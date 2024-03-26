@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v5"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -12,6 +13,8 @@ import (
 	"mxshop-api/user-web/forms"
 	"mxshop-api/user-web/global"
 	"mxshop-api/user-web/global/response"
+	"mxshop-api/user-web/middlewares"
+	"mxshop-api/user-web/models"
 	"mxshop-api/user-web/proto"
 	"net/http"
 	"strconv"
@@ -81,6 +84,9 @@ func GetUserList(ctx *gin.Context) {
 		HandleGrpcErrorToHttp(err, ctx)
 		return
 	}
+	claims, _ := ctx.Get("claims")
+	customClaims := claims.(*models.CustomClaims)
+	zap.S().Infof("当前访问用户：%d", customClaims.ID)
 	//zap.S().Debugf("获取用户列表页")
 	result := make([]response.UserResponse, 0)
 	for _, value := range rsp.Data {
@@ -138,8 +144,34 @@ func PasswordLogin(ctx *gin.Context) {
 			})
 		} else {
 			if passRsp.Success {
-				ctx.JSON(http.StatusInternalServerError, map[string]string{
-					"msg": "登录成功",
+				// 生成Token
+				j := middlewares.NewJWT()
+				roleId, _ := strconv.Atoi(rsp.Role)
+				claims := models.CustomClaims{
+					ID:          uint(rsp.Id),
+					NickName:    rsp.Nickname,
+					AuthorityId: uint(roleId),
+					RegisteredClaims: jwt.RegisteredClaims{
+						NotBefore: jwt.NewNumericDate(time.Now()),                     //签名生效时间
+						ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)), // 签名过期时间
+						IssuedAt:  jwt.NewNumericDate(time.Now()),
+						Issuer:    "mxshop",
+						Subject:   "user-identifier",
+						Audience:  jwt.ClaimStrings{"your-audience"},
+					},
+				}
+				token, err := j.CreateToken(claims)
+				if err != nil {
+					ctx.JSON(http.StatusInternalServerError, gin.H{
+						"msg": "生成token失败",
+					})
+					return
+				}
+				ctx.JSON(http.StatusInternalServerError, gin.H{
+					"id":         rsp.Id,
+					"nick_name":  rsp.Nickname,
+					"token":      token,
+					"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
 				})
 			} else {
 				ctx.JSON(http.StatusBadRequest, map[string]string{

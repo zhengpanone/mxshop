@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 	"mxshop-api/user-web/global"
 	"mxshop-api/user-web/initialize"
-	"mxshop-api/user-web/middlewres"
+	"mxshop-api/user-web/middlewares"
 	myValidator "mxshop-api/user-web/validator"
 	"os"
 	"path/filepath"
@@ -38,7 +38,7 @@ func main() {
 		})
 	}
 
-	Router.Use(middlewres.MyLogger()) //注册全局中间件
+	Router.Use(middlewares.MyLogger()) //注册全局中间件
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	fmt.Printf("run exe dir is %v", dir)
