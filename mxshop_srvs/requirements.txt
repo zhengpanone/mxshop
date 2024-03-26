@@ -1,0 +1,9 @@
+Faker==24.1.1
+grpcio==1.62.1
+grpcio-tools==1.62.1
+passlib==1.7.4
+peewee==3.17.1
+protobuf==4.25.3
+PyMySQL==1.1.0
+python-dateutil==2.9.0.post0
+six==1.16.0
