@@ -7,4 +7,14 @@ user-srv:
 jwt:
   key: aaaaabbbcddbd
 
+sms:
+  accessKeyId: "xxxx"
+  accessKeySecret: "xxxx"
+  protocol: "https"
+  regionId: "xxx"
+  domain: "xxx"
+  signName: "xxx"
+  templateCode: "xxxx"
+  apiName: "xxx"
+
 
