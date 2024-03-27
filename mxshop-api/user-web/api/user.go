@@ -108,6 +108,12 @@ func PasswordLogin(ctx *gin.Context) {
 		HandleValidatorError(ctx, err)
 		return
 	}
+	if !VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.Captcha) {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"msg": "验证码不正确",
+		})
+		return
+	}
 	// 拨号连接用户grpc服务器
 	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvConfig.Host, global.ServerConfig.UserSrvConfig.Port), grpc.WithInsecure())
 
