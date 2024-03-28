@@ -20,5 +20,5 @@ func InitRedis() {
 	if err != nil {
 		panic("redis初始化失败" + err.Error())
 	}
-	global.GlobalRedisClient = redisClient
+	global.RedisClient = redisClient
 }

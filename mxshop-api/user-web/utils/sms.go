@@ -31,6 +31,6 @@ func SendSms(mobile, smsCode string) (err error) {
 		return err
 	}
 	fmt.Println(client.DoAction(request, response))
-	err = global.GlobalRedisClient.Set(context.Background(), mobile, smsCode, 3*time.Minute).Err()
+	err = global.RedisClient.Set(context.Background(), mobile, smsCode, 3*time.Minute).Err()
 	return err
 }

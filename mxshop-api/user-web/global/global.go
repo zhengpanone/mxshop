@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	Trans             ut.Translator
-	ServerConfig      *config.ServerConfig = &config.ServerConfig{}
-	GlobalRedisClient *redis.Client
+	Trans        ut.Translator
+	ServerConfig *config.ServerConfig = &config.ServerConfig{}
+	RedisClient  *redis.Client
 )

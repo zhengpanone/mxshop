@@ -189,6 +189,80 @@ func PasswordLogin(ctx *gin.Context) {
 
 }
 
+// Register 用户注册
+func Register(ctx *gin.Context) {
+	registerForm := forms.RegisterForm{}
+	if err := ctx.ShouldBind(&registerForm); err != nil {
+		HandleValidatorError(ctx, err)
+		return
+	}
+	// 验证码校验
+	code, err := global.RedisClient.Get(context.Background(), registerForm.Mobile).Result()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": "服务器内部错误" + err.Error(),
+		})
+		return
+	}
+	if code != registerForm.Code {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"msg": "验证码不正确",
+		})
+		return
+	}
+	// grpc调用注册接口
+
+	// 拨号连接用户grpc服务器
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvConfig.Host, global.ServerConfig.UserSrvConfig.Port), grpc.WithInsecure())
+
+	if err != nil {
+		zap.S().Errorw("[Get]连接【用户服务失败】", "msg", err.Error())
+	}
+	// 生成grpc的client并调用接口
+	userSevClient := proto.NewUserClient(userConn)
+	user, err := userSevClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+		Mobile:   registerForm.Mobile,
+		Nickname: registerForm.Mobile,
+		Password: registerForm.Password,
+	})
+	if err != nil {
+		zap.S().Errorf("[Register]新建用户失败：%s", err.Error())
+		HandleGrpcErrorToHttp(err, ctx)
+		return
+	}
+
+	// 生成Token
+	j := middlewares.NewJWT()
+	roleId, _ := strconv.Atoi(user.Role)
+	claims := models.CustomClaims{
+		ID:          uint(user.Id),
+		NickName:    user.Nickname,
+		AuthorityId: uint(roleId),
+		RegisteredClaims: jwt.RegisteredClaims{
+			NotBefore: jwt.NewNumericDate(time.Now()),                     //签名生效时间
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)), // 签名过期时间
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Issuer:    "mxshop",
+			Subject:   "user-identifier",
+			Audience:  jwt.ClaimStrings{"your-audience"},
+		},
+	}
+	token, err := j.CreateToken(claims)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": "生成token失败",
+		})
+		return
+	}
+	ctx.JSON(http.StatusInternalServerError, gin.H{
+		"id":         user.Id,
+		"nick_name":  user.Nickname,
+		"token":      token,
+		"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
+	})
+
+}
+
 func Ping(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg": "ok",

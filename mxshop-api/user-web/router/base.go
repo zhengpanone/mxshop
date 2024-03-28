@@ -8,6 +8,7 @@ import (
 func InitBaseRouter(router *gin.RouterGroup) {
 	BaseRouter := router.Group("base")
 	{
+		BaseRouter.GET("ping", api.Ping)
 		BaseRouter.GET("captcha", api.GenerateCaptcha)
 		BaseRouter.POST("send_sms", api.SendSms)
 	}

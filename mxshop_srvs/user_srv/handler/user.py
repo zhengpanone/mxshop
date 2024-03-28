@@ -68,3 +68,22 @@ class UserServicer(user_pb2_grpc.UserServicer):
     @logger.catch
     def CheckPassword(self, request: user_pb2.PasswordCheckInfo, context):
         return user_pb2.CheckPasswordResponse(success=pbkdf2_sha256.verify(request.password, request.encryptedPassword))
+
+    @logger.catch
+    def CreateUser(self, request:user_pb2.CreateUserInfo, context):
+        try:
+            User.get(User.mobile == request.mobile)
+
+            context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+            context.set_details("用户已存在")
+            return user_pb2.UserInfoResponse()
+        except peewee.DoesNotExist as e:
+            pass
+
+        user = User()
+        user.nick_name = request.nickname
+        user.mobile = request.mobile
+        user.password = pbkdf2_sha256.hash(request.password)
+        user.save()
+
+        return self.convert_user_to_rsp(user)
