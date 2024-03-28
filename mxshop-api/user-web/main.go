@@ -19,6 +19,10 @@ func main() {
 	initialize.InitLogger()
 	// 2.初始化配置文件
 	initialize.InitConfig()
+	// 3. 初始化连接redis
+	if global.ServerConfig.System.UseRedis {
+		initialize.InitRedis()
+	}
 	// 3.初始化routers
 	Router := initialize.Routers()
 	// 4.初始化翻译

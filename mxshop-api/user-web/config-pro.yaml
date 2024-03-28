@@ -4,9 +4,12 @@ user-srv:
   host: '127.0.0.1'
   port: 5001
 
+system:
+  use-redis: false
+
 jwt:
   key: aaaaabbbcddbd
-
+### 短信配置
 sms:
   accessKeyId: "xxxx"
   accessKeySecret: "xxxx"
@@ -16,5 +19,8 @@ sms:
   signName: "xxx"
   templateCode: "xxxx"
   apiName: "xxx"
-
+### redis配置
+redis:
+  host: "127.0.0.1"
+  port: 6379
 
