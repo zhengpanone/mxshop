@@ -1,6 +1,7 @@
 import logging
 import os
 import signal
+import socket
 import sys
 from loguru import logger
 import argparse
@@ -12,24 +13,52 @@ import grpc
 from concurrent import futures
 from user_srv.proto import user_pb2_grpc
 from user_srv.handler.user import UserServicer
+from common.register import consul
+from user_srv.settings import settings
+from functools import partial
 
 
-def on_exit(signum, frame):
-    logger.info("程序进程中断")
+def on_exit(signum, frame, service_id):
+    register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
+    logger.info(f"注销{service_id}服务")
+    register.deregister(service_id)
+    logger.info("注销成功")
+
     sys.exit(0)
+
+
+def get_free_tcp_port():
+    tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tcp.bind(("", 0))
+    addr, port = tcp.getsockname()
+    tcp.close()
+
+    return port
 
 
 def server():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--port', nargs="?", type=int, default=5001, help='server port')
     parser.add_argument('--host', nargs="?", type=str, default='0.0.0.0', help='server host')
+    parser.add_argument('--port', nargs="?", type=int, default=0, help='server port')
     args = parser.parse_args()
+    if args.port == 0:
+        port = get_free_tcp_port()
+    else:
+        port = args.port
 
     logger.add("logs/user_srv_{time}.log")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+
+    # 注册用户服务
     user_pb2_grpc.add_UserServicer_to_server(UserServicer(), server)
+
+    # 注册健康检查
+    health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
+
+    import uuid
+    service_id = str(uuid.uuid1())
     # server.add_insecure_port('[::]:50051')
-    server.add_insecure_port(f'{args.host}:{args.port}')
+    server.add_insecure_port(f'{args.host}:{port}')
     # 主进程退出信号监听
     """
         windows下支撑的信号是有限的
@@ -37,13 +66,23 @@ def server():
         SIGTERM kill 发出的软件终止
         
     """
-    signal.signal(signal.SIGINT, on_exit)
-    signal.signal(signal.SIGTERM, on_exit)
-    logger.info(f'Starting server http://{args.host}:{args.port}')
+    signal.signal(signal.SIGINT, partial(on_exit, service_id))
+    signal.signal(signal.SIGTERM, partial(on_exit, service_id))
+    logger.info(f'Starting server http://{args.host}:{port}')
     server.start()
+
+    logger.info(f"服务注册到注册中心")
+    register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
+    if not register.register(settings.SERVICE_NAME, service_id, settings.SERVICE_HOST, port,
+                             settings.SERVICE_TAGS, None):
+        logger.info(f"服务注册失败")
+        sys.exit(0)
+
     server.wait_for_termination()
 
 
 if __name__ == '__main__':
+    # print(get_free_tcp_port())
     logging.basicConfig()
     server()
+

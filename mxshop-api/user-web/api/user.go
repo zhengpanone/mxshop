@@ -84,9 +84,9 @@ func GetUserList(ctx *gin.Context) {
 		HandleGrpcErrorToHttp(err, ctx)
 		return
 	}
-	claims, _ := ctx.Get("claims")
+	/*claims, _ := ctx.Get("claims")
 	customClaims := claims.(*models.CustomClaims)
-	zap.S().Infof("当前访问用户：%d", customClaims.ID)
+	zap.S().Infof("当前访问用户：%d", customClaims.ID)*/
 	//zap.S().Debugf("获取用户列表页")
 	result := make([]response.UserResponse, 0)
 	for _, value := range rsp.Data {

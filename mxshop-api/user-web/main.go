@@ -6,12 +6,13 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
-	"mxshop-api/user-web/global"
-	"mxshop-api/user-web/initialize"
-	"mxshop-api/user-web/middlewares"
-	myValidator "mxshop-api/user-web/validator"
 	"os"
 	"path/filepath"
+	"user-web/global"
+	"user-web/initialize"
+	"user-web/middlewares"
+	"user-web/utils"
+	myValidator "user-web/validator"
 )
 
 func main() {
@@ -30,6 +31,8 @@ func main() {
 		zap.S().Errorf("初始化翻译器错误")
 		return
 	}
+	// 5. 初始化srv连接
+	initialize.InitSrvConn()
 
 	// 注册验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
@@ -46,7 +49,11 @@ func main() {
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	fmt.Printf("run exe dir is %v", dir)
-	port := global.ServerConfig.Port
+	//
+	port, err := utils.GetFreePort()
+	if err == nil {
+		global.ServerConfig.Port = port
+	}
 	zap.S().Debugf("启动服务器，访问地址：http://127.0.0.1:%d", port)
 	if err := Router.Run(fmt.Sprintf(":%d", port)); err != nil {
 		zap.S().Panic("服务器启动失败：", err.Error())

@@ -36,7 +36,7 @@ type System struct {
 
 type ServerConfig struct {
 	Name          string        `mapstructure:"name"`
-	Port          uint32        `mapstructure:"port"`
+	Port          int           `mapstructure:"port"`
 	UserSrvConfig UserSrvConfig `mapstructure:"user-srv"`
 	JWTInfo       JWTConfig     `mapstructure:"jwt"`
 	SMSConfig     SMSConfig     `mapstructure:"sms"`
