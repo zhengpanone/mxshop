@@ -3,6 +3,7 @@ package initialize
 import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
+	"github.com/gin-gonic/gin"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
@@ -69,8 +70,8 @@ func GetConfigFromNacos() {
 
 	// 监听 Nacos 配置变化。
 	err = client.ListenConfig(vo.ConfigParam{
-		DataId: "user-web.yaml",
-		Group:  "dev",
+		DataId: serverConfig.Nacos.DataId,
+		Group:  serverConfig.Nacos.Group,
 		OnChange: func(namespace, group, dataId, data string) {
 			fmt.Println("配置文件变化-------")
 			//fmt.Println("config changed group:" + group + ", dataId:" + dataId + ", content:" + data)
@@ -87,7 +88,7 @@ func GetConfigFromNacos() {
 				if err := viper.Unmarshal(global.ServerConfig); err != nil {
 					panic(err)
 				}
-				fmt.Printf("----2---%v\n", global.ServerConfig)
+				//fmt.Printf("----2---%v\n", global.ServerConfig)
 				InitSrvConn()
 			}
 		},
@@ -95,11 +96,12 @@ func GetConfigFromNacos() {
 }
 
 func InitConfig() {
-	debug := GetEnvInfo("MXSHOP_DEBUG")
+	//debug := GetEnvInfo("MXSHOP_DEBUG")
+	mode := gin.Mode()
 	configFilePrefix := "config"
 
 	configFileName := fmt.Sprintf("./%s-pro.yaml", configFilePrefix)
-	if debug {
+	if mode == gin.DebugMode {
 		configFileName = fmt.Sprintf("./%s-dev.yaml", configFilePrefix)
 	}
 	v := viper.New()
@@ -122,7 +124,7 @@ func InitConfig() {
 	// 监听本地配置文件的变化（可选）
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("Config file changed:", e.Name)
+		//fmt.Println("Config file changed:", e.Name)
 		zap.S().Infof("Local Config File Changed:%e", e.Name)
 		_ = v.ReadInConfig()
 		_ = v.Unmarshal(global.ServerConfig)
