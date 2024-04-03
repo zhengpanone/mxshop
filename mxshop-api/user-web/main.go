@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
@@ -51,12 +52,16 @@ func main() {
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	fmt.Printf("run exe dir is %v", dir)
 	//
-	port, err := utils.GetFreePort()
-	if err == nil {
-		global.ServerConfig.Port = port
+	currentMod := gin.Mode()
+	if currentMod == gin.ReleaseMode {
+		port, err := utils.GetFreePort()
+		if err == nil {
+			global.ServerConfig.Port = port
+		}
 	}
-	zap.S().Debugf("启动服务器，访问地址：http://127.0.0.1:%d", port)
-	if err := Router.Run(fmt.Sprintf(":%d", port)); err != nil {
+
+	zap.S().Debugf("启动服务器，访问地址：http://127.0.0.1:%d", global.ServerConfig.Port)
+	if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
 		zap.S().Panic("服务器启动失败：", err.Error())
 	}
 

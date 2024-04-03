@@ -65,7 +65,7 @@ func HandleGrpcErrorToHttp(err error, c *gin.Context) {
 }
 
 func GetUserList(ctx *gin.Context) {
-	userSrvClient := global.UserSrvClient
+	userSrvClient := *global.UserSrvClient
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "10"))
 	rsp, err := userSrvClient.GetUserList(context.Background(), &proto.PageInfo{
@@ -109,7 +109,7 @@ func PasswordLogin(ctx *gin.Context) {
 		return
 	}
 
-	userSevClient := global.UserSrvClient
+	userSevClient := *global.UserSrvClient
 	// 登录的逻辑
 	if rsp, err := userSevClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
 		Mobile: passwordLogin.Mobile,
@@ -198,7 +198,7 @@ func Register(ctx *gin.Context) {
 		})
 		return
 	}
-	userSevClient := global.UserSrvClient
+	userSevClient := *global.UserSrvClient
 	user, err := userSevClient.CreateUser(context.Background(), &proto.CreateUserInfo{
 		Mobile:   registerForm.Mobile,
 		Nickname: registerForm.Mobile,

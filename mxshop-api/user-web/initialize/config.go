@@ -88,6 +88,7 @@ func GetConfigFromNacos() {
 					panic(err)
 				}
 				fmt.Printf("----2---%v\n", global.ServerConfig)
+				InitSrvConn()
 			}
 		},
 	})
@@ -125,6 +126,7 @@ func InitConfig() {
 		zap.S().Infof("Local Config File Changed:%e", e.Name)
 		_ = v.ReadInConfig()
 		_ = v.Unmarshal(global.ServerConfig)
+		InitSrvConn()
 	})
 
 	/*config, err := configClient.GetConfig(vo.ConfigParam{

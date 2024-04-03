@@ -13,6 +13,11 @@ import (
 
 // https://blog.csdn.net/zhoupenghui168/article/details/131196225
 func InitSrvConn() {
+
+	// 如果已有连接先关闭
+	if global.UserConn != nil {
+		global.UserConn.Close()
+	}
 	consul := global.ServerConfig.Consul
 	url := fmt.Sprintf("consul://%s:%d/%s?wait=14s&tag=srv", consul.Host, consul.Port, global.ServerConfig.UserSrvConfig.Name)
 	userConn, err := grpc.Dial(
@@ -24,9 +29,10 @@ func InitSrvConn() {
 	if err != nil {
 		zap.S().Fatal("[InitSrvConn]连接【用户服务失败】")
 	}
+	global.UserConn = userConn
 	// 注册客户端
 	userSrvClient := proto.NewUserClient(userConn)
-	global.UserSrvClient = userSrvClient
+	global.UserSrvClient = &userSrvClient
 
 }
 
@@ -63,5 +69,5 @@ func InitSrvConnBack() {
 	}
 	// 生成grpc的client并调用接口
 	userSrvClient := proto.NewUserClient(userConn)
-	global.UserSrvClient = userSrvClient
+	global.UserSrvClient = &userSrvClient
 }
