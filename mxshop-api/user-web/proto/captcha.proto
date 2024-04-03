@@ -1,0 +1,45 @@
+syntax = "proto3";
+option go_package = ".;proto";
+
+// https://blog.csdn.net/zhoupenghui168/article/details/131742761
+
+service Captcha {
+  //获取验证码: MakeCaptchaRequest请求, MakeCaptchaRequest返回
+  rpc GenerateCaptcha(MakeCaptchaRequest) returns (MakeCaptchaResponse) {}
+  //校验验证码: VerifyCaptchaRequest请求, VerifyCaptchaResponse返回
+  rpc VerifyCaptcha(VerifyCaptchaRequest) returns (VerifyCaptchaResponse) {}
+}
+
+//以下具体参数类型参考captcha.go中对应的方法
+
+//获取验证码请求参数
+message MakeCaptchaRequest {
+  //验证码高度
+  int32 height = 1;
+  //验证码宽度
+  int32 width = 2;
+  //验证码长度
+  int32 length = 3;
+}
+
+//获取验证码返回数据
+message MakeCaptchaResponse {
+  //验证码id
+  string id = 1;
+  //验证码base64编码
+  string b64s = 2;
+}
+
+//校验验证码请求参数
+message VerifyCaptchaRequest {
+  //验证码id
+  string id = 1;
+  //输入的验证码
+  string verifyValue = 2;
+}
+
+//校验验证码返回数据
+message VerifyCaptchaResponse {
+  //校验的结果
+  bool verifyResult = 1;
+}

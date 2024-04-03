@@ -28,6 +28,7 @@ class UserServicer(user_pb2_grpc.UserServicer):
 
     @logger.catch
     def GetUserList(self, request: user_pb2.PageInfo, context):
+        print("--------")
         rsp = user_pb2.UserListResponse()
         size = 10
         page = 1

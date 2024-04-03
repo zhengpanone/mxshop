@@ -16,6 +16,7 @@ import (
 )
 
 func main() {
+	//initialize.InitNacos()
 	// 1.初始化Logger
 	initialize.InitLogger()
 	// 2.初始化配置文件

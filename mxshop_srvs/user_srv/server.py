@@ -34,7 +34,9 @@ def get_free_tcp_port():
     tcp.close()
 
     return port
-
+def test_db(args):
+    print("配置文件产生变化")
+    print(args)
 
 def server():
     parser = argparse.ArgumentParser()
@@ -84,5 +86,6 @@ def server():
 if __name__ == '__main__':
     # print(get_free_tcp_port())
     logging.basicConfig()
+    settings.client.add_config_watcher(settings.NACOS["dataId"], settings.NACOS["groupId"], settings.update_config) # 这个逻辑必须放在__name__ == '__main__'中
     server()
 
