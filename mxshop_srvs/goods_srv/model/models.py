@@ -75,7 +75,7 @@ class Goods(BaseModel):
     商品
     """
     category = ForeignKeyField(Category, verbose_name="商品类目", on_delete="CASCADE")
-    brand = ForeignKeyField(Brands, verbose_name="品牌", on_delete="CASCADE")
+    brand = ForeignKeyField(Brands, verbose_name="品牌", on_delete="CASCADE", column_name="brand_id")
     on_sale = BooleanField(default=False, verbose_name="是否上架")
     goods_sn = CharField(max_length=50, default="", verbose_name="商品唯一货号")
     name = CharField(max_length=100, verbose_name="商品名")
