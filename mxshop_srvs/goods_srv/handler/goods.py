@@ -3,7 +3,7 @@ from google.protobuf import empty_pb2
 from loguru import logger
 from peewee import DoesNotExist
 
-from goods_srv.model.models import Goods, Category
+from goods_srv.model.models import Goods, Category, Brands
 from goods_srv.proto import goods_pb2, goods_pb2_grpc
 
 
@@ -124,3 +124,85 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("商品不存在")
             return goods_pb2.GoodsInfoResponse()
+
+    @logger.catch
+    def CreateGoods(self, request: goods_pb2.CreateGoodsInfo, context):
+        """新建商品"""
+        try:
+            category = Category.get(Category.id == request.category_id)
+        except DoesNotExist as e:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("商品分类不存在，创建商品失败")
+            return goods_pb2.GoodsInfoResponse()
+
+        try:
+            brand = Brands.get(Brands.id == request.brand_id)
+        except DoesNotExist as e:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("品牌不存在，创建商品失败")
+            return goods_pb2.GoodsInfoResponse()
+
+        goods = Goods()
+        goods.brand = brand
+        goods.category = category
+        goods.name = request.name
+        goods.goods_sn = request.goods_sn
+        goods.stocks = request.stocks
+        goods.market_price = request.market_price
+        goods.shop_price = request.shop_price
+        goods.goods_brief = request.goods_brief
+        goods.goods_desc = request.goods_desc
+        goods.ship_free = request.ship_free
+        goods.images = list(request.images)
+        goods.desc_images = list(request.desc_images)
+        goods.goods_front_image = request.goods_front_image
+        goods.is_new = request.is_new
+        goods.is_hot = request.is_hot
+        goods.on_sale = request.on_sale
+        goods.save()
+        # TODO 此处完善库存的设置 - 分布式事务
+
+        return self.convert_model_to_message(goods)
+
+    @logger.catch
+    def UpdateGoods(self, request: goods_pb2.CreateGoodsInfo, context):
+        """更新商品"""
+        try:
+            category = Category.get(Category.id == request.category_id)
+        except DoesNotExist as e:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("商品分类不存在，创建商品失败")
+            return goods_pb2.GoodsInfoResponse()
+
+        try:
+            brand = Brands.get(Brands.id == request.brand_id)
+        except DoesNotExist as e:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("品牌不存在，创建商品失败")
+            return goods_pb2.GoodsInfoResponse()
+
+        try:
+            goods = Goods.get(Goods.id == request.id)
+        except DoesNotExist as e:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("商品不存在，更新商品失败")
+            return goods_pb2.GoodsInfoResponse()
+        goods.brand = brand
+        goods.category = category
+        goods.name = request.name
+        goods.goods_sn = request.goods_sn
+        goods.stocks = request.stocks
+        goods.market_price = request.market_price
+        goods.shop_price = request.shop_price
+        goods.goods_brief = request.goods_brief
+        goods.goods_desc = request.goods_desc
+        goods.ship_free = request.ship_free
+        goods.images = list(request.images)
+        goods.desc_images = list(request.desc_images)
+        goods.goods_front_image = request.goods_front_image
+        goods.is_new = request.is_new
+        goods.is_hot = request.is_hot
+        goods.on_sale = request.on_sale
+        goods.save()
+        # TODO 此处完善库存的设置 - 分布式事务
+        return self.convert_model_to_message(goods)
