@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import goods_pb2 as goods__pb2
+from goods_srv.proto import goods_pb2 as goods__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
@@ -44,31 +44,6 @@ class GoodsStub(object):
                 '/Goods/GetGoodsDetail',
                 request_serializer=goods__pb2.GoodInfoRequest.SerializeToString,
                 response_deserializer=goods__pb2.GoodsInfoResponse.FromString,
-                )
-        self.GetAllCategoryList = channel.unary_unary(
-                '/Goods/GetAllCategoryList',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=goods__pb2.CategoryListResponse.FromString,
-                )
-        self.GetSubCategory = channel.unary_unary(
-                '/Goods/GetSubCategory',
-                request_serializer=goods__pb2.CategoryListRequest.SerializeToString,
-                response_deserializer=goods__pb2.SubCategoryListResponse.FromString,
-                )
-        self.CreateCategory = channel.unary_unary(
-                '/Goods/CreateCategory',
-                request_serializer=goods__pb2.CategoryInfoRequest.SerializeToString,
-                response_deserializer=goods__pb2.CategoryInfoResponse.FromString,
-                )
-        self.DeleteCategory = channel.unary_unary(
-                '/Goods/DeleteCategory',
-                request_serializer=goods__pb2.DeleteCategoryInfo.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                )
-        self.UpdateCategory = channel.unary_unary(
-                '/Goods/UpdateCategory',
-                request_serializer=goods__pb2.CategoryInfoRequest.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 )
         self.BrandList = channel.unary_unary(
                 '/Goods/BrandList',
@@ -117,7 +92,7 @@ class GoodsStub(object):
                 )
         self.GetCategoryBrandList = channel.unary_unary(
                 '/Goods/GetCategoryBrandList',
-                request_serializer=goods__pb2.CategoryInfoRequest.SerializeToString,
+                request_serializer=goods__pb2.CategoryBrandInfoRequest.SerializeToString,
                 response_deserializer=goods__pb2.BrandListResponse.FromString,
                 )
         self.CreateCategoryBrand = channel.unary_unary(
@@ -174,42 +149,6 @@ class GoodsServicer(object):
 
     def GetGoodsDetail(self, request, context):
         """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetAllCategoryList(self, request, context):
-        """商品分类
-        获取所有的分类
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetSubCategory(self, request, context):
-        """获取子分类
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def CreateCategory(self, request, context):
-        """新建分类
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteCategory(self, request, context):
-        """删除分类
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UpdateCategory(self, request, context):
-        """修改分类
-        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -341,31 +280,6 @@ def add_GoodsServicer_to_server(servicer, server):
                     request_deserializer=goods__pb2.GoodInfoRequest.FromString,
                     response_serializer=goods__pb2.GoodsInfoResponse.SerializeToString,
             ),
-            'GetAllCategoryList': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetAllCategoryList,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=goods__pb2.CategoryListResponse.SerializeToString,
-            ),
-            'GetSubCategory': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetSubCategory,
-                    request_deserializer=goods__pb2.CategoryListRequest.FromString,
-                    response_serializer=goods__pb2.SubCategoryListResponse.SerializeToString,
-            ),
-            'CreateCategory': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateCategory,
-                    request_deserializer=goods__pb2.CategoryInfoRequest.FromString,
-                    response_serializer=goods__pb2.CategoryInfoResponse.SerializeToString,
-            ),
-            'DeleteCategory': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteCategory,
-                    request_deserializer=goods__pb2.DeleteCategoryInfo.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            ),
-            'UpdateCategory': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateCategory,
-                    request_deserializer=goods__pb2.CategoryInfoRequest.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            ),
             'BrandList': grpc.unary_unary_rpc_method_handler(
                     servicer.BrandList,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
@@ -413,7 +327,7 @@ def add_GoodsServicer_to_server(servicer, server):
             ),
             'GetCategoryBrandList': grpc.unary_unary_rpc_method_handler(
                     servicer.GetCategoryBrandList,
-                    request_deserializer=goods__pb2.CategoryInfoRequest.FromString,
+                    request_deserializer=goods__pb2.CategoryBrandInfoRequest.FromString,
                     response_serializer=goods__pb2.BrandListResponse.SerializeToString,
             ),
             'CreateCategoryBrand': grpc.unary_unary_rpc_method_handler(
@@ -540,91 +454,6 @@ class Goods(object):
         return grpc.experimental.unary_unary(request, target, '/Goods/GetGoodsDetail',
             goods__pb2.GoodInfoRequest.SerializeToString,
             goods__pb2.GoodsInfoResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetAllCategoryList(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Goods/GetAllCategoryList',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            goods__pb2.CategoryListResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetSubCategory(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Goods/GetSubCategory',
-            goods__pb2.CategoryListRequest.SerializeToString,
-            goods__pb2.SubCategoryListResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def CreateCategory(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Goods/CreateCategory',
-            goods__pb2.CategoryInfoRequest.SerializeToString,
-            goods__pb2.CategoryInfoResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DeleteCategory(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Goods/DeleteCategory',
-            goods__pb2.DeleteCategoryInfo.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UpdateCategory(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Goods/UpdateCategory',
-            goods__pb2.CategoryInfoRequest.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -793,7 +622,7 @@ class Goods(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Goods/GetCategoryBrandList',
-            goods__pb2.CategoryInfoRequest.SerializeToString,
+            goods__pb2.CategoryBrandInfoRequest.SerializeToString,
             goods__pb2.BrandListResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

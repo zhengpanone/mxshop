@@ -13,8 +13,9 @@ sys.path.insert(0, BASE_DIR)
 
 import grpc
 from concurrent import futures
-from goods_srv.proto import goods_pb2_grpc
+from goods_srv.proto import goods_pb2_grpc,category_pb2_grpc
 from goods_srv.handler.goods import GoodsServicer
+from goods_srv.handler.category import CategoryServicer
 from common.register import consul
 from goods_srv.settings import settings
 from functools import partial
@@ -55,9 +56,10 @@ def server():
 
     logger.add("logs/goods_srv_{time}.log")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-
+    # RPC服务注册
     # 注册商品服务
     goods_pb2_grpc.add_GoodsServicer_to_server(GoodsServicer(), server)
+    category_pb2_grpc.add_CategoryServicer_to_server(CategoryServicer(), server)
 
     # 注册健康检查
     health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
@@ -89,6 +91,7 @@ def server():
 
 if __name__ == '__main__':
     logging.basicConfig()
-    settings.client.add_config_watcher(settings.NACOS["dataId"], settings.NACOS["groupId"],
+    settings.client.add_config_watcher(settings.NACOS["dataId"],
+                                       settings.NACOS["groupId"],
                                        settings.update_config)  # 这个逻辑必须放在__name__ == '__main__'中
     server()
