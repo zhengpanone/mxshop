@@ -2,12 +2,13 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from goods_srv.proto import category_pb2 as category__pb2
+from goods_srv.proto  import category_pb2 as category__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class CategoryStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """商品分类
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -43,11 +44,11 @@ class CategoryStub(object):
 
 
 class CategoryServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """商品分类
+    """
 
     def GetAllCategoryList(self, request, context):
-        """商品分类
-        获取所有的分类
+        """获取所有的分类
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -117,7 +118,8 @@ def add_CategoryServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class Category(object):
-    """Missing associated documentation comment in .proto file."""
+    """商品分类
+    """
 
     @staticmethod
     def GetAllCategoryList(request,

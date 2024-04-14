@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+
+option go_package = ".;proto";
+
+service Brand {
+    // 品牌和轮播图
+    rpc BrandList (BrandFilterRequest) returns (BrandListResponse);//批量获取品牌信息
+    rpc CreateBrand (BrandRequest) returns (BrandInfoResponse); //新建品牌信息
+    rpc DeleteBrand (BrandRequest) returns (google.protobuf.Empty); //删除品牌
+    rpc UpdateBrand (BrandRequest) returns (google.protobuf.Empty); //修改品牌信息
+
+
+    // 轮播图
+    rpc BannerList (google.protobuf.Empty) returns (BannerListResponse); //获取轮播列表信息
+    rpc CreateBanner (BannerRequest) returns (BannerResponse); //添加banner图
+    rpc DeleteBanner (BannerRequest) returns (google.protobuf.Empty); //删除轮播图
+    rpc UpdateBanner (BannerRequest) returns (google.protobuf.Empty);//修改轮播图
+
+
+
+
+
+    // 品牌分类
+    rpc CategoryBrandList (CategoryBrandFilterRequest) returns (CategoryBrandListResponse); //获取轮播图
+    rpc GetCategoryBrandList (CategoryBrandInfoRequest) returns (BrandListResponse); //通过category获取brands
+    rpc CreateCategoryBrand (CategoryBrandRequest) returns (CategoryBrandResponse); //添加banner图片
+    rpc DeleteCategoryBrand (CategoryBrandRequest) returns (google.protobuf.Empty);//删除轮播图
+    rpc UpdateCategoryBrand (CategoryBrandRequest) returns (google.protobuf.Empty); //修改轮播图
+
+
+}
+
+message BrandFilterRequest {
+    int32 page = 1;
+    int32 size = 2;
+}
+
+message CategoryBrandFilterRequest {
+    int32 page = 1;
+    int32 size = 2;
+}
+message CategoryBrandListResponse {
+    int32 total = 1;
+    repeated CategoryBrandResponse data = 2;
+}
+
+message CategoryBrandRequest {
+    int32 id = 1;
+    int32 category_id = 2;
+    int32 brand_id = 3;
+}
+message CategoryBrandResponse {
+    int32 id = 1;
+    BrandInfoResponse brand = 2;
+    CategoryInfoResponse category = 3;
+}
+
+message CategoryInfoResponse {
+    int32 id = 1;
+    string name = 2;
+    int32 parent_category = 3;
+    int32 level = 4;
+    bool is_tab = 5;
+}
+
+message BrandListResponse {
+    int32 total = 1;
+    repeated BrandInfoResponse data = 2;
+}
+message BrandRequest {
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+
+}
+message BannerListResponse {
+    int32 total = 1;
+    repeated BannerResponse data = 2;
+}
+message BannerRequest {
+    int32 id = 1;
+    int32 index = 2;
+    string image = 3;
+    string url = 4;
+}
+message BannerResponse {
+
+    int32 id = 1;
+    int32 index = 2;
+    string image = 3;
+    string url = 4;
+}
+
+message BrandInfoResponse {
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+}
+
+
+message CategoryBrandInfoRequest {
+    int32 id = 1;
+    string name = 2;
+    int32 parent_category = 3;
+    int32 level = 4;
+    bool is_tab = 5;
+}

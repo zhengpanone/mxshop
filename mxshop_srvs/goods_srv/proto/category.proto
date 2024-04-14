@@ -46,6 +46,7 @@ message CategoryInfoResponse {
     int32 level = 4;
     bool is_tab = 5;
 }
+
 message DeleteCategoryInfo {
     int32 id = 1;
 }

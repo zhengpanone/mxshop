@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x63\x61tegory.proto\x1a\x1bgoogle/protobuf/empty.proto\"9\n\x1b\x43\x61tegoryFilterFilterRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06is_tab\x18\x02 \x01(\x08\"]\n\x14\x43\x61tegoryListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12#\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x15.CategoryInfoResponse\x12\x11\n\tjson_data\x18\x03 \x01(\t\"\x15\n\x13\x43\x61tegoryListRequest\"\x7f\n\x17SubCategoryListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12#\n\x04info\x18\x02 \x01(\x0b\x32\x15.CategoryInfoResponse\x12\x30\n\x11sub_category_list\x18\x03 \x03(\x0b\x32\x15.CategoryInfoResponse\"h\n\x14\x43\x61tegoryInfoResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x17\n\x0fparent_category\x18\x03 \x01(\x05\x12\r\n\x05level\x18\x04 \x01(\x05\x12\x0e\n\x06is_tab\x18\x05 \x01(\x08\"\x14\n\x12\x44\x65leteCategoryInfo\"0\n\x14QueryCategoryRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"N\n\x18\x42\x61tchCategoryInfoRequest\x12\n\n\x02id\x18\x01 \x03(\x05\x12\x12\n\ngoods_nums\x18\x02 \x01(\x05\x12\x12\n\nbrand_nums\x18\x03 \x01(\x05\"g\n\x13\x43\x61tegoryInfoRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x17\n\x0fparent_category\x18\x03 \x01(\x05\x12\r\n\x05level\x18\x04 \x01(\x05\x12\x0e\n\x06is_tab\x18\x05 \x01(\x08\x32\xcf\x02\n\x08\x43\x61tegory\x12\x43\n\x12GetAllCategoryList\x12\x16.google.protobuf.Empty\x1a\x15.CategoryListResponse\x12@\n\x0eGetSubCategory\x12\x14.CategoryListRequest\x1a\x18.SubCategoryListResponse\x12=\n\x0e\x43reateCategory\x12\x14.CategoryInfoRequest\x1a\x15.CategoryInfoResponse\x12=\n\x0e\x44\x65leteCategory\x12\x13.DeleteCategoryInfo\x1a\x16.google.protobuf.Empty\x12>\n\x0eUpdateCategory\x12\x14.CategoryInfoRequest\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x63\x61tegory.proto\x1a\x1bgoogle/protobuf/empty.proto\"9\n\x1b\x43\x61tegoryFilterFilterRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06is_tab\x18\x02 \x01(\x08\"]\n\x14\x43\x61tegoryListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12#\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x15.CategoryInfoResponse\x12\x11\n\tjson_data\x18\x03 \x01(\t\"0\n\x13\x43\x61tegoryListRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05level\x18\x02 \x01(\x05\"\x7f\n\x17SubCategoryListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12#\n\x04info\x18\x02 \x01(\x0b\x32\x15.CategoryInfoResponse\x12\x30\n\x11sub_category_list\x18\x03 \x03(\x0b\x32\x15.CategoryInfoResponse\"h\n\x14\x43\x61tegoryInfoResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x17\n\x0fparent_category\x18\x03 \x01(\x05\x12\r\n\x05level\x18\x04 \x01(\x05\x12\x0e\n\x06is_tab\x18\x05 \x01(\x08\" \n\x12\x44\x65leteCategoryInfo\x12\n\n\x02id\x18\x01 \x01(\x05\"0\n\x14QueryCategoryRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"N\n\x18\x42\x61tchCategoryInfoRequest\x12\n\n\x02id\x18\x01 \x03(\x05\x12\x12\n\ngoods_nums\x18\x02 \x01(\x05\x12\x12\n\nbrand_nums\x18\x03 \x01(\x05\"g\n\x13\x43\x61tegoryInfoRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x17\n\x0fparent_category\x18\x03 \x01(\x05\x12\r\n\x05level\x18\x04 \x01(\x05\x12\x0e\n\x06is_tab\x18\x05 \x01(\x08\x32\xcf\x02\n\x08\x43\x61tegory\x12\x43\n\x12GetAllCategoryList\x12\x16.google.protobuf.Empty\x1a\x15.CategoryListResponse\x12@\n\x0eGetSubCategory\x12\x14.CategoryListRequest\x1a\x18.SubCategoryListResponse\x12=\n\x0e\x43reateCategory\x12\x14.CategoryInfoRequest\x1a\x15.CategoryInfoResponse\x12=\n\x0e\x44\x65leteCategory\x12\x13.DeleteCategoryInfo\x1a\x16.google.protobuf.Empty\x12>\n\x0eUpdateCategory\x12\x14.CategoryInfoRequest\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -28,19 +28,19 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_CATEGORYLISTRESPONSE']._serialized_start=106
   _globals['_CATEGORYLISTRESPONSE']._serialized_end=199
   _globals['_CATEGORYLISTREQUEST']._serialized_start=201
-  _globals['_CATEGORYLISTREQUEST']._serialized_end=222
-  _globals['_SUBCATEGORYLISTRESPONSE']._serialized_start=224
-  _globals['_SUBCATEGORYLISTRESPONSE']._serialized_end=351
-  _globals['_CATEGORYINFORESPONSE']._serialized_start=353
-  _globals['_CATEGORYINFORESPONSE']._serialized_end=457
-  _globals['_DELETECATEGORYINFO']._serialized_start=459
-  _globals['_DELETECATEGORYINFO']._serialized_end=479
-  _globals['_QUERYCATEGORYREQUEST']._serialized_start=481
-  _globals['_QUERYCATEGORYREQUEST']._serialized_end=529
-  _globals['_BATCHCATEGORYINFOREQUEST']._serialized_start=531
-  _globals['_BATCHCATEGORYINFOREQUEST']._serialized_end=609
-  _globals['_CATEGORYINFOREQUEST']._serialized_start=611
-  _globals['_CATEGORYINFOREQUEST']._serialized_end=714
-  _globals['_CATEGORY']._serialized_start=717
-  _globals['_CATEGORY']._serialized_end=1052
+  _globals['_CATEGORYLISTREQUEST']._serialized_end=249
+  _globals['_SUBCATEGORYLISTRESPONSE']._serialized_start=251
+  _globals['_SUBCATEGORYLISTRESPONSE']._serialized_end=378
+  _globals['_CATEGORYINFORESPONSE']._serialized_start=380
+  _globals['_CATEGORYINFORESPONSE']._serialized_end=484
+  _globals['_DELETECATEGORYINFO']._serialized_start=486
+  _globals['_DELETECATEGORYINFO']._serialized_end=518
+  _globals['_QUERYCATEGORYREQUEST']._serialized_start=520
+  _globals['_QUERYCATEGORYREQUEST']._serialized_end=568
+  _globals['_BATCHCATEGORYINFOREQUEST']._serialized_start=570
+  _globals['_BATCHCATEGORYINFOREQUEST']._serialized_end=648
+  _globals['_CATEGORYINFOREQUEST']._serialized_start=650
+  _globals['_CATEGORYINFOREQUEST']._serialized_end=753
+  _globals['_CATEGORY']._serialized_start=756
+  _globals['_CATEGORY']._serialized_end=1091
 # @@protoc_insertion_point(module_scope)

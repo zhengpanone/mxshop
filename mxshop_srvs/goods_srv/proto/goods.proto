@@ -14,29 +14,9 @@ service Goods {
     rpc DeleteGoods (DeleteGoodsInfo) returns (google.protobuf.Empty);
     rpc UpdateGoods (CreateGoodsInfo) returns (google.protobuf.Empty);
     rpc GetGoodsDetail (GoodInfoRequest) returns (GoodsInfoResponse);
-
-    // 品牌和轮播图
-    rpc BrandList (google.protobuf.Empty) returns (BrandListResponse);//批量获取品牌信息
-    rpc CreateBrand (BrandRequest) returns (BrandInfoResponse); //新建品牌信息
-    rpc DeleteBrand (BrandRequest) returns (google.protobuf.Empty); //删除品牌
-    rpc UpdateBrand (BrandRequest) returns (google.protobuf.Empty); //修改品牌信息
-
-    // 轮播图
-    rpc BannerList (google.protobuf.Empty) returns (BannerListResponse); //获取轮播列表信息
-    rpc CreateBanner (BannerRequest) returns (BannerResponse); //添加banner图
-    rpc DeleteBanner (BannerRequest) returns (google.protobuf.Empty); //删除轮播图
-    rpc UpdateBanner (BannerRequest) returns (google.protobuf.Empty);//修改轮播图
-
-
-    // 品牌分类
-    rpc CategoryBrandList (CategoryBrandFilterRequest) returns (CategoryBrandListResponse); //获取轮播图
-    rpc GetCategoryBrandList (CategoryBrandInfoRequest) returns (BrandListResponse); //通过category获取brands
-    rpc CreateCategoryBrand (CategoryBrandRequest) returns (CategoryBrandResponse); //添加banner图片
-    rpc DeleteCategoryBrand (CategoryBrandRequest) returns (google.protobuf.Empty);//删除轮播图
-    rpc UpdateCategoryBrand (CategoryBrandRequest) returns (google.protobuf.Empty); //修改轮播图
-
-
 }
+
+
 message GoodsFilterRequest {
     int32 price_min = 1;
     int32 price_max = 2;
@@ -79,17 +59,11 @@ message CreateGoodsInfo {
     bool on_sale = 18;
     int32 category_id = 19;
     int32 brand_id = 20;
-
-
 }
 
 message CategoryBriefInfoResponse {
     int32 id = 1;
     string name = 2;
-}
-
-message BrandInfoResponse {
-
 }
 
 message GoodsInfoResponse {
@@ -120,50 +94,18 @@ message GoodsInfoResponse {
 message DeleteGoodsInfo {
     int32 id = 1;
 }
+
+
 message GoodInfoRequest {
     int32 id = 1;
 }
 
 
-message BrandListResponse {
-
-}
-message BrandRequest {
-
-}
-message BannerListResponse {
-
-}
-message BannerRequest {
-
-}
-message BannerResponse {
-
-}
-message CategoryBrandFilterRequest {
-
-}
-message CategoryBrandListResponse {
-
-}
-
-message CategoryBrandRequest {
-
-}
-message CategoryBrandResponse {
-
-}
-
-
-message CategoryBrandInfoRequest {
+message BrandInfoResponse {
     int32 id = 1;
     string name = 2;
-    int32 parent_category = 3;
-    int32 level = 4;
-    bool is_tab = 5;
+    string logo = 3;
 }
-
-
 
 
 
