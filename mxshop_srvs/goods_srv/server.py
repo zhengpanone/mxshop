@@ -13,9 +13,8 @@ sys.path.insert(0, BASE_DIR)
 
 import grpc
 from concurrent import futures
-from goods_srv.proto import goods_pb2_grpc,category_pb2_grpc
+from goods_srv.proto import goods_pb2_grpc
 from goods_srv.handler.goods import GoodsServicer
-from goods_srv.handler.category import CategoryServicer
 from common.register import consul
 from goods_srv.settings import settings
 from functools import partial
@@ -59,7 +58,6 @@ def server():
     # RPC服务注册
     # 注册商品服务
     goods_pb2_grpc.add_GoodsServicer_to_server(GoodsServicer(), server)
-    category_pb2_grpc.add_CategoryServicer_to_server(CategoryServicer(), server)
 
     # 注册健康检查
     health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)

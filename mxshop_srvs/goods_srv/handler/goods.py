@@ -2,8 +2,8 @@ import grpc
 from google.protobuf import empty_pb2
 from loguru import logger
 from peewee import DoesNotExist
-
-from goods_srv.model.models import Goods, Category, Brands
+import json
+from goods_srv.model.models import Goods, Category, Brands, GoodsCategoryBrand, Banner
 from goods_srv.proto import goods_pb2, goods_pb2_grpc
 
 
@@ -206,3 +206,361 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         goods.save()
         # TODO 此处完善库存的设置 - 分布式事务
         return self.convert_model_to_message(goods)
+
+    def category_model_to_dict(self, category: Category) -> dict:
+        re = {}
+        re["id"] = category.id
+        re["name"] = category.name
+        re["level"] = category.level
+        re["parent"] = category.parent_category_id
+        re['is_tab'] = category.is_tab
+        return re
+
+    @logger.catch
+    def GetAllCategoryList(self, request: empty_pb2.Empty, context):
+        # 商品分类
+        """
+
+        :param request:
+        :param context:
+        :return:  [{"name":"xxx","id":"xxx","sub_category":[{},{}]},{},{}]
+        """
+        level1 = []
+        level2 = []
+        level3 = []
+        category_list_rsp = goods_pb2.CategoryListResponse()
+        category_list_rsp.total = Category.select().count()
+        for category in Category.select():
+            category_rsp = goods_pb2.CategoryInfoResponse()
+            category_rsp.id = category.id
+            category_rsp.name = category.name
+            category_rsp.parent_category = category.parent_category_id
+            category_rsp.level = category.level
+            category_rsp.is_tab = category.is_tab
+            category_list_rsp.data.append(category_rsp)
+            if category.level == 1:
+                level1.append(self.category_model_to_dict(category))
+            elif category.level == 2:
+                level2.append(self.category_model_to_dict(category))
+            elif category.level == 3:
+                level3.append(self.category_model_to_dict(category))
+
+        for data3 in level3:
+            for data2 in level2:
+                if data3['parent'] == data2['id']:
+                    if "sub_category" not in data2:
+                        data2['sub_category'] = [data3]
+                    else:
+                        data2['sub_category'].append(data3)
+
+        for data2 in level2:
+            for data1 in level1:
+                if data2['parent'] == data1['id']:
+                    if "sub_category" not in data1:
+                        data1['sub_category'] = [data2]
+                    else:
+                        data1['sub_category'].append(data2)
+        category_list_rsp.json_data = json.dumps(level1)
+
+        return category_list_rsp
+
+    @logger.catch
+    def GetSubCategory(self, request: goods_pb2.CategoryListRequest, context):
+        category_list_rsp = goods_pb2.SubCategoryListResponse()
+        try:
+            category_info = Category.get(Category.id == request.id)
+            category_rsp = goods_pb2.CategoryInfoResponse()
+            category_rsp.id = category_info.id
+            category_rsp.name = category_info.name
+            category_rsp.level = category_info.level
+            category_rsp.is_tab = category_info.is_tab
+            if category_info.parent_category:
+                category_list_rsp.info.parent_category = category_info.parent_category_id
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details('商品子分类记录不存在')
+            return empty_pb2.Empty()
+
+        categorys = Category.select().where(Category.parent_category == request.id)
+        for category in categorys:
+            category_rsp = goods_pb2.CategoryInfoResponse()
+            category_rsp.id = category.id
+            category_rsp.name = category.name
+            if category_info.parent_category:
+                category_rsp.parent_category = category_info.parent_category_id
+            category_rsp.level = category.level
+            category_rsp.is_tab = category.is_tab
+
+            category_list_rsp.sub_category_list.append(category_rsp)
+        return category_list_rsp
+
+    @logger.catch
+    def CreateCategory(self, request, context):
+        try:
+            category = Category()
+            category.name = request.name
+            if request.level != 1:
+                category.parent_category = request.parent_category
+            category.level = request.level
+            category.is_tab = request.is_tab
+            category.save()
+            category_rsp = goods_pb2.CategoryInfoResponse()
+            category_rsp.id = category.id
+            category_rsp.name = category.name
+            if category_rsp.parent_category:
+                category_rsp.parent_category = category_rsp.parent_category.id
+            category_rsp.level = category_rsp.level
+            category_rsp.is_tab = category_rsp.is_tab
+
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("商品分类新增数据失败:" + str(e))
+            return goods_pb2.CategoryInfoResponse()
+        return category_rsp
+
+    @logger.catch
+    def DeleteCategory(self, request, context):
+        try:
+            category = Category.get(request.id)
+            category.delete_instance()
+            # TODO 删除响应的category下的商品
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("删除商品分类时，记录不存在")
+            return empty_pb2.Empty()
+
+    @logger.catch
+    def UpdateCategory(self, request, context):
+        try:
+            category = Category.get(request.id)
+            if request.name:
+                category.name = request.name
+            if request.parent_category:
+                category.parent_category = request.parent_category
+            if request.level:
+                category.level = request.level
+            if request.is_tab:
+                category.is_tab = request.is_tab
+
+            category.save()
+
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("更新商品分类时，记录不存在")
+            return empty_pb2.Empty()
+
+    @logger.catch
+    def BrandList(self, request: goods_pb2.BrandFilterRequest, context):
+        rsp = goods_pb2.BrandListResponse()
+        brands = Brands.select()
+        rsp.total = brands.count()
+        for brand in brands:
+            brand_rsp = goods_pb2.BrandInfoResponse()
+            brand_rsp.id = brand.id
+            brand_rsp.name = brand.name
+            brand_rsp.logo = brand.logo
+            rsp.data.append(brand_rsp)
+        return rsp
+
+    @logger.catch
+    def CreateBrand(self, request: goods_pb2.BrandRequest, context):
+        brands = Brands.select().where(Brands.name == request.name)
+        if brands:
+            context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+            context.set_details('创建brand时，品牌已经存在')
+            return goods_pb2.BrandInfoResponse()
+        brand = Brands()
+        brand.name = request.name
+        brand.logo = request.logo
+        brand.save()
+
+        brand_rsp = goods_pb2.BrandInfoResponse()
+        brand_rsp.id = brand.id
+        brand_rsp.name = brand.name
+        brand_rsp.logo = brand.logo
+        return brand_rsp
+
+    @logger.catch
+    def DeleteBrand(self, request: goods_pb2.BrandRequest, context):
+        try:
+            banner = Brands.get(request.id)
+            banner.delete_innstance()
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("删除brand时，记录不存在")
+            return empty_pb2.Empty()
+
+    @logger.catch
+    def UpdateBrand(self, request: goods_pb2.BrandRequest, context):
+        try:
+            brand = Brands.get(request.id)
+            if request.name:
+                brand.name = request.name
+            if request.logo:
+                brand.logo = request.logo
+            brand.save()
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("更新brand时，记录不存在")
+            return empty_pb2.Empty()
+
+    @logger.catch
+    def BannerList(self, request, context):
+        rsp = goods_pb2.BannerListResponse()
+        banners = Banner.select()
+        rsp.total = banners.count()
+        for banner in banners:
+            banner_rsp = goods_pb2.BannerResponse()
+            banner_rsp.id = banner.id
+            banner_rsp.image = banner.image
+            banner_rsp.index = banner.index
+            banner_rsp.url = banner.url
+            rsp.data.append(banner_rsp)
+        return rsp
+
+    @logger.catch
+    def CreateBanner(self, request: goods_pb2.BannerRequest, context):
+        banner = Banner()
+        banner.image = request.image
+        banner.index = request.index
+        banner.url = request.url
+        banner.save()
+
+        banner_rsp = goods_pb2.BannerResponse()
+        banner_rsp.id = banner.id
+        banner_rsp.image = banner.image
+        banner_rsp.index = banner.index
+        banner_rsp.url = banner.url
+
+        return banner_rsp
+
+    @logger.catch
+    def DeleteBanner(self, request: goods_pb2.BannerRequest, context):
+        try:
+            banner = Banner.get(request.id)
+            banner.delete_innstance()
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("删除banner时，记录不存在")
+            return empty_pb2.Empty()
+
+    @logger.catch
+    def UpdateBanner(self, request: goods_pb2.BannerRequest, context):
+        try:
+            banner = Banner.get(request.id)
+            if request.image:
+                banner.image = request.image
+            if request.index:
+                banner.index = request.index
+            if request.url:
+                banner.url = request.url
+            banner.save()
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("更新banner时，记录不存在")
+            return empty_pb2.Empty()
+
+    @logger.catch
+    def CategoryBrandList(self, request: goods_pb2.CategoryBrandFilterRequest, context):
+        rsp = goods_pb2.CategoryBrandListResponse()
+        category_brands = GoodsCategoryBrand.select().count()
+        page = 1
+        size = 10
+        if request.page:
+            page = request.page
+        if request.size:
+            size = request.size
+
+        category_brands = category_brands.paginate(page, size)
+        for category_brand in category_brands:
+            category_brand_rsp = goods_pb2.CategoryBrandResponse()
+            category_brand_rsp.id = category_brand.id
+            category_brand_rsp.brand.name = category_brand.brand.name
+            category_brand_rsp.brand.logo = category_brand.brand.logo
+
+            category_brand_rsp.category.id = category_brand.category.id
+            category_brand_rsp.category.name = category_brand.category.name
+            category_brand_rsp.category.parend_category = category_brand.category.parent_category_id
+            category_brand_rsp.category.level = category_brand.category.level
+            category_brand_rsp.category.is_table = category_brand.category.is_table
+            rsp.data.append(category_brand_rsp)
+        return rsp
+
+    @logger.catch
+    def GetCategoryBrandList(self, request: goods_pb2.CategoryListRequest, context):
+        # 获取某一个分类的所有品牌
+        rsp = goods_pb2.CategoryBrandInfoRequest()
+        try:
+            category = Category.get(Category.id == request.id)
+            category_brands = GoodsCategoryBrand.select().where(GoodsCategoryBrand.category == category)
+            rsp.total = category_brands.count()
+            for category_brand in category_brands:
+                brand_rsp = goods_pb2.BrandInfoResponse()
+                brand_rsp.id = category_brand.brand.id
+                brand_rsp.name = category_brand.brand.name
+                brand_rsp.logo = category_brand.brand.logo
+                rsp.data.append(brand_rsp)
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+            context.set_details('获取分类下的品牌，记录存在')
+            return rsp
+        return rsp
+
+    @logger.catch
+    def CreateCategoryBrand(self, request: goods_pb2.CategoryBrandRequest, context):
+        category_brand = GoodsCategoryBrand()
+        try:
+            brand = Brands.get(request.brand_id)
+            category_brand.brand = brand
+            category = Category.get(request.categoryId)
+            category_brand.category = category
+            category_brand.save()
+            rsp = goods_pb2.CategoryBrandResponse()
+            rsp.id = category_brand.id
+            return rsp
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("商品品牌记录不存在")
+            return goods_pb2.CategoryBrandResponse()
+
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("内部错误")
+            return goods_pb2.CategoryBrandResponse()
+
+    @logger.catch
+    def DeleteCategoryBrand(self, request: goods_pb2.CategoryBrandRequest, context):
+        try:
+            category_brand = GoodsCategoryBrand.get(request.id)
+            category_brand.delete_instance()
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("删除商品分类时，记录不存在")
+            return empty_pb2.Empty()
+
+    @logger.catch
+    def UpdateCategoryBrand(self, request: goods_pb2.CategoryBrandRequest, context):
+        try:
+            category_brand = GoodsCategoryBrand.get(request.id)
+            brand = Brands.get(request.brand_id)
+            category_brand.brand = brand
+            category = Category.get(request.category_id)
+            category_brand.category = category
+            category_brand.save()
+
+            return empty_pb2.Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("更新商品分类时，记录不存在")
+            return empty_pb2.Empty()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("内部错误")
+            return empty_pb2.Empty()
