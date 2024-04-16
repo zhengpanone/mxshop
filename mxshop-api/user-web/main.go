@@ -6,13 +6,17 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 	"user-web/global"
 	"user-web/initialize"
 	"user-web/middlewares"
 	"user-web/utils"
+	"user-web/utils/register/consul"
 	myValidator "user-web/validator"
 )
 
@@ -56,13 +60,34 @@ func main() {
 	if currentMod == gin.ReleaseMode {
 		port, err := utils.GetFreePort()
 		if err == nil {
-			global.ServerConfig.Port = port
+			global.ServerConfig.Port = uint32(port)
 		}
 	}
 
-	zap.S().Debugf("启动服务器，访问地址：http://127.0.0.1:%d", global.ServerConfig.Port)
-	if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
-		zap.S().Panic("服务器启动失败：", err.Error())
+	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
+	serviceId := uuid.NewV4().String()
+	err := registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	if err != nil {
+		zap.S().Panic("服务注册失败：", err.Error())
 	}
+	zap.S().Debugf("启动服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
+	go func() {
+		if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
+			zap.S().Panic("服务器启动失败：", err.Error())
+		}
+	}()
+
+	// 接收终止信号
+	quit := make(chan os.Signal, 1)
+	// 注册要捕获的信号，这里包括 Ctrl+C（SIGINT）和终止信号（SIGTERM）
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	fmt.Println("Waiting for Ctrl+C (SIGINT)...")
+	// 阻塞等待信号
+	sig := <-quit
+	fmt.Printf("Received signal: %v\n", sig)
+	if err = registerClient.DeRegister(serviceId); err != nil {
+		zap.S().Info("注销失败：", err.Error())
+	}
+	zap.S().Info("注销成功：")
 
 }

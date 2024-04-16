@@ -83,8 +83,8 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             page = request.page
         if request.size:
             size = request.size
+        rsp.total = goods.count()
         result = goods.paginate(page, size)
-        rsp.total = result.count()
         for good in result:
             rsp.data.append(self.convert_model_to_message(good))
 

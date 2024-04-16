@@ -4,7 +4,7 @@ import (
 	"net"
 )
 
-func GetFreePort() (int, error) {
+func GetFreePort() (uint32, error) {
 	addr, err := net.ResolveTCPAddr("tcp", "localhost:0")
 	if err != nil {
 		return 0, err
@@ -19,5 +19,5 @@ func GetFreePort() (int, error) {
 
 		}
 	}(l)
-	return l.Addr().(*net.TCPAddr).Port, nil
+	return uint32(l.Addr().(*net.TCPAddr).Port), nil
 }

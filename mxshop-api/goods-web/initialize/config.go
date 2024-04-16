@@ -96,7 +96,6 @@ func GetConfigFromNacos() {
 }
 
 func InitConfig() {
-	//debug := GetEnvInfo("MXSHOP_DEBUG")
 	mode := gin.Mode()
 	configFilePrefix := "config"
 

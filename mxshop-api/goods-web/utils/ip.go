@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func GetIP() {
+func GetIP() string {
 	// 获取本机的所有网络接口。
 	interfaces, err := net.InterfaceByName("en0")
 	if err != nil {
@@ -19,6 +19,7 @@ func GetIP() {
 		fmt.Printf("Error getting addresses : %v", err)
 		os.Exit(1)
 	}
+	var ipStr string
 	for _, addr := range addrs {
 		// 获取接口上的所有地址信息。
 		var ip net.IP
@@ -38,7 +39,9 @@ func GetIP() {
 		if ip == nil {
 			continue // not an ipv4 address
 		}
-
-		fmt.Printf("Interface Name: %v, IP Address: %v\n", interfaces.Name, ip)
+		if interfaces.Name == "en0" {
+			ipStr = ip.String()
+		}
 	}
+	return ipStr
 }
