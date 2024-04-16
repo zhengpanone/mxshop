@@ -1,0 +1,1 @@
+protoc -I . goods.proto --go_out=plugins=grpc:.
