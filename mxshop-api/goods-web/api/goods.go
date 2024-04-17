@@ -2,76 +2,14 @@ package api
 
 import (
 	"context"
-	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
+	"goods-web/forms"
 	"goods-web/global"
 	"goods-web/proto"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"net/http"
 	"strconv"
-	"strings"
 )
-
-func removeTopStruct(fields map[string]string) map[string]string {
-	rsp := map[string]string{}
-	for field, err := range fields {
-		rsp[field[strings.Index(field, ".")+1:]] = err
-	}
-	return rsp
-}
-
-func HandleGrpcErrorToHttp(err error, c *gin.Context) {
-	// 将grpc的code转换成http的code
-	if err != nil {
-		if e, ok := status.FromError(err); ok {
-			switch e.Code() {
-			case codes.NotFound:
-				c.JSON(http.StatusNotFound, gin.H{
-					"msg": e.Message(),
-				})
-			case codes.Internal:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "内部错误",
-				})
-
-			case codes.InvalidArgument:
-				c.JSON(http.StatusBadRequest, gin.H{
-					"msg": "参数错误",
-				})
-			case codes.Unavailable:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "用户服务不可用",
-				})
-			default:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "其他错误" + e.Message(),
-				})
-
-			}
-
-		}
-
-	}
-}
-
-func HandleValidatorError(ctx *gin.Context, err error) {
-	// 如何返回错误信息
-	var errs validator.ValidationErrors
-	ok := errors.As(err, &errs)
-	if !ok {
-		ctx.JSON(http.StatusOK, gin.H{
-			"msg": err.Error(),
-		})
-		return
-	}
-	ctx.JSON(http.StatusBadRequest, gin.H{
-		"error": removeTopStruct(errs.Translate(global.Trans)),
-	})
-	return
-}
 
 func GetGoodsList(ctx *gin.Context) {
 	request := &proto.GoodsFilterRequest{}
@@ -155,5 +93,35 @@ func GetGoodsList(ctx *gin.Context) {
 	}
 	reMap["data"] = goodsList
 	ctx.JSON(http.StatusOK, reMap)
+}
+
+func NewGoods(ctx *gin.Context) {
+	goodsForm := forms.GoodsForm{}
+	if err := ctx.ShouldBindJSON(&goodsForm); err != nil {
+		HandleValidatorError(ctx, err)
+		return
+	}
+	goodsClient := global.GoodsSrvClient
+	rsp, err := goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsInfo{
+		Name:            goodsForm.Name,
+		GoodsSn:         goodsForm.GoodsSn,
+		Stocks:          goodsForm.Stocks,
+		MarketPrice:     goodsForm.MarketPrice,
+		ShopPrice:       goodsForm.ShopPrice,
+		GoodsBrief:      goodsForm.GoodsBrief,
+		GoodsDesc:       goodsForm.GoodsDesc,
+		ShipFree:        *goodsForm.ShipFree,
+		Images:          goodsForm.Images,
+		DescImages:      goodsForm.DescImages,
+		GoodsFrontImage: goodsForm.FrontImage,
+		CategoryId:      goodsForm.CategoryId,
+		BrandId:         goodsForm.Brand,
+	})
+	if err != nil {
+		HandleGrpcErrorToHttp(err, ctx)
+		return
+	}
+	// 如何设置库存
+	ctx.JSON(http.StatusOK, rsp)
 
 }

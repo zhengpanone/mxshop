@@ -116,15 +116,15 @@ class Banner(BaseModel):
 
 
 if __name__ == '__main__':
-    db.create_tables([Category, Brands, Goods, GoodsCategoryBrand, Brands])
-    from faker import Faker
-    from passlib.hash import pbkdf2_sha256
-
-    fake = Faker(locale='zh_CN')
-    for i in range(10):
-        category_name = fake.word().capitalize()
-        c1 = Category(name=category_name)
-        c1.save()
+    db.create_tables([Category, Brands, Goods, GoodsCategoryBrand, Brands, Banner])
+    # from faker import Faker
+    # from passlib.hash import pbkdf2_sha256
+    #
+    # fake = Faker(locale='zh_CN')
+    # for i in range(10):
+    #     category_name = fake.word().capitalize()
+    #     c1 = Category(name=category_name)
+    #     c1.save()
 
     # Category.update(name="1111").where(Category.name=='2222').execute()
     # print(list(Category.select()))

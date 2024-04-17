@@ -26,7 +26,7 @@ func InitSrvConn() {
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
 	)
 	if err != nil {
-		zap.S().Fatal("[InitSrvConn]连接【商品服务失败】")
+		zap.S().Fatal("[InitSrvConn]连接【商品Srv服务失败】")
 	}
 	global.GoodsConn = goodsConn
 	// 注册客户端
