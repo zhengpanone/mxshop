@@ -16,9 +16,20 @@ def get_server_ip():
     :return: ip地址
     """
     import socket
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    return ip_address
+    try:
+
+        # 创建一个UOP套接字
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # 连接远程服务器（在这里我们不真正连接任何东西，只是为了获取本地 IP）
+        sock.connect(("8.8.8.8", 80))  # 使用 Google 的 DNS 服务器地址
+
+        # 获取本地 IP 地址
+        local_ip = sock.getsockname()[0]
+
+        return local_ip
+
+    except socket.error:
+        return None
 
 
 NACOS = {

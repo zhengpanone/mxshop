@@ -2,6 +2,7 @@ from datetime import datetime
 from playhouse.shortcuts import ReconnectMixin
 from playhouse.pool import PooledMySQLDatabase
 from playhouse.mysql_ext import JSONField
+from goods_srv.settings import settings
 
 from peewee import *
 
@@ -10,7 +11,7 @@ class ReconnectMySQLDatabase(ReconnectMixin, PooledMySQLDatabase):
     pass
 
 
-db = ReconnectMySQLDatabase("mxshop_goods_srv", host="127.0.0.1", port=3306, user="root", password="root")
+# db = ReconnectMySQLDatabase("mxshop_goods_srv", host="127.0.0.1", port=3306, user="root", password="root")
 
 
 class BaseModel(Model):
@@ -19,7 +20,7 @@ class BaseModel(Model):
     is_deleted = BooleanField(default=False, verbose_name="是否删除")
 
     class Meta:
-        database = db
+        database = settings.DB
 
     def save(self, *args, **kwargs):
         if self._pk is not None:
@@ -49,7 +50,6 @@ class BaseModel(Model):
         return super().select(*fields).where(cls.is_deleted == False)
 
 
-BaseModel
 
 
 class Category(BaseModel):
