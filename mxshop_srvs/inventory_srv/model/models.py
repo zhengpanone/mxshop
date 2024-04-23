@@ -4,12 +4,7 @@ from playhouse.pool import PooledMySQLDatabase
 
 from peewee import *
 
-
-class ReconnectMySQLDatabase(ReconnectMixin, PooledMySQLDatabase):
-    pass
-
-
-db = ReconnectMySQLDatabase("mxshop_inventory_srv", host="127.0.0.1", port=3306, user="root", password="root")
+from inventory_srv.settings import settings
 
 
 class BaseModel(Model):
@@ -18,16 +13,12 @@ class BaseModel(Model):
     is_deleted = BooleanField(default=False, verbose_name="是否删除")
 
     class Meta:
-        database = db
+        database = settings.DB
 
     def save(self, *args, **kwargs):
         if self._pk is not None:
             self.update_time = datetime.now()
         return super().save(*args, **kwargs)
-
-    @classmethod
-    def update(cls, __data=None, **update):
-        return super().update(update_time=datetime.now())
 
     @classmethod
     def delete(cls, permanently=False):
@@ -73,16 +64,15 @@ class InventoryHistory(BaseModel):
 
 if __name__ == '__main__':
     db.create_tables([Inventory])
-    # from faker import Faker
-    # from passlib.hash import pbkdf2_sha256
-    #
-    # fake = Faker(locale='zh_CN')
-    # for i in range(10):
-    #     category_name = fake.word().capitalize()
-    #     c1 = Category(name=category_name)
-    #     c1.save()
+    # for i in range(1,6):
+    #     goods_inv = Inventory(goods=i, stocks=100)
+    #     goods_inv.save()
 
-    # Category.update(name="1111").where(Category.name=='2222').execute()
-    # print(list(Category.select()))
-    # Category.delete().where(Category.name=='2222').execute()
-    # print(list(Category.select()))
+    goods_info = ((1, 2), (2, 3), (3, 10))
+    for goods_id, num in goods_info:
+        goods_inv = Inventory.get(Inventory.goods == goods_id)
+        if goods_inv.stocks < num:
+            print(f'{goods_id}:库存不足')
+        else:
+            goods_inv.stocks = goods_inv.stocks-num
+            goods_inv.save()

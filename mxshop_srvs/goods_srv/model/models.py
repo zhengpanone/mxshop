@@ -28,10 +28,6 @@ class BaseModel(Model):
         return super().save(*args, **kwargs)
 
     @classmethod
-    def update(cls, __data=None, **update):
-        return super().update(update_time=datetime.now())
-
-    @classmethod
     def delete(cls, permanently=False):
         if permanently:
             return super().delete()
