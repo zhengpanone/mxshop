@@ -33,14 +33,14 @@ class InventoryTest:
         goods_list = [(1,10),(2,11),(3,15),(4,119)]
         request = inventory_pb2.SellInfo()
         for goodsId, num in goods_list:
-            request.goods_info.append(inventory_pb2.GoodsInvInfo(goods_id=goodsId, num=num))
+            request.goodsInfo.append(inventory_pb2.GoodsInvInfo(goods_id=goodsId, num=num))
         rsp = self.stub.Sell(request)
 
     def reback(self):
         goods_list = [(1,10),(2,11),(3,15),(4,119)]
         request = inventory_pb2.SellInfo()
         for goodsId, num in goods_list:
-            request.goods_info.append(inventory_pb2.GoodsInvInfo(goods_id=goodsId, num=num))
+            request.goodsInfo.append(inventory_pb2.GoodsInvInfo(goods_id=goodsId, num=num))
         rsp = self.stub.Reback(request)
 
 if __name__ == '__main__':

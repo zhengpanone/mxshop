@@ -12,20 +12,20 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
     def convert_model_to_message(self, goods):
         info_rsp = goods_pb2.GoodsInfoResponse()
         info_rsp.id = goods.id
-        info_rsp.category_id = goods.category_id
+        info_rsp.categoryId = goods.category_id
         info_rsp.name = goods.name
-        info_rsp.goods_sn = goods.goods_sn
-        info_rsp.click_num = goods.click_num
-        info_rsp.sold_num = goods.sold_num
-        info_rsp.fav_num = goods.fav_num
-        info_rsp.market_price = goods.market_price
-        info_rsp.shop_price = goods.shop_price
-        info_rsp.goods_brief = goods.goods_brief
-        info_rsp.goods_front_image = goods.goods_front_image
-        info_rsp.is_new = goods.is_new
-        info_rsp.is_hot = goods.is_hot
-        info_rsp.on_sale = goods.on_sale
-        info_rsp.desc_images.extend(goods.desc_images)
+        info_rsp.goodsSn = goods.goods_sn
+        info_rsp.clickNum = goods.click_num
+        info_rsp.soldNum = goods.sold_num
+        info_rsp.favNum = goods.fav_num
+        info_rsp.marketPrice = goods.market_price
+        info_rsp.shopPrice = goods.shop_price
+        info_rsp.goodsBrief = goods.goods_brief
+        info_rsp.goodsFrontImage = goods.goods_front_image
+        info_rsp.isNew = goods.is_new
+        info_rsp.isHot = goods.is_hot
+        info_rsp.onSale = goods.on_sale
+        info_rsp.descImages.extend(goods.desc_images)
         info_rsp.images.extend(goods.desc_images)
         info_rsp.category.id = goods.category.id
         info_rsp.category.name = goods.category.name
@@ -33,6 +33,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         info_rsp.brand.id = goods.brand.id
         info_rsp.brand.name = goods.brand.name
         info_rsp.brand.logo = goods.brand.logo
+        return info_rsp
 
     @logger.catch
     def GoodsList(self, request: goods_pb2.GoodsFilterRequest, context):

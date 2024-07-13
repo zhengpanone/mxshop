@@ -13,10 +13,10 @@ class InventoryServicer(inventory_pb2_grpc.InventoryServicer):
     def Sell(self, request:inventory_pb2.SellInfo, context):
         # 扣减库存
         with settings.DB.atomic() as txn:
-            for item in request.goods_info:
+            for item in request.goodsInfo:
                 # 查询库存
                 try:
-                    goods_inv = Inventory.get(Inventory.goods == item.goods_id)
+                    goods_inv = Inventory.get(Inventory.goods == item.goodsId)
                 except DoesNotExist as e:
                     txn.rollback() # 事务回滚
                     context.set_code(grpc.StatusCode.NOT_FOUND)
@@ -64,7 +64,7 @@ class InventoryServicer(inventory_pb2_grpc.InventoryServicer):
     def Reback(self, request, context):
         # 库存归还，有两张情况：1、订单自动归还，2订单创建失败 3 手动归还
         with settings.DB.atomic() as txn:
-            for item in request.goods_info:
+            for item in request.goodsInfo:
                 # 查询库存
                 try:
                     goods_inv = Inventory.get(Inventory.goods==item.goods_id)
