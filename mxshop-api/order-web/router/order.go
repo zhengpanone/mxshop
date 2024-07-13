@@ -7,10 +7,10 @@ import (
 )
 
 func InitOrderRouter(router *gin.RouterGroup) {
-	GoodsRouter := router.Group("order")
+	GoodsRouter := router.Group("order").Use(middlewares.JWTAuth())
 	{
-		GoodsRouter.GET("/list", middlewares.JWTAuth(), middlewares.IsAdmin(), api.GetOrderList) // 订单列表
-		GoodsRouter.POST("/create", middlewares.JWTAuth(), api.NewOrder)
-		GoodsRouter.POST("/:id", middlewares.JWTAuth(), api.GetOrder)
+		GoodsRouter.GET("/list", api.GetOrderList) // 订单列表
+		GoodsRouter.POST("/create", api.NewOrder)
+		GoodsRouter.POST("/:id", api.GetOrder)
 	}
 }
