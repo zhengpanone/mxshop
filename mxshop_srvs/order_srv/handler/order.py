@@ -55,7 +55,7 @@ class OrderServicer(order_pb2_grpc.OrderServicer):
     def UpdateCartItem(self, request: order_pb2.CartItemRequest, context):
         """更新购物车条目和选中状态"""
         try:
-            item = ShoppingCart.get(ShoppingCart.id == request.id)
+            item = ShoppingCart.get(ShoppingCart.user == request.userId, ShoppingCart.goods == request.goodsId)
             if request.nums:
                 item.nums = request.nums
             item.checked = request.checked
@@ -70,7 +70,7 @@ class OrderServicer(order_pb2_grpc.OrderServicer):
     def DeleteCartItem(self, request: order_pb2.CartItemRequest, context):
         """删除购物车条目"""
         try:
-            item = ShoppingCart.get(ShoppingCart.id == request.id)
+            item = ShoppingCart.get(ShoppingCart.user == request.userId, ShoppingCart.goods == request.goodsId)
             item.delete_instance()
             return empty_pb2.Empty()
         except DoesNotExist as e:
@@ -164,7 +164,7 @@ class OrderServicer(order_pb2_grpc.OrderServicer):
             goods_sell_info = []
             # 获取购物车记录
             for cart_item in ShoppingCart.select().where(ShoppingCart.user == request.userId,
-                                                        ShoppingCart.checked == True):
+                                                         ShoppingCart.checked == True):
                 goods_ids.append(cart_item.id)
                 goods_nums[cart_item.goods] = cart_item.nums
 
