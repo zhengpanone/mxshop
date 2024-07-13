@@ -53,8 +53,8 @@ class InventoryServicer(inventory_pb2_grpc.InventoryServicer):
     def InvDetail(self, request: inventory_pb2.GoodsInvInfo, context):
         # 获取某个商品的库存详情
         try:
-            inv = Inventory.get(Inventory.goods == request.goods_id)
-            return inventory_pb2.GoodsInvInfo(goods_id=inv.goods, num=inv.stocks)
+            inv = Inventory.get(Inventory.goods == request.goodsId)
+            return inventory_pb2.GoodsInvInfo(goodsId=inv.goods, num=inv.stocks)
         except DoesNotExist as e:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("没有找到该商品的库存记录")
