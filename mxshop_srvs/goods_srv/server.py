@@ -6,7 +6,7 @@ import sys
 from loguru import logger
 import argparse
 
-from common.grpc_health.v1 import health_pb2_grpc, health
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, BASE_DIR)
@@ -16,6 +16,7 @@ from concurrent import futures
 from goods_srv.proto import goods_pb2_grpc
 from goods_srv.handler.goods import GoodsServicer
 from common.register import consul
+from common.grpc_health.v1 import health_pb2_grpc, health
 from goods_srv.settings import settings
 from functools import partial
 
@@ -23,8 +24,11 @@ from functools import partial
 def on_exit(signum, frame, service_id):
     register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
     logger.info(f"注销{service_id}服务")
-    register.deregister(service_id)
-    logger.info("注销成功")
+    result = register.deregister(service_id)
+    if result:
+        logger.info(f"注销订单服务：{service_id} 成功")
+    else:
+        logger.error(f"注销订单服务：{service_id} 失败")
 
     sys.exit(0)
 
@@ -72,8 +76,8 @@ def server():
         SIGTERM kill 发出的软件终止
         
     """
-    signal.signal(signal.SIGINT, partial(on_exit, service_id))
-    signal.signal(signal.SIGTERM, partial(on_exit, service_id))
+    signal.signal(signal.SIGINT, partial(on_exit, service_id=service_id))
+    signal.signal(signal.SIGTERM, partial(on_exit, service_id=service_id))
     logger.info(f'Starting server http://{args.host}:{port}')
     server.start()
 
