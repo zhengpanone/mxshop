@@ -102,11 +102,13 @@ func PasswordLogin(ctx *gin.Context) {
 		HandleValidatorError(ctx, err)
 		return
 	}
-	if !utils.VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.Captcha) {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"msg": "验证码不正确",
-		})
-		return
+	if global.ServerConfig.EnableCaptcha {
+		if !utils.VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.Captcha) {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"msg": "验证码不正确",
+			})
+			return
+		}
 	}
 
 	userSevClient := *global.UserSrvClient

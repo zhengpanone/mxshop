@@ -52,6 +52,7 @@ type ServerConfig struct {
 	System        System        `mapstructure:"system" json:"system" yaml:"system"`
 	Consul        Consul        `mapstructure:"consul" json:"consul" yaml:"consul"`
 	Nacos         NacosConfig   `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
+	EnableCaptcha bool          `mapstructure:"enable-captcha" json:"enable-captcha" yaml:"enable-captcha"`
 }
 
 type NacosConfig struct {
