@@ -84,6 +84,7 @@ class UserServicer(user_pb2_grpc.UserServicer):
         user = User()
         user.nick_name = request.nickname
         user.mobile = request.mobile
+        user.role = '1'
         user.password = pbkdf2_sha256.hash(request.password)
         user.save()
 

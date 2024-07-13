@@ -14,6 +14,7 @@ from concurrent import futures
 from user_srv.proto import user_pb2_grpc
 from user_srv.handler.user import UserServicer
 from common.register import consul
+from common.grpc_health.v1 import health_pb2_grpc, health
 from user_srv.settings import settings
 from functools import partial
 
