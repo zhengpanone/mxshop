@@ -6,8 +6,6 @@ import sys
 from loguru import logger
 import argparse
 
-
-
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, BASE_DIR)
 
@@ -26,9 +24,9 @@ def on_exit(signum, frame, service_id):
     logger.info(f"注销{service_id}服务")
     result = register.deregister(service_id)
     if result:
-        logger.info(f"注销订单服务：{service_id} 成功")
+        logger.info(f"注销商品服务：{service_id} 成功")
     else:
-        logger.error(f"注销订单服务：{service_id} 失败")
+        logger.error(f"注销商品服务：{service_id} 失败")
 
     sys.exit(0)
 
@@ -81,11 +79,11 @@ def server():
     logger.info(f'Starting server http://{args.host}:{port}')
     server.start()
 
-    logger.info(f"服务注册到注册中心")
+    logger.info(f"商品服务注册到注册中心")
     register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
     if not register.register(settings.SERVICE_NAME, service_id, settings.SERVICE_HOST, port,
                              settings.SERVICE_TAGS, None):
-        logger.info(f"服务注册失败")
+        logger.info(f"商品服务注册失败")
         sys.exit(0)
 
     server.wait_for_termination()

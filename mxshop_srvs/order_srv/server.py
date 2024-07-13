@@ -22,8 +22,11 @@ from functools import partial
 def on_exit(signum, frame, service_id):
     register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
     logger.info(f"注销{service_id}服务")
-    register.deregister(service_id=service_id)
-    logger.info("注销成功")
+    result = register.deregister(service_id=service_id)
+    if result:
+        logger.info(f"注销订单服务：{service_id} 成功")
+    else:
+        logger.error(f"注销订单服务：{service_id} 失败")
 
     sys.exit(0)
 
@@ -71,11 +74,11 @@ def server():
     logger.info(f'Starting server http://{args.host}:{port}')
     server.start()
 
-    logger.info(f"服务注册到注册中心")
+    logger.info(f"订单服务注册到注册中心")
     register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
     if not register.register(settings.SERVICE_NAME, service_id, settings.SERVICE_HOST, port,
                              settings.SERVICE_TAGS, None):
-        logger.info(f"服务注册失败")
+        logger.info(f"订单服务注册失败")
         sys.exit(0)
 
     server.wait_for_termination()
