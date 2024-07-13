@@ -3,9 +3,9 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"mxshop-api/user-web/forms"
-	"mxshop-api/user-web/utils"
 	"net/http"
+	"user-web/forms"
+	"user-web/utils"
 )
 
 func SendSms(ctx *gin.Context) {

@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
-	"mxshop-api/user-web/global"
+	"time"
+	"user-web/global"
 )
 
 func InitRedis() {
@@ -14,7 +15,7 @@ func InitRedis() {
 		DB:       0,
 		Password: "",
 	})
-	timeoutCtx, cancelFunc := context.WithTimeout(context.Background(), global.ServerConfig.RedisConfig.DialTimeout)
+	timeoutCtx, cancelFunc := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancelFunc()
 	_, err := redisClient.Ping(timeoutCtx).Result()
 	if err != nil {

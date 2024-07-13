@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dysmsapi"
-	"mxshop-api/user-web/global"
 	"time"
+	"user-web/global"
 )
 
 func SendSms(mobile, smsCode string) (err error) {

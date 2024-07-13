@@ -4,9 +4,9 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"mxshop-api/user-web/global"
-	"mxshop-api/user-web/models"
 	"net/http"
+	"user-web/global"
+	"user-web/models"
 )
 
 func JWTAuth() gin.HandlerFunc {
