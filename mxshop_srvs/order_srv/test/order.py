@@ -4,6 +4,7 @@ from order_srv.proto import order_pb2, order_pb2_grpc
 from order_srv.settings import settings
 from loguru import logger
 
+
 class OrderTest:
     def __init__(self):
         c = consul.Consul(host=settings.CONSUL_HOST, port=settings.CONSUL_PORT)
@@ -33,8 +34,6 @@ class OrderTest:
     def order_list(self):
         rsp = self.stub.OrderList(order_pb2.OrderFilterRequest(userId=1))
         logger.info(rsp)
-
-
 
 
 if __name__ == '__main__':
