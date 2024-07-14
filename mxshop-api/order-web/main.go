@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	ut "github.com/go-playground/universal-translator"
+	"github.com/go-playground/validator/v10"
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"order-web/global"
@@ -10,6 +13,7 @@ import (
 	"order-web/middlewares"
 	"order-web/utils"
 	"order-web/utils/register/consul"
+	myValidator "order-web/validator"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -31,6 +35,17 @@ func main() {
 	}
 	// 5. 初始化srv连接
 	initialize.InitSrvConn()
+
+	// 注册验证器
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		_ = v.RegisterValidation("mobile", myValidator.ValidateMobile)
+		_ = v.RegisterTranslation("mobile", global.Trans, func(ut ut.Translator) error {
+			return ut.Add("mobile", "{0} 非法的手机号码!", true)
+		}, func(ut ut.Translator, fe validator.FieldError) string {
+			t, _ := ut.T("mobile", fe.Field())
+			return t
+		})
+	}
 
 	Router.Use(middlewares.MyLogger()) //注册全局中间件
 

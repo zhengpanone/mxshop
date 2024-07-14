@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
+	"order-web/forms"
 	"order-web/global"
 	"order-web/models"
 	"order-web/proto"
@@ -59,34 +60,29 @@ func GetOrderList(ctx *gin.Context) {
 }
 
 func NewOrder(ctx *gin.Context) {
-	/*goodsForm := forms.GoodsForm{}
-	if err := ctx.ShouldBindJSON(&goodsForm); err != nil {
+	orderForm := forms.CreateOrderForm{}
+	if err := ctx.ShouldBindJSON(&orderForm); err != nil {
 		HandleValidatorError(ctx, err)
 		return
 	}
-	goodsClient := global.GoodsSrvClient
-	rsp, err := goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsInfo{
-		Name:            goodsForm.Name,
-		GoodsSn:         goodsForm.GoodsSn,
-		Stocks:          goodsForm.Stocks,
-		MarketPrice:     goodsForm.MarketPrice,
-		ShopPrice:       goodsForm.ShopPrice,
-		GoodsBrief:      goodsForm.GoodsBrief,
-		GoodsDesc:       goodsForm.GoodsDesc,
-		ShipFree:        *goodsForm.ShipFree,
-		Images:          goodsForm.Images,
-		DescImages:      goodsForm.DescImages,
-		GoodsFrontImage: goodsForm.FrontImage,
-		CategoryId:      goodsForm.CategoryId,
-		BrandId:         goodsForm.Brand,
-	})*/
-
-	/*if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+	userId, _ := ctx.Get("userId")
+	request := proto.OrderRequest{
+		UserId:  int32(userId.(uint)),
+		Name:    orderForm.Name,
+		Address: orderForm.Address,
+		Post:    orderForm.Post,
+		Mobile:  orderForm.Mobile,
+	}
+	rsp, err := global.OrderSrvClient.CreateOrder(context.Background(), &request)
+	if err != nil {
+		zap.S().Errorw("新建订单详情失败")
+		HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
-	// 如何设置库存
-	ctx.JSON(http.StatusOK, rsp)*/
+	// TODO 返回支付宝的支付url
+	ctx.JSON(http.StatusOK, gin.H{
+		"id": rsp.Id,
+	})
 
 }
 
