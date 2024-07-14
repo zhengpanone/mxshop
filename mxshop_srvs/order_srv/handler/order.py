@@ -113,14 +113,17 @@ class OrderServicer(order_pb2_grpc.OrderServicer):
         rsp = order_pb2.OrderInfoDetailResponse()
         try:
             # 订单信息
-            order = OrderInfo.get(OrderInfo.id == request.id)
+            if request.userId:
+                order = OrderInfo.get(OrderInfo.id == request.id, OrderInfo.user == request.userId)
+            else:
+                order = OrderInfo.get(OrderInfo.id == request.id)
             rsp.orderInfo.id = order.id
             rsp.orderInfo.userId = order.user
             rsp.orderInfo.orderSn = order.order_sn
             rsp.orderInfo.payType = order.pay_type
             rsp.orderInfo.status = order.status
             rsp.orderInfo.post = order.post
-            rsp.orderInfo.total = order.order_mount
+            rsp.orderInfo.total = order.order_amount
             rsp.orderInfo.address = order.address
             rsp.orderInfo.name = order.signer_name
             rsp.orderInfo.mobile = order.signer_mobile
