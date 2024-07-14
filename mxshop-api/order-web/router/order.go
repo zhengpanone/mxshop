@@ -13,4 +13,8 @@ func InitOrderRouter(router *gin.RouterGroup) {
 		GoodsRouter.POST("/create", api.NewOrder)   // 新建订单
 		GoodsRouter.GET("/:id", api.GetOrderDetail) // 查询订单详情
 	}
+	PayRouter := router.Group("pay")
+	{
+		PayRouter.POST("alipay/notify", api.AliPayNotify)
+	}
 }
