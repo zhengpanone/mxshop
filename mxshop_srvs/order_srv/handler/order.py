@@ -103,6 +103,7 @@ class OrderServicer(order_pb2_grpc.OrderServicer):
             tmp_rsp.address = order.address
             tmp_rsp.name = order.signer_name
             tmp_rsp.mobile = order.signer_mobile
+            tmp_rsp.addTime = order.add_time
             rsp.data.append(tmp_rsp)
         return rsp
 
