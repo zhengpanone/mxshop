@@ -7,11 +7,11 @@ import (
 )
 
 func InitCategoryRouter(router *gin.RouterGroup) {
-	CategoryRouter := router.Group("goods")
+	CategoryRouter := router.Group("category")
 	{
-		CategoryRouter.GET("category/list", api.GetCategoryList)
-		CategoryRouter.POST("category/create", middlewares.JWTAuth(), middlewares.IsAdmin(), api.NewCategory)
-		CategoryRouter.POST("category/update", middlewares.JWTAuth(), middlewares.IsAdmin(), api.UpdateCategory)
+		CategoryRouter.GET("list", api.GetCategoryList)
+		CategoryRouter.POST("create", middlewares.JWTAuth(), middlewares.IsAdmin(), api.NewCategory)
+		CategoryRouter.POST("update", middlewares.JWTAuth(), middlewares.IsAdmin(), api.UpdateCategory)
 
 	}
 }

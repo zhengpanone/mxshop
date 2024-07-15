@@ -18,7 +18,7 @@ func Routers() *gin.Engine {
 	})
 	// 配置跨域
 	Router.Use(middlewares.Cors())
-	ApiGroup := Router.Group("/v1")
+	ApiGroup := Router.Group("/v1/goods")
 	router.InitGoodsRouter(ApiGroup)
 	router.InitCategoryRouter(ApiGroup)
 	router.InitBannerRouter(ApiGroup)

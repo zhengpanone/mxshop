@@ -71,7 +71,7 @@ func UpdateBrand(ctx *gin.Context) {
 }
 
 func ListBrand(ctx *gin.Context) {
-	page := ctx.DefaultQuery("pn", "1")
+	page := ctx.DefaultQuery("page", "1")
 	pageInt, _ := strconv.Atoi(page)
 	size := ctx.DefaultQuery("size", "10")
 	sizeInt, _ := strconv.Atoi(size)
@@ -87,7 +87,7 @@ func ListBrand(ctx *gin.Context) {
 	result := make([]interface{}, 0)
 	response := make(map[string]interface{})
 	response["total"] = rsp.Total
-	for _, value := range rsp.Data[pageInt : pageInt*sizeInt+sizeInt] {
+	for _, value := range rsp.Data {
 		responseMap := make(map[string]interface{})
 		responseMap["id"] = value.Id
 		responseMap["name"] = value.Name
@@ -95,6 +95,82 @@ func ListBrand(ctx *gin.Context) {
 		result = append(result, responseMap)
 	}
 	response["data"] = result
+	ctx.JSON(http.StatusOK, response)
+}
+
+func GetCategoryBrandList(ctx *gin.Context) {
+	id := ctx.Param("id")
+	categoryId, err := strconv.ParseInt(id, 10, 32)
+	if err != nil {
+		ctx.Status(http.StatusNotFound)
+		return
+	}
+	resp, err := global.GoodsSrvClient.GetCategoryBrandList(context.Background(), &proto.CategoryBrandInfoRequest{
+		Id: int32(categoryId),
+	})
+	if err != nil {
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		return
+	}
+	result := make([]interface{}, 0)
+	for _, value := range resp.Data {
+		reMap := make(map[string]interface{})
+		reMap["id"] = value.Id
+		reMap["name"] = value.Name
+		reMap["logo"] = value.Logo
+
+		result = append(result, reMap)
+	}
+
 	ctx.JSON(http.StatusOK, result)
+
+}
+
+func UpdateCategoryBrand(ctx *gin.Context) {
+
+}
+
+func CategoryBrandList(ctx *gin.Context) {
+	//所有的list返回的数据结构
+	/*
+		{
+			"total": 100,
+			"data":[{},{}]
+		}
+	*/
+	rsp, err := global.GoodsSrvClient.CategoryBrandList(context.Background(), &proto.CategoryBrandFilterRequest{})
+	if err != nil {
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		return
+	}
+	reMap := map[string]interface{}{
+		"total": rsp.Total,
+	}
+
+	result := make([]interface{}, 0)
+	for _, value := range rsp.Data {
+		reMap := make(map[string]interface{})
+		reMap["id"] = value.Id
+		reMap["category"] = map[string]interface{}{
+			"id":   value.Category.Id,
+			"name": value.Category.Name,
+		}
+		reMap["brand"] = map[string]interface{}{
+			"id":   value.Brand.Id,
+			"name": value.Brand.Name,
+			"logo": value.Brand.Logo,
+		}
+
+		result = append(result, reMap)
+	}
+
+	reMap["data"] = result
+	ctx.JSON(http.StatusOK, reMap)
+}
+func NewCategoryBrand(ctx *gin.Context) {
+
+}
+
+func DeleteCategoryBrand(ctx *gin.Context) {
 
 }

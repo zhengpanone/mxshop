@@ -40,26 +40,26 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         """商品列表页"""
         rsp = goods_pb2.GoodsListResponse()
         goods = Goods.select()
-        if request.key_words:
+        if request.keyWords:
             goods = goods.filter(Goods.name.constraints(request.key_words))
-        if request.is_hot:
+        if request.isHot:
             goods = goods.filter(Goods.is_hot == True)
-        if request.is_new:
+        if request.isNew:
             goods = goods.filter(Goods.is_new == True)
-        if request.is_tab:
+        if request.isTab:
             goods = goods.filter(Goods.is_hot == True)
-        if request.price_min:
+        if request.priceMin:
             goods = goods.filter(Goods.shop_price >= request.price_min)
-        if request.price_max:
+        if request.priceMax:
             goods = goods.filter(Goods.shop_price <= request.price_max)
         if request.brand:
             goods = goods.filter(Goods.brand_id == request.brand)
 
-        if request.top_category:
+        if request.topCategory:
             # 通过category查询商品，这个category可能是一级、二级或者三级
             ids = []
             try:
-                category = Category.get(Category.id == request.top_category)
+                category = Category.get(Category.id == request.topCategory)
                 level = category.level
                 if level == 2:
                     categorys = Category.select().where(Category.parent_category == request.topCategory)
@@ -357,7 +357,8 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         rsp = goods_pb2.BrandListResponse()
         brands = Brands.select()
         rsp.total = brands.count()
-        for brand in brands:
+        result = brands.paginate(request.page, request.size)
+        for brand in result:
             brand_rsp = goods_pb2.BrandInfoResponse()
             brand_rsp.id = brand.id
             brand_rsp.name = brand.name
@@ -470,14 +471,14 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
     @logger.catch
     def CategoryBrandList(self, request: goods_pb2.CategoryBrandFilterRequest, context):
         rsp = goods_pb2.CategoryBrandListResponse()
-        category_brands = GoodsCategoryBrand.select().count()
+        category_brands = GoodsCategoryBrand.select()
         page = 1
         size = 10
         if request.page:
             page = request.page
         if request.size:
             size = request.size
-
+        rsp.total = category_brands.count()
         category_brands = category_brands.paginate(page, size)
         for category_brand in category_brands:
             category_brand_rsp = goods_pb2.CategoryBrandResponse()
@@ -487,9 +488,9 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
 
             category_brand_rsp.category.id = category_brand.category.id
             category_brand_rsp.category.name = category_brand.category.name
-            category_brand_rsp.category.parend_category = category_brand.category.parent_category_id
+            category_brand_rsp.category.parentCategory = category_brand.category.parent_category_id
             category_brand_rsp.category.level = category_brand.category.level
-            category_brand_rsp.category.is_table = category_brand.category.is_table
+            category_brand_rsp.category.isTab = category_brand.category.is_tab
             rsp.data.append(category_brand_rsp)
         return rsp
 

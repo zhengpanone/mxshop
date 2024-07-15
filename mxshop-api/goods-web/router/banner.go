@@ -7,12 +7,12 @@ import (
 )
 
 func InitBannerRouter(router *gin.RouterGroup) {
-	BannerRouter := router.Group("goods")
+	BannerRouter := router.Group("banner")
 	{
-		BannerRouter.GET("banner/list", api.ListBanner)
-		BannerRouter.POST("banner/create", middlewares.JWTAuth(), middlewares.IsAdmin(), api.NewBanner)
-		BannerRouter.PUT("banner/update", middlewares.JWTAuth(), middlewares.IsAdmin(), api.UpdateBanner)
-		BannerRouter.DELETE("banner/delete", middlewares.JWTAuth(), middlewares.IsAdmin(), api.DeleteBanner)
+		BannerRouter.GET("list", api.ListBanner)
+		BannerRouter.POST("create", middlewares.JWTAuth(), middlewares.IsAdmin(), api.NewBanner)
+		BannerRouter.PUT("update/:id", middlewares.JWTAuth(), middlewares.IsAdmin(), api.UpdateBanner)
+		BannerRouter.DELETE("delete/:id", middlewares.JWTAuth(), middlewares.IsAdmin(), api.DeleteBanner)
 
 	}
 }
