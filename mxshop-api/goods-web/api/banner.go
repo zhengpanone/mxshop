@@ -14,7 +14,7 @@ import (
 func ListBanner(ctx *gin.Context) {
 	rsp, err := global.GoodsSrvClient.BannerList(context.Background(), &emptypb.Empty{})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	result := make([]interface{}, 0)
@@ -44,7 +44,7 @@ func NewBanner(ctx *gin.Context) {
 		})
 
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	response := make(map[string]interface{})
@@ -74,7 +74,7 @@ func UpdateBanner(ctx *gin.Context) {
 		Url:   bannerForm.Url,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	ctx.Status(http.StatusOK)
@@ -89,7 +89,7 @@ func DeleteBanner(ctx *gin.Context) {
 	}
 	_, err = global.GoodsSrvClient.DeleteBanner(context.Background(), &proto.BannerRequest{Id: int32(idInt)})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	ctx.Status(http.StatusOK)

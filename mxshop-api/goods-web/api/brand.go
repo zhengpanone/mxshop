@@ -22,7 +22,7 @@ func NewBrand(ctx *gin.Context) {
 	})
 
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 	}
 	response := make(map[string]interface{})
 	response["id"] = rsp.Id
@@ -40,7 +40,7 @@ func DeleteBrand(ctx *gin.Context) {
 	}
 	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &proto.BrandRequest{Id: int32(idInt)})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	ctx.Status(http.StatusOK)
@@ -64,7 +64,7 @@ func UpdateBrand(ctx *gin.Context) {
 		Logo: brandForm.Logo,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	ctx.Status(http.StatusOK)
@@ -81,7 +81,7 @@ func ListBrand(ctx *gin.Context) {
 		Size: int32(sizeInt),
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	result := make([]interface{}, 0)

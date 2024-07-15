@@ -18,7 +18,7 @@ func GetCategoryList(ctx *gin.Context) {
 
 	if err != nil {
 		zap.S().Errorw("[GetCategoryList]查询【商品分类列表】失败：", err.Error())
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 
@@ -46,7 +46,7 @@ func Detail(ctx *gin.Context) {
 	if r, err := global.GoodsSrvClient.GetSubCategory(context.Background(), &proto.CategoryListRequest{
 		Id: int32(i),
 	}); err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	} else {
 		for _, value := range r.SubCategoryList {
@@ -82,7 +82,7 @@ func NewCategory(ctx *gin.Context) {
 		ParentCategory: categoryForm.ParentCategory,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	response := make(map[string]interface{})
@@ -116,7 +116,7 @@ func UpdateCategory(ctx *gin.Context) {
 	}
 	_, err = global.GoodsSrvClient.UpdateCategory(context.Background(), request)
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	ctx.Status(http.StatusOK)

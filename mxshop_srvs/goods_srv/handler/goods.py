@@ -62,13 +62,13 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
                 category = Category.get(Category.id == request.top_category)
                 level = category.level
                 if level == 2:
-                    categorys = Category.select().where(Category.parent_category == request.top_category)
+                    categorys = Category.select().where(Category.parent_category == request.topCategory)
                     for category in categorys:
                         ids.append(category.id)
                 elif level == 1:
                     c2 = Category.alias()
                     categorys = Category.select().where(Category.parent_category_id.in_(
-                        c2.select(c2.id).where(c2.parent_category_id == request.top_category)))
+                        c2.select(c2.id).where(c2.parent_category_id == request.topCategory)))
                     for category in categorys:
                         ids.append(category.id)
                 elif level == 3:
@@ -235,9 +235,9 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             category_rsp = goods_pb2.CategoryInfoResponse()
             category_rsp.id = category.id
             category_rsp.name = category.name
-            category_rsp.parent_category = category.parent_category_id
+            category_rsp.parentCategory = category.parent_category_id
             category_rsp.level = category.level
-            category_rsp.is_tab = category.is_tab
+            category_rsp.isTab = category.is_tab
             category_list_rsp.data.append(category_rsp)
             if category.level == 1:
                 level1.append(self.category_model_to_dict(category))
@@ -261,7 +261,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
                         data1['sub_category'] = [data2]
                     else:
                         data1['sub_category'].append(data2)
-        category_list_rsp.json_data = json.dumps(level1)
+        category_list_rsp.jsonData = json.dumps(level1)
 
         return category_list_rsp
 

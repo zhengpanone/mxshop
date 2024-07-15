@@ -58,7 +58,7 @@ func GetGoodsList(ctx *gin.Context) {
 	r, err := global.GoodsSrvClient.GoodsList(context.Background(), request)
 	if err != nil {
 		zap.S().Errorw("[GetGoodsList]查询【商品列表】失败")
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 
@@ -118,7 +118,7 @@ func NewGoods(ctx *gin.Context) {
 		BrandId:         goodsForm.Brand,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	// 如何设置库存

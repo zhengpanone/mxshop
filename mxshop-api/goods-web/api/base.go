@@ -19,33 +19,32 @@ func removeTopStruct(fields map[string]string) map[string]string {
 	return rsp
 }
 
-func HandleGrpcErrorToHttp(err error, c *gin.Context) {
+func HandleGrpcErrorToHttp(err error, c *gin.Context, srvName string) {
 	// 将grpc的code转换成http的code
 	if err != nil {
 		if e, ok := status.FromError(err); ok {
 			switch e.Code() {
 			case codes.NotFound:
 				c.JSON(http.StatusNotFound, gin.H{
-					"msg": e.Message(),
+					"msg": srvName + ":" + e.Message(),
 				})
 			case codes.Internal:
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "内部错误",
+					"msg": srvName + ":" + "内部错误" + e.Message(),
 				})
 
 			case codes.InvalidArgument:
 				c.JSON(http.StatusBadRequest, gin.H{
-					"msg": "参数错误",
+					"msg": srvName + ":" + "参数错误" + e.Message(),
 				})
 			case codes.Unavailable:
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "用户服务不可用",
+					"msg": srvName + ":" + "不可用",
 				})
 			default:
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "其他错误" + e.Message(),
+					"msg": srvName + ":" + "其他错误" + e.Message(),
 				})
-
 			}
 
 		}
