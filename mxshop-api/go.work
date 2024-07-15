@@ -1,0 +1,10 @@
+go 1.22.1
+
+use (
+	./order-web
+	./goods-web
+	./user-web
+	./oss-web
+	./userop-web
+)
+

@@ -43,7 +43,7 @@ func GetGoodsList(ctx *gin.Context) {
 	pageInt, _ := strconv.Atoi(page)
 	request.Page = uint32(pageInt)
 
-	size := ctx.DefaultQuery("page", "10")
+	size := ctx.DefaultQuery("size", "10")
 	sizeInt, _ := strconv.Atoi(size)
 	request.Size = uint32(sizeInt)
 

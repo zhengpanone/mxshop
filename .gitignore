@@ -3,3 +3,9 @@
 **/__pycache__
 */*.log
 **/tmp
+
+**/vendor
+**/logs
+**/nacos-data
+
+
