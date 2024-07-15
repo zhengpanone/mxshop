@@ -26,9 +26,9 @@ def on_exit(signum, frame, service_id):
     logger.info(f"注销{service_id}服务")
     result = register.deregister(service_id)
     if result:
-        logger.info(f"注销用户服务：{service_id} 成功")
+        logger.info(f"注销用户操作服务：{service_id} 成功")
     else:
-        logger.error(f"注销用户服务：{service_id} 失败")
+        logger.error(f"注销用户操作服务：{service_id} 失败")
 
     sys.exit(0)
 
