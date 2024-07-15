@@ -3,6 +3,8 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"net/http"
 	"user-web/forms"
 	"user-web/utils"
@@ -35,4 +37,37 @@ func GenerateCaptcha(ctx *gin.Context) {
 		"captchaId": id,
 		"picPath":   base64,
 	})
+}
+
+func HandleGrpcErrorToHttp(err error, c *gin.Context, srvName string) {
+	// 将grpc的code转换成http的code
+	if err != nil {
+		if e, ok := status.FromError(err); ok {
+			switch e.Code() {
+			case codes.NotFound:
+				c.JSON(http.StatusNotFound, gin.H{
+					"msg": srvName + ":" + e.Message(),
+				})
+			case codes.Internal:
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"msg": srvName + ":" + "内部错误" + e.Message(),
+				})
+
+			case codes.InvalidArgument:
+				c.JSON(http.StatusBadRequest, gin.H{
+					"msg": srvName + ":" + "参数错误" + e.Message(),
+				})
+			case codes.Unavailable:
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"msg": srvName + ":" + "不可用",
+				})
+			default:
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"msg": srvName + ":" + "其他错误" + e.Message(),
+				})
+			}
+
+		}
+
+	}
 }

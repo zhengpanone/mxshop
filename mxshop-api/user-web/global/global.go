@@ -12,6 +12,6 @@ var (
 	Trans         ut.Translator
 	ServerConfig  *config.ServerConfig = &config.ServerConfig{}
 	RedisClient   *redis.Client
-	UserSrvClient *proto.UserClient
+	UserSrvClient proto.UserClient
 	UserConn      *grpc.ClientConn
 )

@@ -17,6 +17,7 @@ func InitSrvConn() {
 	// 如果已有连接先关闭
 	if global.UserConn != nil {
 		global.UserConn.Close()
+
 	}
 	consul := global.ServerConfig.Consul
 	url := fmt.Sprintf("consul://%s:%d/%s?wait=14s&tag=srv", consul.Host, consul.Port, global.ServerConfig.UserSrvConfig.Name)
@@ -32,7 +33,7 @@ func InitSrvConn() {
 	global.UserConn = userConn
 	// 注册客户端
 	userSrvClient := proto.NewUserClient(userConn)
-	global.UserSrvClient = &userSrvClient
+	global.UserSrvClient = userSrvClient
 
 }
 
@@ -69,5 +70,5 @@ func InitSrvConnBack() {
 	}
 	// 生成grpc的client并调用接口
 	userSrvClient := proto.NewUserClient(userConn)
-	global.UserSrvClient = &userSrvClient
+	global.UserSrvClient = userSrvClient
 }

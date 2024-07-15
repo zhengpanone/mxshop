@@ -7,8 +7,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
 	"go.uber.org/zap"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"net/http"
 	"strconv"
 	"strings"
@@ -30,51 +28,17 @@ func removeTopStruct(fields map[string]string) map[string]string {
 	return rsp
 }
 
-func HandleGrpcErrorToHttp(err error, c *gin.Context) {
-	// 将grpc的code转换成http的code
-	if err != nil {
-		if e, ok := status.FromError(err); ok {
-			switch e.Code() {
-			case codes.NotFound:
-				c.JSON(http.StatusNotFound, gin.H{
-					"msg": e.Message(),
-				})
-			case codes.Internal:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "内部错误",
-				})
-
-			case codes.InvalidArgument:
-				c.JSON(http.StatusBadRequest, gin.H{
-					"msg": "参数错误",
-				})
-			case codes.Unavailable:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "用户服务不可用",
-				})
-			default:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": "其他错误" + e.Message(),
-				})
-
-			}
-
-		}
-
-	}
-}
-
 func GetUserList(ctx *gin.Context) {
-	userSrvClient := *global.UserSrvClient
+
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "10"))
-	rsp, err := userSrvClient.GetUserList(context.Background(), &proto.PageInfo{
+	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &proto.PageInfo{
 		Page: uint32(page),
 		Size: uint32(size),
 	})
 	if err != nil {
 		zap.S().Errorw("[GetUserList]查询【用户列表】失败")
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "用户服务srv")
 		return
 	}
 	/*claims, _ := ctx.Get("claims")
@@ -111,27 +75,16 @@ func PasswordLogin(ctx *gin.Context) {
 		}
 	}
 
-	userSevClient := *global.UserSrvClient
 	// 登录的逻辑
-	if rsp, err := userSevClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
+	if rsp, err := global.UserSrvClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
 		Mobile: passwordLogin.Mobile,
 	}); err != nil {
-		if e, ok := status.FromError(err); ok {
-			switch e.Code() {
-			case codes.NotFound:
-				ctx.JSON(http.StatusBadRequest, map[string]string{
-					"mobile": "用户不存在",
-				})
-			default:
-				ctx.JSON(http.StatusInternalServerError, map[string]string{
-					"msg": "登录失败" + e.Message(),
-				})
-			}
-			return
-		}
+		zap.S().Errorw("用户登录失败失败" + err.Error())
+		HandleGrpcErrorToHttp(err, ctx, "用户srv")
+		return
 	} else {
 		// 只是查询到用户，没有检查密码
-		if passRsp, passErr := userSevClient.CheckPassword(context.Background(), &proto.PasswordCheckInfo{
+		if passRsp, passErr := global.UserSrvClient.CheckPassword(context.Background(), &proto.PasswordCheckInfo{
 			EncryptedPassword: rsp.Password,
 			Password:          passwordLogin.Password,
 		}); passErr != nil {
@@ -163,16 +116,18 @@ func PasswordLogin(ctx *gin.Context) {
 					})
 					return
 				}
-				ctx.JSON(http.StatusInternalServerError, gin.H{
+				ctx.JSON(http.StatusOK, gin.H{
 					"id":         rsp.Id,
 					"nick_name":  rsp.Nickname,
 					"token":      token,
 					"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
 				})
+				return
 			} else {
 				ctx.JSON(http.StatusBadRequest, map[string]string{
 					"msg": "登录失败",
 				})
+				return
 			}
 		}
 	}
@@ -200,15 +155,14 @@ func Register(ctx *gin.Context) {
 		})
 		return
 	}
-	userSevClient := *global.UserSrvClient
-	user, err := userSevClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+	user, err := global.UserSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
 		Mobile:   registerForm.Mobile,
 		Nickname: registerForm.Mobile,
 		Password: registerForm.Password,
 	})
 	if err != nil {
 		zap.S().Errorf("[Register]新建用户失败：%s", err.Error())
-		HandleGrpcErrorToHttp(err, ctx)
+		HandleGrpcErrorToHttp(err, ctx, "用户服务srv")
 		return
 	}
 
