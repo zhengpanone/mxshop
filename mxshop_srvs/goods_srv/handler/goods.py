@@ -501,7 +501,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         try:
             category = Category.get(Category.id == request.id)
             category_brands = GoodsCategoryBrand.select().where(GoodsCategoryBrand.category == category)
-            rsp.total = category_brands.count()
+            # rsp.total = category_brands.count()
             for category_brand in category_brands:
                 brand_rsp = goods_pb2.BrandInfoResponse()
                 brand_rsp.id = category_brand.brand.id
