@@ -17,6 +17,7 @@ func SwaggerInit(engine *gin.Engine) {
 	swaggerInfo.Version = "v1.0.0"
 	swaggerInfo.Host = "127.0.0.1:18021"
 	swaggerInfo.BasePath = ""
+	url := ginSwagger.URL("/swagger/doc.json")
 	// Serve Swagger UI
-	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }

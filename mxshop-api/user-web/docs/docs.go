@@ -28,6 +28,7 @@ const docTemplate = `{
                     "用户管理"
                 ],
                 "summary": "用户列表",
+                "operationId": "/v1/user/list",
                 "parameters": [
                     {
                         "type": "string",
@@ -57,22 +58,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "Errors": {
-                                            "type": "object"
-                                        },
-                                        "data": {
-                                            "type": "object"
-                                        }
-                                    }
-                                }
-                            ]
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/response.UserResponse"
+                            }
                         }
                     }
                 }
@@ -224,6 +213,27 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 3
+                }
+            }
+        },
+        "response.UserResponse": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "description": "Birthday time.Time ` + "`" + `json:\"birthday\"` + "`" + `",
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
                 }
             }
         },

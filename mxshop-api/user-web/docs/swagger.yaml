@@ -41,6 +41,20 @@ definitions:
     - mobile
     - password
     type: object
+  response.UserResponse:
+    properties:
+      birthday:
+        description: Birthday time.Time `json:"birthday"`
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      mobile:
+        type: string
+      nickName:
+        type: string
+    type: object
   utils.ErrorItem:
     properties:
       error:
@@ -81,6 +95,7 @@ paths:
       consumes:
       - application/json
       description: 获取用户列表
+      operationId: /v1/user/list
       parameters:
       - description: token令牌
         in: header
@@ -105,14 +120,9 @@ paths:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/utils.Response'
-            - properties:
-                Errors:
-                  type: object
-                data:
-                  type: object
-              type: object
+            items:
+              $ref: '#/definitions/response.UserResponse'
+            type: array
       summary: 用户列表
       tags:
       - 用户管理
