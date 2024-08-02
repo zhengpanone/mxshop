@@ -34,7 +34,10 @@ func removeTopStruct(fields map[string]string) map[string]string {
 // @Tags  用户管理
 // @Accept  json
 // @Produce json
-// @success 200  {object} utils.Response{data=interface{}}
+// @Param x-token header string true "token令牌"
+// @Param page query int true "页码" default(1)
+// @Param size query int true "页面大小" default(10)
+// @success 200  {object} utils.Response{data=interface{},Errors=nil}
 // @Router  /v1/user/list [get]
 func GetUserList(ctx *gin.Context) {
 

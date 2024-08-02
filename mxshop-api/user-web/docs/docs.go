@@ -28,6 +28,31 @@ const docTemplate = `{
                     "用户管理"
                 ],
                 "summary": "用户列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "页面大小",
+                        "name": "size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -39,6 +64,9 @@ const docTemplate = `{
                                 {
                                     "type": "object",
                                     "properties": {
+                                        "Errors": {
+                                            "type": "object"
+                                        },
                                         "data": {
                                             "type": "object"
                                         }

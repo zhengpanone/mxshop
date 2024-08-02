@@ -7,12 +7,13 @@ import (
 	"user-web/docs"
 )
 
+// SwaggerInit swagger初始化
 func SwaggerInit(engine *gin.Engine) {
 	// 获取swagger
 	swaggerInfo := docs.SwaggerInfo
 	// 动态设置swagger
 	swaggerInfo.Title = "user-web"
-	swaggerInfo.Description = "mxshop-api user-web"
+	swaggerInfo.Description = "mxshop-api 用户管理"
 	swaggerInfo.Version = "v1.0.0"
 	swaggerInfo.Host = "127.0.0.1:18021"
 	swaggerInfo.BasePath = ""

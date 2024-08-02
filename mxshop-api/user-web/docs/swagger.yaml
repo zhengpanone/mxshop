@@ -81,6 +81,24 @@ paths:
       consumes:
       - application/json
       description: 获取用户列表
+      parameters:
+      - description: token令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        required: true
+        type: integer
+      - default: 10
+        description: 页面大小
+        in: query
+        name: size
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -90,6 +108,8 @@ paths:
             allOf:
             - $ref: '#/definitions/utils.Response'
             - properties:
+                Errors:
+                  type: object
                 data:
                   type: object
               type: object
