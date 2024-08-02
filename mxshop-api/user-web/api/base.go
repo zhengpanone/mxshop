@@ -45,6 +45,7 @@ func HandleGrpcErrorToHttp(err error, c *gin.Context, srvName string) {
 		if e, ok := status.FromError(err); ok {
 			switch e.Code() {
 			case codes.NotFound:
+
 				c.JSON(http.StatusNotFound, gin.H{
 					"msg": srvName + ":" + e.Message(),
 				})

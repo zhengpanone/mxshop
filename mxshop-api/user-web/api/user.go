@@ -28,6 +28,14 @@ func removeTopStruct(fields map[string]string) map[string]string {
 	return rsp
 }
 
+// GetUserList 获取用户列表
+// @Summary 用户列表
+// @Description 获取用户列表
+// @Tags  用户管理
+// @Accept  json
+// @Produce json
+// @success 200  {object} utils.Response{data=interface{}}
+// @Router  /v1/user/list [get]
 func GetUserList(ctx *gin.Context) {
 
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
@@ -76,9 +84,7 @@ func PasswordLogin(ctx *gin.Context) {
 	}
 	if global.ServerConfig.EnableCaptcha {
 		if !utils.VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.Captcha) {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"msg": "验证码不正确",
-			})
+			utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
 			return
 		}
 	}
@@ -96,9 +102,8 @@ func PasswordLogin(ctx *gin.Context) {
 			EncryptedPassword: rsp.Password,
 			Password:          passwordLogin.Password,
 		}); passErr != nil {
-			ctx.JSON(http.StatusInternalServerError, map[string]string{
-				"msg": "登录失败",
-			})
+			utils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "登录失败")
+			return
 		} else {
 			if passRsp.Success {
 				// 生成Token
@@ -120,9 +125,6 @@ func PasswordLogin(ctx *gin.Context) {
 				token, err := j.CreateToken(claims)
 				if err != nil {
 					utils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
-					/*ctx.JSON(http.StatusInternalServerError, gin.H{
-						"msg": "生成token失败",
-					})*/
 					return
 				}
 				utils.OkWithData(ctx, gin.H{
@@ -131,18 +133,9 @@ func PasswordLogin(ctx *gin.Context) {
 					"token":      token,
 					"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
 				})
-				/*ctx.JSON(http.StatusOK, gin.H{
-					"id":         rsp.Id,
-					"nick_name":  rsp.Nickname,
-					"token":      token,
-					"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
-				})*/
 				return
 			} else {
 				utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "登录失败")
-				/*ctx.JSON(http.StatusBadRequest, map[string]string{
-					"msg": "登录失败",
-				})*/
 				return
 			}
 		}
@@ -151,6 +144,14 @@ func PasswordLogin(ctx *gin.Context) {
 }
 
 // Register 用户注册
+// @Summary 用户注册
+// @Description 用户注册
+// @Tags  用户管理
+// @Accept  json
+// @Produce json
+// @Param  request body  forms.RegisterForm true "请求参数"
+// @success 200  {object} utils.Response{data=interface{}}
+// @Router  /v1/user/register [post]
 func Register(ctx *gin.Context) {
 	registerForm := forms.RegisterForm{}
 	if err := ctx.ShouldBind(&registerForm); err != nil {
@@ -160,15 +161,11 @@ func Register(ctx *gin.Context) {
 	// 验证码校验
 	code, err := global.RedisClient.Get(context.Background(), registerForm.Mobile).Result()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": "服务器内部错误" + err.Error(),
-		})
+		utils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
 		return
 	}
 	if code != registerForm.Code {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"msg": "验证码不正确",
-		})
+		utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
 		return
 	}
 	user, err := global.UserSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{

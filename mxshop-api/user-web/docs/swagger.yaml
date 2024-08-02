@@ -21,6 +21,26 @@ definitions:
     - mobile
     - password
     type: object
+  forms.RegisterForm:
+    properties:
+      code:
+        description: 短信验证码
+        maxLength: 5
+        minLength: 5
+        type: string
+      mobile:
+        description: 手机号码 自定义validator
+        type: string
+      password:
+        description: 密码
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - code
+    - mobile
+    - password
+    type: object
   utils.ErrorItem:
     properties:
       error:
@@ -56,6 +76,26 @@ definitions:
 info:
   contact: {}
 paths:
+  /v1/user/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 用户列表
+      tags:
+      - 用户管理
   /v1/user/pwd_login:
     post:
       consumes:
@@ -81,6 +121,33 @@ paths:
                   type: object
               type: object
       summary: 用户登录
+      tags:
+      - 用户管理
+  /v1/user/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/forms.RegisterForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 用户注册
       tags:
       - 用户管理
 swagger: "2.0"
