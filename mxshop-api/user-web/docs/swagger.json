@@ -1,0 +1,135 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/v1/user/pwd_login": {
+            "post": {
+                "description": "用户账号密码登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.PasswordLoginForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "forms.PasswordLoginForm": {
+            "type": "object",
+            "required": [
+                "captcha",
+                "captcha_id",
+                "mobile",
+                "password"
+            ],
+            "properties": {
+                "captcha": {
+                    "type": "string",
+                    "maxLength": 5,
+                    "minLength": 5
+                },
+                "captcha_id": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号码 自定义validator",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
+                }
+            }
+        },
+        "utils.ErrorItem": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Meta": {
+            "type": "object",
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "响应数据"
+                },
+                "errors": {
+                    "description": "Errors 错误提示，如 xx字段不能为空等",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/utils.ErrorItem"
+                    }
+                },
+                "meta": {
+                    "description": "Meta 源数据,存储如请求ID,分页等信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/utils.Meta"
+                        }
+                    ]
+                },
+                "msg": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

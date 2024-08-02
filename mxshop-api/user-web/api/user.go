@@ -59,7 +59,15 @@ func GetUserList(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-// PasswordLogin 登录
+// PasswordLogin
+// @Summary 用户登录
+// @Description 用户账号密码登录
+// @Tags  用户管理
+// @Accept  json
+// @Produce json
+// @Param  request body  forms.PasswordLoginForm true "请求参数"
+// @success 200  {object} utils.Response{data=interface{}}
+// @Router  /v1/user/pwd_login [post]
 func PasswordLogin(ctx *gin.Context) {
 	passwordLogin := forms.PasswordLoginForm{}
 	if err := ctx.ShouldBind(&passwordLogin); err != nil {
@@ -111,22 +119,30 @@ func PasswordLogin(ctx *gin.Context) {
 				}
 				token, err := j.CreateToken(claims)
 				if err != nil {
-					ctx.JSON(http.StatusInternalServerError, gin.H{
+					utils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
+					/*ctx.JSON(http.StatusInternalServerError, gin.H{
 						"msg": "生成token失败",
-					})
+					})*/
 					return
 				}
-				ctx.JSON(http.StatusOK, gin.H{
+				utils.OkWithData(ctx, gin.H{
 					"id":         rsp.Id,
 					"nick_name":  rsp.Nickname,
 					"token":      token,
 					"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
 				})
+				/*ctx.JSON(http.StatusOK, gin.H{
+					"id":         rsp.Id,
+					"nick_name":  rsp.Nickname,
+					"token":      token,
+					"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
+				})*/
 				return
 			} else {
-				ctx.JSON(http.StatusBadRequest, map[string]string{
+				utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "登录失败")
+				/*ctx.JSON(http.StatusBadRequest, map[string]string{
 					"msg": "登录失败",
-				})
+				})*/
 				return
 			}
 		}

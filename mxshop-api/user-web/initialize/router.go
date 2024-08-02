@@ -9,6 +9,7 @@ import (
 
 func Routers() *gin.Engine {
 	Router := gin.Default()
+	SwaggerInit(Router)
 	Router.Use(middlewares.Recovery())
 	Router.GET("/health", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
