@@ -1,6 +1,6 @@
 from playhouse.pool import PooledMySQLDatabase
 from playhouse.shortcuts import ReconnectMixin
-import nacos
+from nacos import NacosClient
 import json
 from loguru import logger
 
@@ -42,8 +42,9 @@ NACOS = {
     "password": "nacos"
 }
 
-client = nacos.NacosClient(f"{NACOS['host']}:{NACOS['port']}", namespace=NACOS['namespace'], username=NACOS["user"],
-                           password=NACOS["password"])
+client = NacosClient(f"{NACOS['host']}:{NACOS['port']}", namespace=NACOS['namespace'],
+                     username=NACOS["user"], password=NACOS["password"],
+                     log_level='INFO')
 data = json.loads(client.get_config(NACOS["dataId"], NACOS["groupId"]))
 logger.info(data)
 

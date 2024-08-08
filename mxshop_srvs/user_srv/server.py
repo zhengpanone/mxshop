@@ -93,6 +93,7 @@ def server():
 if __name__ == '__main__':
     # print(get_free_tcp_port())
     logging.basicConfig()
-    settings.client.add_config_watcher(settings.NACOS["dataId"], settings.NACOS["groupId"],
-                                       settings.update_config)  # 这个逻辑必须放在__name__ == '__main__'中
+    # 添加配置监听器，当Nacos中的配置发生变化时
+    settings.client.add_config_watcher(data_id=settings.NACOS["dataId"], group=settings.NACOS["groupId"],
+                                       cb=settings.update_config)  # 这个逻辑必须放在__name__ == '__main__'中
     server()

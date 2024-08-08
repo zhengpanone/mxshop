@@ -4,7 +4,10 @@ Faker==24.1.1
 grpcio==1.62.1
 grpcio-tools==1.62.1
 idna==3.6
+jaeger-client==4.8.0
 loguru==0.7.2
+nacos-sdk-python==1.0.0
+opentracing==2.4.0
 passlib==1.7.4
 peewee==3.17.1
 protobuf==4.25.3
@@ -14,4 +17,7 @@ python-dateutil==2.9.0.post0
 requests==2.31.0
 setuptools==69.2.0
 six==1.16.0
+threadloop==1.0.2
+thrift==0.20.0
+tornado==6.4.1
 urllib3==2.2.1
