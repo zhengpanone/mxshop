@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -8,10 +10,12 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
+	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
-	"syscall"
+	"time"
 	"user-web/global"
 	"user-web/initialize"
 	"user-web/middlewares"
@@ -71,8 +75,14 @@ func main() {
 		zap.S().Panic("服务注册失败：", err.Error())
 	}
 	zap.S().Debugf("启动服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
+
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%d", global.ServerConfig.Port),
+		Handler: Router,
+	}
+
 	go func() {
-		if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			zap.S().Panic("服务器启动失败：", err.Error())
 		}
 	}()
@@ -80,11 +90,16 @@ func main() {
 	// 接收终止信号
 	quit := make(chan os.Signal, 1)
 	// 注册要捕获的信号，这里包括 Ctrl+C（SIGINT）和终止信号（SIGTERM）
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	fmt.Println("Waiting for Ctrl+C (SIGINT)...")
+	signal.Notify(quit /*syscall.SIGINT, syscall.SIGTERM,*/, os.Interrupt)
+	log.Println("Waiting for Ctrl+C (SIGINT)...")
 	// 阻塞等待信号
 	sig := <-quit
-	fmt.Printf("Received signal: %v\n", sig)
+	log.Printf("Received signal: %v\n", sig)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		zap.S().Fatal("Server Shutdown:", zap.Error(err))
+	}
 	if err = registerClient.DeRegister(serviceId); err != nil {
 		zap.S().Info("注销失败：", err.Error())
 	}
