@@ -35,7 +35,7 @@ func main() {
 	Router.Use(middlewares.MyLogger()) //注册全局中间件
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	fmt.Printf("run exe dir is %v", dir)
+	fmt.Printf("run exe dir is %v\n", dir)
 	//
 	currentMod := gin.Mode()
 	if currentMod == gin.ReleaseMode {

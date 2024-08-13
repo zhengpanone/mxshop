@@ -10,6 +10,10 @@ type JWTConfig struct {
 	SigningKey string `mapstructure:"key" yaml:"key"`
 }
 
+type JaegerConfig struct {
+	Host string `mapstructure:"host" yaml:"host"`
+	Port uint32 `mapstructure:"port" yaml:"port"`
+}
 type System struct {
 	UseRedis bool `mapstructure:"use-redis" json:"user-redis" yaml:"use-redis"` // 使用redis
 }
@@ -29,15 +33,16 @@ type ServerConfig struct {
 	System         System         `mapstructure:"system" json:"system" yaml:"system"`
 	Consul         Consul         `mapstructure:"consul" json:"consul" yaml:"consul"`
 	Nacos          NacosConfig    `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
+	Jaeger         JaegerConfig   `mapstructure:"jaeger" json:"jaeger" yaml:"jaeger"`
 }
 
 type NacosConfig struct {
 	Host        string `mapstructure:"host"`
-	Port        uint64 `mastructure:"port"`
-	ContextPath string `mastructure:"context-path"`
-	Namespace   string `mastructure:"namespace"`
-	User        string `mastructure:"user"`
-	Password    string `mastructure:"password"`
-	DataId      string `mastructure:"dataId"`
-	Group       string `mastructure:"group"`
+	Port        uint64 `mapstructure:"port"`
+	ContextPath string `mapstructure:"context-path"`
+	Namespace   string `mapstructure:"namespace"`
+	User        string `mapstructure:"user"`
+	Password    string `mapstructure:"password"`
+	DataId      string `mapstructure:"dataId"`
+	Group       string `mapstructure:"group"`
 }
