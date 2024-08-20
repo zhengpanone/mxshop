@@ -14,7 +14,7 @@ func InitJaeger(serviceName string, host string, port uint32) (opentracing.Trace
 	// 参数详解 https://www.jaegertracing.io/docs/1.20/sampling/
 	cfg := &config.Configuration{
 		ServiceName: serviceName,
-		// 采样配置
+		// 采样配置 将采样频率设置为 1，每一个 span 都记录，方便查看测试结果
 		Sampler: &config.SamplerConfig{
 			Type:  jaeger.SamplerTypeConst,
 			Param: 1,
@@ -29,7 +29,5 @@ func InitJaeger(serviceName string, host string, port uint32) (opentracing.Trace
 	if err != nil {
 		log.Fatalf("Could not initialize jaeger tracer: %s", err.Error())
 	}
-
-	opentracing.SetGlobalTracer(tracer)
 	return tracer, closer
 }

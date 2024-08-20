@@ -55,7 +55,7 @@ func GetGoodsList(ctx *gin.Context) {
 	request.Brand = int32(brandInt)
 
 	// 请求商品service服务
-	r, err := global.GoodsSrvClient.GoodsList(context.Background(), request)
+	r, err := global.GoodsSrvClient.GoodsList(context.WithValue(context.Background(), "ginContext", ctx), request)
 	if err != nil {
 		zap.S().Errorw("[GetGoodsList]查询【商品列表】失败")
 		HandleGrpcErrorToHttp(err, ctx, "商品srv")

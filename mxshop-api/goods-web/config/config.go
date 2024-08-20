@@ -34,6 +34,8 @@ type ServerConfig struct {
 	Consul         Consul         `mapstructure:"consul" json:"consul" yaml:"consul"`
 	Nacos          NacosConfig    `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
 	Jaeger         JaegerConfig   `mapstructure:"jaeger" json:"jaeger" yaml:"jaeger"`
+	// 日志配置
+	LogConfig LogConfig `mapstructure:"log" json:"log" yaml:"log"`
 }
 
 type NacosConfig struct {
@@ -45,4 +47,18 @@ type NacosConfig struct {
 	Password    string `mapstructure:"password"`
 	DataId      string `mapstructure:"dataId"`
 	Group       string `mapstructure:"group"`
+}
+
+// LogConfig 日志配置
+type LogConfig struct {
+	// 日志级别
+	Level string `mapstructure:"level"`
+	// 志文件的位置
+	Filename string `mapstructure:"filename"`
+	// 在进行切割之前，日志文件的最大大小（以MB为单位）
+	MaxSize int `mapstructure:"max_size"`
+	// 保留旧文件的最大天数
+	MaxAge int `mapstructure:"max_age"`
+	// 保留旧文件的最大个数
+	MaxBackups int `mapstructure:"max_backups"`
 }

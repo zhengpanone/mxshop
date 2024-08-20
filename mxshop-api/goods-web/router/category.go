@@ -3,15 +3,15 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"goods-web/api"
-	"goods-web/middlewares"
+	"goods-web/middleware"
 )
 
 func InitCategoryRouter(router *gin.RouterGroup) {
 	CategoryRouter := router.Group("category")
 	{
 		CategoryRouter.GET("list", api.GetCategoryList)
-		CategoryRouter.POST("create", middlewares.JWTAuth(), middlewares.IsAdmin(), api.NewCategory)
-		CategoryRouter.POST("update", middlewares.JWTAuth(), middlewares.IsAdmin(), api.UpdateCategory)
+		CategoryRouter.POST("create", middleware.JWTAuth(), middleware.IsAdmin(), api.NewCategory)
+		CategoryRouter.POST("update", middleware.JWTAuth(), middleware.IsAdmin(), api.UpdateCategory)
 
 	}
 }

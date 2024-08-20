@@ -1,4 +1,4 @@
-package middlewares
+package middleware
 
 import (
 	"context"
@@ -16,6 +16,7 @@ func Trace() gin.HandlerFunc {
 		var parentSpan opentracing.Span
 
 		tracer, closer := utils.InitJaeger(global.ServerConfig.Name, global.ServerConfig.Jaeger.Host, global.ServerConfig.Jaeger.Port)
+
 		defer closer.Close()
 
 		// 直接从 c.Request.Header 中提取 span,如果没有就新建一个
