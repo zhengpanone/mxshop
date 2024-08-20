@@ -2,8 +2,8 @@ package initialize
 
 import (
 	"github.com/gin-gonic/gin"
+	commonMiddleware "mxshop-api/common/middleware"
 	"net/http"
-	"order-web/middlewares"
 	"order-web/router"
 )
 
@@ -17,7 +17,7 @@ func Routers() *gin.Engine {
 		})
 	})
 	// 配置跨域
-	Router.Use(middlewares.Cors())
+	Router.Use(commonMiddleware.Cors())
 	ApiGroup := Router.Group("/v1/order/")
 	router.InitOrderRouter(ApiGroup)
 	router.InitShopCartRouter(ApiGroup)

@@ -2,12 +2,13 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	commonMiddleware "mxshop-api/common/middleware"
 	"userop-web/api"
-	"userop-web/middlewares"
+	"userop-web/global"
 )
 
 func InitAddressRouter(router *gin.RouterGroup) {
-	GoodsRouter := router.Group("address").Use(middlewares.JWTAuth())
+	GoodsRouter := router.Group("address").Use(commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey))
 	{
 		GoodsRouter.GET("/list", api.GetAddressList)   // 查看地址
 		GoodsRouter.POST("/create", api.CreateAddress) // 新增地址

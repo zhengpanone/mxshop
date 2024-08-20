@@ -3,30 +3,28 @@ package initialize
 import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"goods-web/global"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 )
 
 // InitLogger 初始化日志
 // 如果需要根据环境打印不同的日志, 也可以根据配置文件中的mode 来作为判断条件, 在这个函数的入参里面增加一个mode, 将配置文件里的数据传进来
-func InitLogger(filename string, maxSize, maxBackup, maxAge int, level string) (err error) {
+func InitLogger(filename string, maxSize, maxBackup, maxAge int, level string) (*zap.Logger, error) {
 	writerSyncer := getLogWriter(filename, maxSize, maxBackup, maxAge)
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
-	if err = l.UnmarshalText([]byte(level)); err != nil {
-		return err
+	if err := l.UnmarshalText([]byte(level)); err != nil {
+		return nil, err
 	}
 	core := zapcore.NewTee(
 		zapcore.NewCore(encoder, writerSyncer, l),
 		zapcore.NewCore(encoder, zapcore.Lock(os.Stdout), l),
 	)
 	// 初始化一个全局对象, 并添加调用栈信息
-	global.Logger = zap.New(core, zap.AddCaller())
+	logger := zap.New(core, zap.AddCaller())
 	// 替换zap包全局的logger
-	zap.ReplaceGlobals(global.Logger)
-	zap.L().Info("日志初始化成功")
-	return
+
+	return logger, nil
 }
 
 func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.WriteSyncer {

@@ -5,10 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
 	"go.uber.org/zap"
+	commonClaims "mxshop-api/common/claims"
 	"net/http"
 	"order-web/forms"
 	"order-web/global"
-	"order-web/models"
 	"order-web/proto"
 	"strconv"
 )
@@ -17,7 +17,7 @@ func GetOrderList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
-	model := claims.(*models.CustomClaims)
+	model := claims.(*commonClaims.CustomClaims)
 	request := proto.OrderFilterRequest{}
 	if model.AuthorityId == 1 {
 		request.UserId = int32(userId.(uint))
@@ -134,7 +134,7 @@ func GetOrderDetail(ctx *gin.Context) {
 	}
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
-	model := claims.(*models.CustomClaims)
+	model := claims.(*commonClaims.CustomClaims)
 	request := proto.OrderRequest{
 		Id: int32(i),
 	}

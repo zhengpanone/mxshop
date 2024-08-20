@@ -3,16 +3,17 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"goods-web/api"
-	"goods-web/middleware"
+	"goods-web/global"
+	commonMiddleware "mxshop-api/common/middleware"
 )
 
 func InitBrandRouter(router *gin.RouterGroup) {
 	BrandRouter := router.Group("brand")
 	{
 		BrandRouter.GET("list", api.ListBrand)
-		BrandRouter.POST("create", middleware.JWTAuth(), middleware.IsAdmin(), api.NewBrand)
-		BrandRouter.PUT("update", middleware.JWTAuth(), middleware.IsAdmin(), api.UpdateBrand)
-		BrandRouter.DELETE("delete", middleware.JWTAuth(), middleware.IsAdmin(), api.DeleteBrand)
+		BrandRouter.POST("create", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), api.NewBrand)
+		BrandRouter.PUT("update", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), api.UpdateBrand)
+		BrandRouter.DELETE("delete", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), api.DeleteBrand)
 	}
 	CategoryBrandRouter := router.Group("category-brand")
 	{

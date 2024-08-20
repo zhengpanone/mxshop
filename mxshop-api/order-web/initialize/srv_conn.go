@@ -30,7 +30,8 @@ func InitSrvConn() {
 	}
 	global.GoodsConn = goodsConn
 	// 注册客户端
-	global.GoodsSrvClient = proto.NewGoodsClient(goodsConn)
+	goodsSrvClient := proto.NewGoodsClient(goodsConn)
+	global.GoodsSrvClient = goodsSrvClient
 
 	// 如果已有连接先关闭
 	if global.OrderConn != nil {
@@ -48,7 +49,8 @@ func InitSrvConn() {
 	}
 	global.OrderConn = orderConn
 	// 注册客户端
-	global.OrderSrvClient = proto.NewOrderClient(orderConn)
+	orderSrvConn := proto.NewOrderClient(orderConn)
+	global.OrderSrvClient = orderSrvConn
 
 	// 如果已有连接先关闭
 	if global.InventoryConn != nil {
@@ -62,10 +64,11 @@ func InitSrvConn() {
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
 	)
 	if err != nil {
-		zap.S().Fatal("[InitOrderSrvConn]连接【订单Srv服务失败】")
+		zap.S().Fatal("[InitInventorySrvConn]连接【库存Srv服务失败】")
 	}
 	global.InventoryConn = inventoryConn
-	// 注册客户端
-	global.InventorySrvClient = proto.NewInventoryClient(inventoryConn)
 
+	// 注册客户端
+	inventorySrvClient := proto.NewInventoryClient(inventoryConn)
+	global.InventorySrvClient = inventorySrvClient
 }

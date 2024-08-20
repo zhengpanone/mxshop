@@ -10,6 +10,7 @@ import (
 	"goods-web/initialize"
 	"goods-web/utils"
 	"goods-web/utils/register/consul"
+	commonInitialize "mxshop-api/common/initialize"
 	commonMiddleware "mxshop-api/common/middleware"
 	"net/http"
 	"os"
@@ -32,10 +33,13 @@ func main() {
 	initialize.InitConfig()
 	// 2.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
-	err := initialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
+	logger, err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
 	if err != nil {
 		panic(err)
 	}
+	global.Logger = logger
+	zap.ReplaceGlobals(logger)
+	zap.L().Info("日志初始化成功")
 
 	// 3.初始化routers
 	Router := initialize.Routers()
@@ -60,7 +64,7 @@ func main() {
 		}
 	}
 	server := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", utils.GetIP(), global.ServerConfig.Port),
+		Addr:    fmt.Sprintf("%s:%d", "127.0.0.1", global.ServerConfig.Port),
 		Handler: Router,
 	}
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)

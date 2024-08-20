@@ -11,6 +11,8 @@ import (
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"log"
+	commonInitialize "mxshop-api/common/initialize"
+	commonMiddleware "mxshop-api/common/middleware"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,7 +20,7 @@ import (
 	"time"
 	"user-web/global"
 	"user-web/initialize"
-	"user-web/middlewares"
+
 	"user-web/utils"
 	"user-web/utils/register/consul"
 	myValidator "user-web/validator"
@@ -26,10 +28,19 @@ import (
 
 func main() {
 	//initialize.InitNacos()
-	// 1.初始化Logger
-	initialize.InitLogger()
-	// 2.初始化配置文件
+	// 1.初始化配置文件
 	initialize.InitConfig()
+
+	// 2.初始化Logger
+	logConfig := global.ServerConfig.LogConfig
+	logger, err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
+	if err != nil {
+		panic(err)
+	}
+	global.Logger = logger
+	zap.ReplaceGlobals(logger)
+	zap.L().Info("日志初始化成功")
+
 	// 3. 初始化连接redis
 	if global.ServerConfig.System.UseRedis {
 		initialize.InitRedis()
@@ -55,10 +66,10 @@ func main() {
 		})
 	}
 
-	Router.Use(middlewares.MyLogger()) //注册全局中间件
+	registerMiddleware(Router) //注册全局中间件
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	fmt.Printf("run exe dir is %v", dir)
+	fmt.Printf("run exe dir is %v\n", dir)
 	//
 	currentMod := gin.Mode()
 	if currentMod == gin.ReleaseMode {
@@ -70,12 +81,12 @@ func main() {
 
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
 	serviceId := uuid.NewV4().String()
-	err := registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
 	if err != nil {
-		zap.S().Panic("服务注册失败：", err.Error())
+		zap.S().Panic("用户服务注册失败：", err.Error())
 	}
-	zap.S().Debugf("启动服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
-
+	zap.S().Debugf("启动用户服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
+	zap.S().Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", global.ServerConfig.Port),
 		Handler: Router,
@@ -83,7 +94,7 @@ func main() {
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			zap.S().Panic("服务器启动失败：", err.Error())
+			zap.S().Panic("用户服务器启动失败：", err.Error())
 		}
 	}()
 
@@ -104,5 +115,12 @@ func main() {
 		zap.S().Info("注销失败：", err.Error())
 	}
 	zap.S().Info("注销成功：")
+
+}
+
+// registerMiddleware 注册中间件
+func registerMiddleware(r *gin.Engine) {
+	// 打印日志 、异常保护
+	r.Use(commonMiddleware.GinLogger(global.Logger), commonMiddleware.GinRecovery(global.Logger, true))
 
 }

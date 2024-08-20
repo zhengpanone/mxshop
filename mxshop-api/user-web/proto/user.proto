@@ -19,10 +19,9 @@ message PasswordCheckInfo{
 message CheckPasswordResponse{
   bool  success = 1;
 }
-
 message PageInfo{
-  uint32 page = 1;
-  uint32 size = 2;
+  uint32 pageNum = 1;
+  uint32 pageSize = 2;
 }
 message MobileRequest{
   string mobile = 1;

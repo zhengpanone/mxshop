@@ -2,6 +2,7 @@ package global
 
 import (
 	ut "github.com/go-playground/universal-translator"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"userop-web/config"
 	"userop-web/proto"
@@ -9,7 +10,8 @@ import (
 
 var (
 	Trans            ut.Translator
-	ServerConfig     *config.ServerConfig = &config.ServerConfig{}
+	ServerConfig     = &config.ServerConfig{}
+	Logger           *zap.Logger
 	UserFavSrvClient proto.UserFavClient
 	MessageSrvClient proto.MessageClient
 	AddressSrvClient proto.AddressClient

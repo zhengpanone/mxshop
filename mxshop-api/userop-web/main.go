@@ -8,23 +8,34 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
+	commonInitialize "mxshop-api/common/initialize"
+	commonMiddleware "mxshop-api/common/middleware"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"syscall"
 	"userop-web/global"
 	"userop-web/initialize"
-	"userop-web/middlewares"
 	"userop-web/utils"
 	"userop-web/utils/register/consul"
 	myValidator "userop-web/validator"
 )
 
 func main() {
-	// 1.初始化Logger
-	initialize.InitLogger()
-	// 2.初始化配置文件
+
+	// 1.初始化配置文件
 	initialize.InitConfig()
+
+	// 2.初始化Logger
+	// 2.初始化Logger
+	logConfig := global.ServerConfig.LogConfig
+	logger, err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
+	if err != nil {
+		panic(err)
+	}
+	global.Logger = logger
+	zap.ReplaceGlobals(logger)
+	zap.L().Info("日志初始化成功")
 
 	// 3.初始化routers
 	Router := initialize.Routers()
@@ -47,10 +58,10 @@ func main() {
 		})
 	}
 
-	Router.Use(middlewares.MyLogger()) //注册全局中间件
+	registerMiddleware(Router) //注册全局中间件
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	fmt.Printf("run exe dir is %v", dir)
+	fmt.Printf("run exe dir is %v\n", dir)
 	//
 	currentMod := gin.Mode()
 	if currentMod == gin.ReleaseMode {
@@ -61,7 +72,7 @@ func main() {
 	}
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
 	serviceId := uuid.NewV4().String()
-	err := registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
 	if err != nil {
 		zap.S().Panic("用户操作服务注册失败：", err.Error())
 	}
@@ -84,4 +95,11 @@ func main() {
 		zap.S().Info("注销失败：", err.Error())
 	}
 	zap.S().Info("注销成功：")
+}
+
+// registerMiddleware 注册中间件
+func registerMiddleware(r *gin.Engine) {
+	// 打印日志 、异常保护
+	r.Use(commonMiddleware.GinLogger(global.Logger), commonMiddleware.GinRecovery(global.Logger, true))
+
 }

@@ -4,10 +4,10 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	customClaims "mxshop-api/common/claims"
 	"net/http"
 	"userop-web/forms"
 	"userop-web/global"
-	"userop-web/models"
 	"userop-web/proto"
 )
 
@@ -15,7 +15,7 @@ func GetMessageList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
-	model := claims.(*models.CustomClaims)
+	model := claims.(*customClaims.CustomClaims)
 	request := proto.MessageRequest{}
 	if model.AuthorityId == 1 {
 		request.UserId = int32(userId.(uint))

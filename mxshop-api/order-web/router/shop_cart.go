@@ -2,12 +2,13 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	commonMiddleware "mxshop-api/common/middleware"
 	"order-web/api"
-	"order-web/middlewares"
+	"order-web/global"
 )
 
 func InitShopCartRouter(router *gin.RouterGroup) {
-	GoodsRouter := router.Group("shop-cart").Use(middlewares.JWTAuth())
+	GoodsRouter := router.Group("shop-cart").Use(commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey))
 	{
 		GoodsRouter.GET("/list", api.GetShopCartList)  // 购物车列表
 		GoodsRouter.POST("/create", api.NewShopCart)   // 添加商品到购物车

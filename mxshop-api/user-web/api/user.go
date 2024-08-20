@@ -7,6 +7,8 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
 	"go.uber.org/zap"
+	"mxshop-api/common/claims"
+	commonMiddleware "mxshop-api/common/middleware"
 	"net/http"
 	"strconv"
 	"strings"
@@ -14,8 +16,6 @@ import (
 	"user-web/forms"
 	"user-web/global"
 	"user-web/global/response"
-	"user-web/middlewares"
-	"user-web/models"
 	"user-web/proto"
 	"user-web/utils"
 )
@@ -42,11 +42,11 @@ func removeTopStruct(fields map[string]string) map[string]string {
 // @ID /v1/user/list
 func GetUserList(ctx *gin.Context) {
 
-	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
-	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "10"))
+	page, _ := strconv.Atoi(ctx.DefaultQuery("pageNum", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("pageSize", "10"))
 	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &proto.PageInfo{
-		Page: uint32(page),
-		Size: uint32(size),
+		PageNum:  uint32(page),
+		PageSize: uint32(size),
 	})
 	if err != nil {
 		zap.S().Errorw("[GetUserList]查询【用户列表】失败")
@@ -68,7 +68,11 @@ func GetUserList(ctx *gin.Context) {
 		}
 		result = append(result, user)
 	}
-	ctx.JSON(http.StatusOK, result)
+	reMap := map[string]interface{}{
+		"total": rsp.Total,
+		"data":  result,
+	}
+	ctx.JSON(http.StatusOK, reMap)
 }
 
 // PasswordLogin
@@ -111,9 +115,9 @@ func PasswordLogin(ctx *gin.Context) {
 		} else {
 			if passRsp.Success {
 				// 生成Token
-				j := middlewares.NewJWT()
+				j := commonMiddleware.NewJWT(global.ServerConfig.JWTInfo.SigningKey)
 				roleId, _ := strconv.Atoi(rsp.Role)
-				claims := models.CustomClaims{
+				claims := claims.CustomClaims{
 					ID:          uint(rsp.Id),
 					NickName:    rsp.Nickname,
 					AuthorityId: uint(roleId),
@@ -184,9 +188,9 @@ func Register(ctx *gin.Context) {
 	}
 
 	// 生成Token
-	j := middlewares.NewJWT()
+	j := commonMiddleware.NewJWT(global.ServerConfig.JWTInfo.SigningKey)
 	roleId, _ := strconv.Atoi(user.Role)
-	claims := models.CustomClaims{
+	claims := claims.CustomClaims{
 		ID:          uint(user.Id),
 		NickName:    user.Nickname,
 		AuthorityId: uint(roleId),

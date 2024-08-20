@@ -2,10 +2,12 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	//"oss-web/utils/s3"
 )
 
-// HTTP 处理函数：处理获取预签名 URL 的请求
-func Token(ctx *gin.Context) {
+// GenerateUploadToken 生成上传凭证
+func GenerateUploadToken(ctx *gin.Context) {
+
 	//response := s3.GetPolicyToken()
 
 }

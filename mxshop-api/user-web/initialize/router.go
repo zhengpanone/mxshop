@@ -2,15 +2,15 @@ package initialize
 
 import (
 	"github.com/gin-gonic/gin"
+	"mxshop-api/common/middleware"
 	"net/http"
-	"user-web/middlewares"
 	"user-web/router"
 )
 
 func Routers() *gin.Engine {
 	Router := gin.Default()
 	SwaggerInit(Router)
-	Router.Use(middlewares.Recovery())
+	Router.Use(middleware.Recovery())
 	Router.GET("/health", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
 			"code":    http.StatusOK,
@@ -18,7 +18,7 @@ func Routers() *gin.Engine {
 		})
 	})
 	// 配置跨域
-	Router.Use(middlewares.Cors())
+	Router.Use(middleware.Cors())
 	ApiGroup := Router.Group("/v1")
 	router.InitBaseRouter(ApiGroup)
 	router.InitUserRouter(ApiGroup)

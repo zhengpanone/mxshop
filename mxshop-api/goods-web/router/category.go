@@ -3,7 +3,8 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"goods-web/api"
-	"goods-web/middleware"
+	"goods-web/global"
+	commonMiddleware "mxshop-api/common/middleware"
 )
 
 func InitCategoryRouter(router *gin.RouterGroup) {
@@ -11,8 +12,8 @@ func InitCategoryRouter(router *gin.RouterGroup) {
 	var categoryController = new(api.CategoryController)
 	{
 		CategoryRouter.GET("list", api.GetCategoryList)
-		CategoryRouter.POST("create", middleware.JWTAuth(), middleware.IsAdmin(), categoryController.CreateCategory)
-		CategoryRouter.POST("update", middleware.JWTAuth(), middleware.IsAdmin(), api.UpdateCategory)
+		CategoryRouter.POST("create", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), categoryController.CreateCategory)
+		CategoryRouter.POST("update", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), api.UpdateCategory)
 
 	}
 }

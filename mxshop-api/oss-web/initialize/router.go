@@ -2,7 +2,7 @@ package initialize
 
 import (
 	"github.com/gin-gonic/gin"
-	"goods-web/middlewares"
+	"goods-web/middleware"
 	"goods-web/router"
 	"net/http"
 )
@@ -17,7 +17,7 @@ func Routers() *gin.Engine {
 		})
 	})
 	// 配置跨域
-	Router.Use(middlewares.Cors())
+	Router.Use(middleware.Cors())
 	ApiGroup := Router.Group("/v1")
 	router.InitOssRouter(ApiGroup)
 	return Router

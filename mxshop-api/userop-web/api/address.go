@@ -4,11 +4,11 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	customClaims "mxshop-api/common/claims"
 	"net/http"
 	"strconv"
 	"userop-web/forms"
 	"userop-web/global"
-	"userop-web/models"
 	"userop-web/proto"
 )
 
@@ -17,7 +17,7 @@ func GetAddressList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
-	model := claims.(*models.CustomClaims)
+	model := claims.(*customClaims.CustomClaims)
 	if model.AuthorityId != 2 {
 		request.UserId = int32(userId.(uint))
 	}

@@ -1,15 +1,15 @@
-package middlewares
+package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	commonClaims "mxshop-api/common/claims"
 	"net/http"
-	"order-web/models"
 )
 
 func IsAdmin() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		claims, _ := ctx.Get("claims")
-		customClaims := claims.(*models.CustomClaims)
+		customClaims := claims.(*commonClaims.CustomClaims)
 		if customClaims.AuthorityId != 2 {
 			ctx.JSON(http.StatusForbidden, gin.H{"msg": "无权限"})
 			ctx.Abort()
