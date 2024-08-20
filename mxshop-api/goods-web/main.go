@@ -19,6 +19,14 @@ import (
 	"time"
 )
 
+// @title 商品服务
+// @description 慕学商城项目
+// @version 1.0
+// @contact.name zhengpanone
+// @contact.url http://.....
+// @host localhost:8080
+// @BasePath
+
 func main() {
 	// 1.初始化配置文件
 	initialize.InitConfig()
@@ -61,7 +69,8 @@ func main() {
 	if err != nil {
 		zap.S().Panic("服务注册失败：", err.Error())
 	}
-	zap.S().Debugf("启动服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
+	global.Logger.Info(fmt.Sprintf("启动服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			zap.S().Panic("服务器启动失败：", err)

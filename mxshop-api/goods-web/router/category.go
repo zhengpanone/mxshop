@@ -8,9 +8,10 @@ import (
 
 func InitCategoryRouter(router *gin.RouterGroup) {
 	CategoryRouter := router.Group("category")
+	var categoryController = new(api.CategoryController)
 	{
 		CategoryRouter.GET("list", api.GetCategoryList)
-		CategoryRouter.POST("create", middleware.JWTAuth(), middleware.IsAdmin(), api.NewCategory)
+		CategoryRouter.POST("create", middleware.JWTAuth(), middleware.IsAdmin(), categoryController.CreateCategory)
 		CategoryRouter.POST("update", middleware.JWTAuth(), middleware.IsAdmin(), api.UpdateCategory)
 
 	}

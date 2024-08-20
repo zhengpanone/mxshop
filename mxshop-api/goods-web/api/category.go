@@ -13,6 +13,8 @@ import (
 	"strconv"
 )
 
+type CategoryController struct{}
+
 func GetCategoryList(ctx *gin.Context) {
 	r, err := global.GoodsSrvClient.GetAllCategoryList(context.Background(), &emptypb.Empty{})
 
@@ -69,7 +71,19 @@ func Detail(ctx *gin.Context) {
 	return
 }
 
-func NewCategory(ctx *gin.Context) {
+// CreateCategory
+// @Description 创建分类
+// @receiver CategoryController
+// @Summary 根据给定的参数创建分类
+// @Tags Category
+// @Accept json
+// @Produce json
+// @param x-token header string true "x-token header"
+// @param forms.CategoryForm body forms.CategoryForm true "category information"
+// @Router /v1/goods/category/create [post]
+func (c *CategoryController) CreateCategory(ctx *gin.Context) {
+	// @Success 200 {object} api_helper.Response
+	// @Failure 400 {object} api_helper.ErrorResponse
 	categoryForm := forms.CategoryForm{}
 	if err := ctx.ShouldBindJSON(&categoryForm); err != nil {
 		HandleValidatorError(ctx, err)
