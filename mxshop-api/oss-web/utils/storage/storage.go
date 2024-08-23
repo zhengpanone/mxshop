@@ -70,7 +70,6 @@ func GetPolicyToken() string {
 	result, err := json.Marshal(config)
 	deByte := base64.StdEncoding.EncodeToString(result)
 	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte("" /*global.ServerConfig.OssInfo.ApiSecret*/))
-	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(global.ServerConfig.OssInfo.ApiSecret))
 	_, _ = io.WriteString(h, deByte)
 	signedStr := base64.StdEncoding.EncodeToString(h.Sum(nil))
 	var callbackParam CallbackParam
