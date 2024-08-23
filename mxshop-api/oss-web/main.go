@@ -29,7 +29,6 @@ func main() {
 	initialize.InitConfig()
 
 	// 2.初始化Logger
-	// 2.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
 	logger, err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
 	if err != nil {

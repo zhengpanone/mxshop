@@ -63,11 +63,13 @@ func GetPolicyToken() string {
 	condition = append(condition, "starts-with")
 	condition = append(condition, "$key")
 	condition = append(condition, global.ServerConfig.OssInfo.UploadDir)
+	condition = append(condition, global.ServerConfig.OssInfo.UploadDir)
 	config.Conditions = append(config.Conditions, condition)
 
 	//calculate signature
 	result, err := json.Marshal(config)
 	deByte := base64.StdEncoding.EncodeToString(result)
+	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte("" /*global.ServerConfig.OssInfo.ApiSecret*/))
 	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(global.ServerConfig.OssInfo.ApiSecret))
 	_, _ = io.WriteString(h, deByte)
 	signedStr := base64.StdEncoding.EncodeToString(h.Sum(nil))

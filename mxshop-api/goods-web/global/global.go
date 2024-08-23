@@ -10,7 +10,7 @@ import (
 
 var (
 	Trans          ut.Translator
-	ServerConfig   *config.ServerConfig = &config.ServerConfig{}
+	ServerConfig   = &config.ServerConfig{}
 	GoodsSrvClient proto.GoodsClient
 	GoodsConn      *grpc.ClientConn
 	Logger         *zap.Logger

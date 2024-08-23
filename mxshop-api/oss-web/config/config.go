@@ -11,14 +11,13 @@ type OssConfig struct {
 }
 
 type ServerConfig struct {
-	Name    string                   `mapstructure:"name" json:"name" yaml:"name"`
-	Host    string                   `mapstructure:"host" json:"host" yaml:"host"`
-	Port    uint32                   `mapstructure:"port" json:"port" yaml:"port"`
-	Tags    []string                 `mapstructure:"tags" json:"tags" yaml:"tags"`
-	JWTInfo commonConfig.JWTConfig   `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
-	Consul  commonConfig.Consul      `mapstructure:"consul" json:"consul" yaml:"consul"`
-	Nacos   commonConfig.NacosConfig `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
-	OssInfo OssConfig                `mapstructure:"oss" json:"oss" yaml:"oss"`
-	// 日志配置
-	LogConfig commonConfig.LogConfig `mapstructure:"log" json:"log" yaml:"log"`
+	Name      string                   `mapstructure:"name" json:"name" yaml:"name"`
+	Host      string                   `mapstructure:"host" json:"host" yaml:"host"`
+	Port      uint32                   `mapstructure:"port" json:"port" yaml:"port"`
+	Tags      []string                 `mapstructure:"tags" json:"tags" yaml:"tags"`
+	JWTInfo   commonConfig.JWTConfig   `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
+	Consul    commonConfig.Consul      `mapstructure:"consul" json:"consul" yaml:"consul"`
+	Nacos     commonConfig.NacosConfig `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
+	OssInfo   OssConfig                `mapstructure:"oss" json:"oss" yaml:"oss"`
+	LogConfig commonConfig.LogConfig   `mapstructure:"log" json:"log" yaml:"log"` // 日志配置
 }

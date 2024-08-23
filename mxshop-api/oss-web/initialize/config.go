@@ -8,8 +8,9 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"github.com/spf13/viper"
-	"goods-web/global"
+	"go.uber.org/zap"
 	"log"
+	"oss-web/global"
 	"strings"
 )
 
@@ -113,10 +114,10 @@ func InitConfig() {
 	if err := v.Unmarshal(global.ServerConfig); err != nil {
 		panic(err)
 	}
-	//zap.S().Infof("配置信息：%v", global.ServerConfig)
+	zap.S().Infof("配置信息：%v", global.ServerConfig)
 	// 从nacos中读取配置信息
 	GetConfigFromNacos()
-	global.Logger.Info(fmt.Sprintf("配置信息：%v", global.ServerConfig))
+	zap.S().Infof(fmt.Sprintf("配置信息：%v", global.ServerConfig))
 	// viper的功能-动态监控变化
 
 	// 监听本地配置文件的变化（可选）
