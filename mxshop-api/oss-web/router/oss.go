@@ -2,13 +2,13 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"goods-web/handler"
+	"oss-web/api"
 )
 
 func InitOssRouter(Router *gin.RouterGroup) {
 	OssRouter := Router.Group("oss")
 	{
-		OssRouter.GET("token", handler.Token)
-		OssRouter.POST("callback", handler.HandlerRequest)
+		OssRouter.GET("token", api.GenerateUploadToken)
+		OssRouter.POST("callback", api.HandlerRequest)
 	}
 }

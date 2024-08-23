@@ -3,6 +3,6 @@ nacos:
   port: 8848
   context-path: /nacos
   namespace: ac2997b0-1569-47d9-a792-efc10375341b
-  dataId: goods-web.yaml
+  dataId: oss-web.yaml
   group: dev
 

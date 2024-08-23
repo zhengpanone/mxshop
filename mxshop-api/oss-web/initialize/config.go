@@ -8,12 +8,12 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 	"goods-web/global"
 	"log"
 	"strings"
 )
 
+// GetEnvInfo 获取环境变量信息
 func GetEnvInfo(env string) bool {
 	viper.AutomaticEnv()
 	return viper.GetBool(env)
@@ -89,7 +89,6 @@ func GetConfigFromNacos() {
 					panic(err)
 				}
 				//fmt.Printf("----2---%v\n", global.ServerConfig)
-				InitSrvConn()
 			}
 		},
 	})
@@ -117,31 +116,15 @@ func InitConfig() {
 	//zap.S().Infof("配置信息：%v", global.ServerConfig)
 	// 从nacos中读取配置信息
 	GetConfigFromNacos()
-	zap.S().Infof("配置信息：%v", global.ServerConfig)
+	global.Logger.Info(fmt.Sprintf("配置信息：%v", global.ServerConfig))
 	// viper的功能-动态监控变化
 
 	// 监听本地配置文件的变化（可选）
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		//fmt.Println("Config file changed:", e.Name)
-		zap.S().Infof("Local Config File Changed:%e", e.Name)
+		global.Logger.Info(fmt.Sprintf("Config file changed:%s", e.Name))
 		_ = v.ReadInConfig()
 		_ = v.Unmarshal(global.ServerConfig)
-		InitSrvConn()
 	})
-
-	/*config, err := configClient.GetConfig(vo.ConfigParam{
-		DataId: "your-data-id",
-		Group:  "your-group",
-	})
-	if err != nil {
-		log.Fatal(err)
-	}*/
-	/*viper.SetConfigType("yaml")
-	bytes.NewBuffer()
-	if err := viper.ReadConfig(bytes.NewBuffer(config)); err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Config updated:", viper.AllSettings())*/
 
 }

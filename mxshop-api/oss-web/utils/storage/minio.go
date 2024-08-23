@@ -1,10 +1,11 @@
-package s3
+package storage
 
 import (
 	"context"
 	"fmt"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
+	"goods-web/global"
 	"io"
 )
 
@@ -22,7 +23,7 @@ func NewMinIOClient(endpoint, accessKey, secretKey string, useSSL bool) (*MinIO,
 		Secure: useSSL,
 	})
 	if err != nil {
-		fmt.Println("Failed to initialize MinIO client:", err)
+		global.Logger.Fatal(fmt.Sprintf("Failed to initialize MinIO client:%s", err))
 		return nil, err
 	}
 
@@ -31,23 +32,19 @@ func NewMinIOClient(endpoint, accessKey, secretKey string, useSSL bool) (*MinIO,
 	}, nil
 }
 
-func GetPolicyToken() {
-
-}
-
 // Upload 实现了在 MinIO 上上传对象的方法
-func (m *MinIO) Upload(bucketName, objectName string, reader io.Reader, contentType string) error {
+func (m *MinIO) Upload(ctx context.Context, bucketName, objectName string, reader io.Reader, objectSize int64, contentType string) (interface{}, error) {
 	// 使用 MinIO 客户端上传对象
-	_, err := m.client.PutObject(context.Background(), bucketName, objectName, reader, -1, minio.PutObjectOptions{
+	object, err := m.client.PutObject(ctx, bucketName, objectName, reader, objectSize, minio.PutObjectOptions{
 		ContentType: contentType,
 	})
-	return err
+	return object, err
 }
 
 // Download 实现了从 MinIO 下载对象的方法
-func (m *MinIO) Download(bucketName, objectName string) (io.ReadCloser, error) {
+func (m *MinIO) Download(ctx context.Context, bucketName, objectName string) (io.ReadCloser, error) {
 	// 使用 MinIO 客户端下载对象
-	obj, err := m.client.GetObject(context.Background(), bucketName, objectName, minio.GetObjectOptions{})
+	obj, err := m.client.GetObject(ctx, bucketName, objectName, minio.GetObjectOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +52,8 @@ func (m *MinIO) Download(bucketName, objectName string) (io.ReadCloser, error) {
 }
 
 // Delete 实现了从 MinIO 删除对象的方法
-func (m *MinIO) Delete(bucketName, objectName string) error {
+func (m *MinIO) Delete(ctx context.Context, bucketName, objectName string) error {
 	// 使用 MinIO 客户端删除对象
-	err := m.client.RemoveObject(context.Background(), bucketName, objectName, minio.RemoveObjectOptions{})
+	err := m.client.RemoveObject(ctx, bucketName, objectName, minio.RemoveObjectOptions{})
 	return err
 }
