@@ -64,7 +64,7 @@ func main() {
 		}
 	}
 	server := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", "127.0.0.1", global.ServerConfig.Port),
+		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", global.ServerConfig.Port),
 		Handler: Router,
 	}
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)

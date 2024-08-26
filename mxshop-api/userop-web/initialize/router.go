@@ -9,7 +9,7 @@ import (
 
 func Routers() *gin.Engine {
 	Router := gin.Default()
-
+	SwaggerInit(Router)
 	Router.GET("/health", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
 			"code":    http.StatusOK,

@@ -76,7 +76,8 @@ func main() {
 	if err != nil {
 		zap.S().Panic("用户操作服务注册失败：", err.Error())
 	}
-	zap.S().Debugf("启动用户操作服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
+	global.Logger.Info(fmt.Sprintf("启动用户操作服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
 	go func() {
 		if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
 			zap.S().Panic("用户操作服务启动失败：", err.Error())
