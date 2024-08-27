@@ -1,9 +1,9 @@
 package global
 
 import (
+	commonConfig "common/config"
 	ut "github.com/go-playground/universal-translator"
 	"go.uber.org/zap"
-	commonConfig "mxshop-api/common/config"
 	"oss-web/config"
 )
 

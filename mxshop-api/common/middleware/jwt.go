@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"common/claims"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"mxshop-api/common/claims"
 	"net/http"
 	//"order-web/global"
 	//"order-web/models"

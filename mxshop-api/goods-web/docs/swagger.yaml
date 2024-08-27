@@ -1,0 +1,55 @@
+definitions:
+  forms.CategoryForm:
+    properties:
+      is_tab:
+        type: boolean
+      level:
+        enum:
+        - 1
+        - 2
+        - 3
+        type: integer
+      name:
+        maxLength: 20
+        minLength: 1
+        type: string
+      parent:
+        type: integer
+    required:
+    - is_tab
+    - level
+    - name
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: zhengpanone
+    url: http://.....
+  description: 慕学商城项目
+  title: 商品服务
+  version: "1.0"
+paths:
+  /v1/goods/category/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建分类
+      parameters:
+      - description: x-token header
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: category information
+        in: body
+        name: forms.CategoryForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.CategoryForm'
+      produces:
+      - application/json
+      responses: {}
+      summary: 根据给定的参数创建分类
+      tags:
+      - Category
+swagger: "2.0"

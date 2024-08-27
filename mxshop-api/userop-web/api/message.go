@@ -1,10 +1,10 @@
 package api
 
 import (
+	customClaims "common/claims"
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	customClaims "mxshop-api/common/claims"
 	"net/http"
 	"userop-web/forms"
 	"userop-web/global"

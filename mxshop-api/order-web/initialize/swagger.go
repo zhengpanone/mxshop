@@ -11,6 +11,12 @@ import (
 )
 
 // SwaggerInit swagger初始化
+//
+// Parameters:
+// - engine: gin.Engine - gin Engine
+//
+// Returns:
+// - nil
 func SwaggerInit(engine *gin.Engine) {
 	// 获取swagger
 	swaggerInfo := docs.SwaggerInfo

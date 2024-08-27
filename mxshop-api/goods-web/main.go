@@ -1,6 +1,8 @@
 package main
 
 import (
+	commonInitialize "common/initialize"
+	commonMiddleware "common/middleware"
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -10,8 +12,6 @@ import (
 	"goods-web/initialize"
 	"goods-web/utils"
 	"goods-web/utils/register/consul"
-	commonInitialize "mxshop-api/common/initialize"
-	commonMiddleware "mxshop-api/common/middleware"
 	"net/http"
 	"os"
 	"os/signal"

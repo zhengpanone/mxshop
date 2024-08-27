@@ -1,14 +1,14 @@
 package api
 
 import (
+	"common/claims"
+	commonMiddleware "common/middleware"
 	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
 	"go.uber.org/zap"
-	"mxshop-api/common/claims"
-	commonMiddleware "mxshop-api/common/middleware"
 	"net/http"
 	"strconv"
 	"strings"

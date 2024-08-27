@@ -1,7 +1,7 @@
 package config
 
 import (
-	commonConfig "mxshop-api/common/config"
+	commonConfig "common/config"
 )
 
 type GoodsSrvConfig struct {

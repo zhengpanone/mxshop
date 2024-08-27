@@ -1,0 +1,80 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "慕学商城项目",
+        "title": "商品服务",
+        "contact": {
+            "name": "zhengpanone",
+            "url": "http://....."
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "paths": {
+        "/v1/goods/category/create": {
+            "post": {
+                "description": "创建分类",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "根据给定的参数创建分类",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "x-token header",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "category information",
+                        "name": "forms.CategoryForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.CategoryForm"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "forms.CategoryForm": {
+            "type": "object",
+            "required": [
+                "is_tab",
+                "level",
+                "name"
+            ],
+            "properties": {
+                "is_tab": {
+                    "type": "boolean"
+                },
+                "level": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                },
+                "parent": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

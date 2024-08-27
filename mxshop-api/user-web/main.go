@@ -1,6 +1,8 @@
 package main
 
 import (
+	commonInitialize "common/initialize"
+	commonMiddleware "common/middleware"
 	"context"
 	"errors"
 	"fmt"
@@ -11,8 +13,6 @@ import (
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"log"
-	commonInitialize "mxshop-api/common/initialize"
-	commonMiddleware "mxshop-api/common/middleware"
 	"net/http"
 	"os"
 	"os/signal"

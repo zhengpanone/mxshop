@@ -1,6 +1,6 @@
 package config
 
-import commonConfig "mxshop-api/common/config"
+import commonConfig "common/config"
 
 type SrvConfig struct {
 	Name string `mapstructure:"name" yaml:"name"`

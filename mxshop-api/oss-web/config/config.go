@@ -1,6 +1,6 @@
 package config
 
-import commonConfig "mxshop-api/common/config"
+import commonConfig "common/config"
 
 type OssConfig struct {
 	ApiKey      string `mapstructure:"key" json:"key" yaml:"key"`

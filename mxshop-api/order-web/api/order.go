@@ -1,11 +1,11 @@
 package api
 
 import (
+	commonClaims "common/claims"
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
 	"go.uber.org/zap"
-	commonClaims "mxshop-api/common/claims"
 	"net/http"
 	"order-web/forms"
 	"order-web/global"

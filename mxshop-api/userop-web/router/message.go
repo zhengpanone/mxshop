@@ -1,8 +1,8 @@
 package router
 
 import (
+	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
-	commonMiddleware "mxshop-api/common/middleware"
 	"userop-web/api"
 	"userop-web/global"
 )

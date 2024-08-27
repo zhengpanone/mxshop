@@ -1,8 +1,8 @@
 package initialize
 
 import (
+	"common/middleware"
 	"github.com/gin-gonic/gin"
-	"mxshop-api/common/middleware"
 	"net/http"
 	"user-web/router"
 )

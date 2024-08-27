@@ -1,6 +1,8 @@
 package main
 
 import (
+	commonInitialize "common/initialize"
+	commonMiddleware "common/middleware"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -8,8 +10,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
-	commonInitialize "mxshop-api/common/initialize"
-	commonMiddleware "mxshop-api/common/middleware"
 	"order-web/global"
 	"order-web/initialize"
 	"order-web/utils"

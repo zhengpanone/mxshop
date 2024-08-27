@@ -1,6 +1,8 @@
 package initialize
 
 import (
+	"common/interceptor"
+	"common/utils"
 	"fmt"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	_ "github.com/mbobakov/grpc-consul-resolver"
@@ -9,8 +11,6 @@ import (
 	"goods-web/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"mxshop-api/common/interceptor"
-	"mxshop-api/common/utils"
 )
 
 // https://blog.csdn.net/zhoupenghui168/article/details/131196225
