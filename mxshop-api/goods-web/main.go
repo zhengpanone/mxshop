@@ -4,6 +4,7 @@ import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
 	"context"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
@@ -63,21 +64,27 @@ func main() {
 			global.ServerConfig.Port = port
 		}
 	}
+	// 注册到注册中心
+	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
+	serviceId := uuid.NewV4().String()
+	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+
+	if err != nil {
+		zap.S().Panic("商品服务goods-web 注册失败：", err.Error())
+	}
+
+	global.Logger.Info(fmt.Sprintf("商品服务goods-web服务注册到注册中心"))
+
+	global.Logger.Info(fmt.Sprintf("启动商品服务goods-web，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
+
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", global.ServerConfig.Port),
 		Handler: Router,
 	}
-	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
-	serviceId := uuid.NewV4().String()
-	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
-	if err != nil {
-		zap.S().Panic("服务注册失败：", err.Error())
-	}
-	global.Logger.Info(fmt.Sprintf("启动服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port))
-	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
 	go func() {
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			zap.S().Panic("服务器启动失败：", err)
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			zap.S().Panic("商品服务goods-web 启动失败：", err)
 		}
 	}()
 
@@ -109,13 +116,13 @@ func shutdown(server *http.Server, serviceId string, registerClient consul.Regis
 	defer cancel()
 	// 在注册中心注销服务
 	if err := registerClient.DeRegister(serviceId); err != nil {
-		zap.S().Info("注销失败：", err.Error())
+		zap.S().Info("商品服务goods-web 在注册中心注销失败：", err.Error())
 	}
-	zap.S().Info("注销成功：")
+	zap.S().Info("商品服务goods-web 在注册中心注销成功：")
 
 	// 调用Http实例的Shutdown方法 关闭服务器
 	if err := server.Shutdown(ctx); err != nil {
-		global.Logger.Fatal("服务器关闭错误", zap.Error(err))
+		global.Logger.Fatal("商品服务goods-web 关闭错误", zap.Error(err))
 	}
-	global.Logger.Info("关闭服务器")
+	global.Logger.Info("商品服务goods-web 关闭")
 }

@@ -1,13 +1,14 @@
 package api
 
 import (
+	"common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"goods-web/forms"
 	"goods-web/global"
 	"goods-web/proto"
-	"net/http"
+	"math"
 	"strconv"
 )
 
@@ -63,7 +64,10 @@ func GetGoodsList(ctx *gin.Context) {
 	}
 
 	reMap := map[string]interface{}{
-		"total": r.Total,
+		"total":     r.Total,
+		"totalPage": int(math.Ceil(float64(r.Total) / float64(request.Size))),
+		"pageNum":   request.Page,
+		"pageSize":  request.Size,
 	}
 	goodsList := make([]interface{}, 0)
 	for _, value := range r.Data {
@@ -91,8 +95,9 @@ func GetGoodsList(ctx *gin.Context) {
 			"on_sale": value.OnSale,
 		})
 	}
-	reMap["data"] = goodsList
-	ctx.JSON(http.StatusOK, reMap)
+	reMap["list"] = goodsList
+	utils.OkWithData(ctx, reMap)
+
 }
 
 func NewGoods(ctx *gin.Context) {
@@ -122,6 +127,25 @@ func NewGoods(ctx *gin.Context) {
 		return
 	}
 	// 如何设置库存
-	ctx.JSON(http.StatusOK, rsp)
+	utils.OkWithData(ctx, rsp)
+}
 
+func UpdateStatus(ctx *gin.Context) {
+	goodsStatusForm := forms.GoodsStatusForm{}
+	if err := ctx.ShouldBindJSON(&goodsStatusForm); err != nil {
+		HandleValidatorError(ctx, err)
+		return
+	}
+	id := ctx.Param("id")
+	i, err := strconv.ParseInt(id, 10, 32)
+	if _, err = global.GoodsSrvClient.UpdateGoods(context.Background(), &proto.CreateGoodsInfo{
+		Id:     int32(i),
+		IsHot:  *goodsStatusForm.IsHot,
+		IsNew:  *goodsStatusForm.IsNew,
+		OnSale: *goodsStatusForm.OnSale,
+	}); err != nil {
+		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		return
+	}
+	utils.OkWithMsg(ctx, "修改成功")
 }

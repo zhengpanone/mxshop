@@ -23,21 +23,18 @@ func NewRegistryClient(host string, port uint32) RegistryClient {
 }
 
 func (r *Registry) Register(address string, port uint32, name string, tags []string, id string) error {
+	// 1、初始化consul配置
 	cfg := api.DefaultConfig()
 	cfg.Address = fmt.Sprintf("%s:%d", r.Host, r.Port)
+
+	//2、获取consul操作对象
 	client, err := api.NewClient(cfg)
 
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("health url:", fmt.Sprintf("http://%s:%d/health", address, port))
-	// 生成对应的检查对象
-	check := &api.AgentServiceCheck{
-		HTTP:                           fmt.Sprintf("http://%s:%d/health", address, port),
-		Timeout:                        "5s",
-		Interval:                       "5s",
-		DeregisterCriticalServiceAfter: "10s",
-	}
+
+	// 3、配置注册服务的参数
 	// 生成注册对象
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = name
@@ -45,8 +42,15 @@ func (r *Registry) Register(address string, port uint32, name string, tags []str
 	registration.Port = int(port)
 	registration.Tags = tags
 	registration.Address = address
+	// 生成对应的检查对象
+	check := &api.AgentServiceCheck{
+		HTTP:                           fmt.Sprintf("http://%s:%d/health", address, port),
+		Timeout:                        "5s", // 超时时间
+		Interval:                       "5s", // 循环检测间隔时间
+		DeregisterCriticalServiceAfter: "10s",
+	}
 	registration.Check = check
-
+	// 4、注册服务到consul上
 	err = client.Agent().ServiceRegister(registration)
 	if err != nil {
 		panic(err)
