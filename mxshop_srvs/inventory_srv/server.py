@@ -76,11 +76,11 @@ def server():
     logger.info(f'Starting server http://{args.host}:{port}')
     server.start()
 
-    logger.info(f"服务注册到注册中心")
+    logger.info(f"库存服务srv注册到注册中心")
     register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
     if not register.register(settings.SERVICE_NAME, service_id, settings.SERVICE_HOST, port,
                              settings.SERVICE_TAGS, None):
-        logger.info(f"服务注册失败")
+        logger.info(f"库存服务srv注册失败")
         sys.exit(0)
 
     server.wait_for_termination()
