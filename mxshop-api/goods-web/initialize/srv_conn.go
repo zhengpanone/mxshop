@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+// InitSrvConn 初始化Srv连接
 // https://blog.csdn.net/zhoupenghui168/article/details/131196225
 func InitSrvConn() {
 	tracer, closer := utils.InitJaeger("goods-grpc", global.ServerConfig.Jaeger.Host, global.ServerConfig.Jaeger.Port)
@@ -23,7 +24,7 @@ func InitSrvConn() {
 	}
 	consul := global.ServerConfig.Consul
 	url := fmt.Sprintf("consul://%s:%d/%s?wait=14s&tag=srv", consul.Host, consul.Port, global.ServerConfig.GoodsSrvConfig.Name)
-	goodsConn, err := grpc.Dial(
+	goodsConn, err := grpc.NewClient(
 		url,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		//轮询调度策略
