@@ -16,3 +16,16 @@ Content-Type: application/x-www-form-urlencoded
 
 authorization={{AuthCallback}}&public_key=public_key_data&filename=testfile.txt&size=1024&mimeType=image/jpeg&height=1000&width=1000
 
+### 上传文件到服务器
+# @name UploadFile
+POST {{baseUrl}}/v1/oss/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=------------------------abcdefg
+
+--------------------------abcdefg
+Content-Disposition: form-data; name="file"; filename="IMG20241108172515.jpg"
+Content-Type: image/jpeg
+
+@/Users/mac/Downloads/IMG20241108172515.jpg
+
+--------------------------abcdefg--
+
