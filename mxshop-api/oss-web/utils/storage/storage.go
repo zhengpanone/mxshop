@@ -62,8 +62,7 @@ func GetPolicyToken() string {
 	var condition []string
 	condition = append(condition, "starts-with")
 	condition = append(condition, "$key")
-	condition = append(condition, global.ServerConfig.OssInfo.UploadDir)
-	condition = append(condition, global.ServerConfig.OssInfo.UploadDir)
+	condition = append(condition, global.OSSConfig.UploadDir)
 	config.Conditions = append(config.Conditions, condition)
 
 	//calculate signature
@@ -73,7 +72,7 @@ func GetPolicyToken() string {
 	_, _ = io.WriteString(h, deByte)
 	signedStr := base64.StdEncoding.EncodeToString(h.Sum(nil))
 	var callbackParam CallbackParam
-	callbackParam.CallbackUrl = global.ServerConfig.OssInfo.CallBackUrl
+	callbackParam.CallbackUrl = global.OSSConfig.CallbackURL
 	callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
 	callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
 	callbackStr, err := json.Marshal(callbackParam)
@@ -84,11 +83,11 @@ func GetPolicyToken() string {
 	callbackBase64 := base64.StdEncoding.EncodeToString(callbackStr)
 
 	var policyToken PolicyToken
-	policyToken.AccessKeyId = global.ServerConfig.OssInfo.ApiKey
-	policyToken.Host = global.ServerConfig.OssInfo.Host
+	policyToken.AccessKeyId = global.OSSConfig.AccessKey
+	policyToken.Host = global.OSSConfig.Endpoint
 	policyToken.Expire = expireEnd
 	policyToken.Signature = signedStr
-	policyToken.Directory = global.ServerConfig.OssInfo.UploadDir
+	policyToken.Directory = global.OSSConfig.UploadDir
 	policyToken.Policy = deByte
 	policyToken.Callback = callbackBase64
 	response, err := json.Marshal(policyToken)

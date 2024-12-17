@@ -12,4 +12,6 @@ var (
 	ServerConfig = &config.ServerConfig{}
 	Logger       *zap.Logger
 	NacosConfig  = &commonConfig.NacosConfig{}
+	OSSClient    = &config.OSSClients{}
+	OSSConfig    = &config.OssConfig{}
 )

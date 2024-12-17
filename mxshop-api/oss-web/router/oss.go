@@ -10,5 +10,6 @@ func InitOssRouter(Router *gin.RouterGroup) {
 	{
 		OssRouter.GET("token", api.GenerateUploadToken)
 		OssRouter.POST("callback", api.HandlerRequest)
+		OssRouter.POST("upload", api.UploadFile)
 	}
 }

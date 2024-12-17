@@ -38,6 +38,8 @@ func main() {
 	zap.ReplaceGlobals(logger)
 	zap.L().Info("日志初始化成功")
 
+	// 初始化oss
+	initialize.InitOSS(global.ServerConfig.OssInfo)
 	// 3.初始化routers
 	Router := initialize.Routers()
 	// 4.初始化翻译
@@ -65,6 +67,7 @@ func main() {
 	if err != nil {
 		zap.S().Panic("oss服务注册失败：", err.Error())
 	}
+	global.Logger.Info(fmt.Sprintf("oss服务oss-web服务注册到注册中心"))
 	zap.S().Debugf("启动oss服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", global.ServerConfig.Port),

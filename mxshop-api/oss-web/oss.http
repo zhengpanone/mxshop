@@ -1,0 +1,18 @@
+@contentType = application/json
+@baseUrl = 127.0.0.1:18080
+
+### 生成 OSS 签名 URL
+# @name GenerateUploadToken
+GET {{baseUrl}}/v1/oss/token HTTP/1.1
+Content-Type: {{contentType}}
+
+### 获取返回的 callback
+@AuthCallback = {{GenerateUploadToken.response.body.callback}}    # 获取 callback
+
+### 测试 HandlerRequest 接口
+# @name HandlerRequest
+POST {{baseUrl}}/v1/oss/callback HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+authorization={{AuthCallback}}&public_key=public_key_data&filename=testfile.txt&size=1024&mimeType=image/jpeg&height=1000&width=1000
+

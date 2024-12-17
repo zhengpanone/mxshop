@@ -1,11 +1,11 @@
-package storage
+package config
 
 import (
 	"context"
 	"fmt"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"goods-web/global"
+	"go.uber.org/zap"
 	"io"
 )
 
@@ -16,24 +16,37 @@ type MinIO struct {
 }
 
 // NewMinIOClient 创建一个连接到 MinIO 的对象存储客户端
-func NewMinIOClient(endpoint, accessKey, secretKey string, useSSL bool) (*MinIO, error) {
+func NewMinIOClient(ossConfig OssConfig) (*MinIO, error) {
 	// 初始化 MinIO 客户端
-	minioClient, err := minio.New(endpoint, &minio.Options{
-		Creds:  credentials.NewStaticV4(accessKey, secretKey, ""),
-		Secure: useSSL,
+	minioClient, err := minio.New(ossConfig.Endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(ossConfig.AccessKey, ossConfig.SecretKey, ""),
+		Secure: ossConfig.UseSSL,
 	})
 	if err != nil {
-		global.Logger.Fatal(fmt.Sprintf("Failed to initialize MinIO client:%s", err))
+		zap.S().Fatal(fmt.Sprintf("Failed to initialize MinIO client:%s", err))
 		return nil, err
 	}
 
+	// 检查存储桶是否存在，如果不存在则创建
+	ctx := context.Background()
+	exists, err := minioClient.BucketExists(ctx, ossConfig.BucketName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to check bucket: %v", err)
+	}
+	if !exists {
+		err = minioClient.MakeBucket(ctx, ossConfig.BucketName, minio.MakeBucketOptions{})
+		if err != nil {
+			return nil, fmt.Errorf("failed to create bucket: %v", err)
+		}
+		zap.S().Info("Bucket %s created successfully", ossConfig.BucketName)
+	}
 	return &MinIO{
 		client: minioClient,
 	}, nil
 }
 
 // Upload 实现了在 MinIO 上上传对象的方法
-func (m *MinIO) Upload(ctx context.Context, bucketName, objectName string, reader io.Reader, objectSize int64, contentType string) (interface{}, error) {
+func (m *MinIO) Upload(ctx context.Context, bucketName string, objectName string, reader io.Reader, objectSize int64, contentType string) (interface{}, error) {
 	// 使用 MinIO 客户端上传对象
 	object, err := m.client.PutObject(ctx, bucketName, objectName, reader, objectSize, minio.PutObjectOptions{
 		ContentType: contentType,
