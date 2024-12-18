@@ -1,13 +1,13 @@
 package initialize
 
 import (
+	commonUtils "common/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"goods-web/docs"
 	"goods-web/global"
-	"goods-web/utils"
 )
 
 // SwaggerInit swagger初始化
@@ -24,7 +24,7 @@ func SwaggerInit(engine *gin.Engine) {
 	swaggerInfo.Title = "goods-web"
 	swaggerInfo.Description = "mxshop-api 商品管理"
 	swaggerInfo.Version = "v1.0.0"
-	swaggerInfo.Host = fmt.Sprintf("%s:%d", utils.GetIP(), global.ServerConfig.Port)
+	swaggerInfo.Host = fmt.Sprintf("%s:%d", commonUtils.GetIP(), global.ServerConfig.Port)
 	swaggerInfo.BasePath = ""
 	url := ginSwagger.URL("/swagger/doc.json")
 	// Serve Swagger UI

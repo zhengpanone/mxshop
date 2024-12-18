@@ -3,6 +3,7 @@ package main
 import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
+	commonUtils "common/utils"
 	"context"
 	"errors"
 	"fmt"
@@ -67,7 +68,7 @@ func main() {
 	// 注册到注册中心
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
 	serviceId := uuid.NewV4().String()
-	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	err = registerClient.Register(commonUtils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
 
 	if err != nil {
 		zap.S().Panic("商品服务goods-web 注册失败：", err.Error())
@@ -75,8 +76,8 @@ func main() {
 
 	global.Logger.Info(fmt.Sprintf("商品服务goods-web服务注册到注册中心"))
 
-	global.Logger.Info(fmt.Sprintf("启动商品服务goods-web，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port))
-	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("启动商品服务goods-web，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", commonUtils.GetIP(), global.ServerConfig.Port))
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", global.ServerConfig.Port),
