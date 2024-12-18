@@ -11,6 +11,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net/http"
 	"strconv"
+	"user-web/utils"
 )
 
 type CategoryController struct{}
@@ -33,8 +34,7 @@ func GetCategoryList(ctx *gin.Context) {
 		})
 		return
 	}
-
-	ctx.JSON(http.StatusOK, data)
+	utils.OkWithData(ctx, data)
 }
 
 func Detail(ctx *gin.Context) {

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  goods-web:
+    build:
+      context: .
+      dockerfile: goods-web/Dockerfile
+  order-web:
+    build:
+      context: .
+      dockerfile: order-web/Dockerfile
