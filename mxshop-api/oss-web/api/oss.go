@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"net/http"
 	"net/url"
 	"oss-web/global"
@@ -88,14 +89,15 @@ func UploadFile(c *gin.Context) {
 
 	// 上传文件到 MinIO
 	ctx := context.Background()
-	_, err = global.OSSClient.MinIOClient.Upload(ctx, global.OSSConfig.BucketName, objectName, file, header.Size, contentType)
+	object, err := global.OSSClient.MinIOClient.Upload(ctx, global.OSSConfig.Bucket, objectName, file, header.Size, contentType)
+	zap.S().Info("Upload File Success", object)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to upload file"})
 		return
 	}
 
 	// 构建文件的访问 URL
-	fileURL := fmt.Sprintf("http://%s/%s/%s", global.OSSConfig.Endpoint, global.OSSConfig.BucketName, objectName)
+	fileURL := fmt.Sprintf("http://%s/%s/%s", global.OSSConfig.Endpoint, global.OSSConfig.Bucket, objectName)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "File uploaded successfully",

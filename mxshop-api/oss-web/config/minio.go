@@ -29,16 +29,16 @@ func NewMinIOClient(ossConfig OssConfig) (*MinIO, error) {
 
 	// 检查存储桶是否存在，如果不存在则创建
 	ctx := context.Background()
-	exists, err := minioClient.BucketExists(ctx, ossConfig.BucketName)
+	exists, err := minioClient.BucketExists(ctx, ossConfig.Bucket)
 	if err != nil {
 		return nil, fmt.Errorf("failed to check bucket: %v", err)
 	}
 	if !exists {
-		err = minioClient.MakeBucket(ctx, ossConfig.BucketName, minio.MakeBucketOptions{})
+		err = minioClient.MakeBucket(ctx, ossConfig.Bucket, minio.MakeBucketOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("failed to create bucket: %v", err)
 		}
-		zap.S().Info("Bucket %s created successfully", ossConfig.BucketName)
+		zap.S().Info("Bucket %s created successfully", ossConfig.Bucket)
 	}
 	return &MinIO{
 		client: minioClient,

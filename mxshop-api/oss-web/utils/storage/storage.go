@@ -43,7 +43,7 @@ type CallbackParam struct {
 
 type PolicyToken struct {
 	AccessKeyId string `json:"accessId"`
-	Host        string `json:"host"`
+	Url         string `json:"url"`
 	Expire      int64  `json:"expire"`
 	Signature   string `json:"signature"`
 	Policy      string `json:"policy"`
@@ -68,7 +68,7 @@ func GetPolicyToken() string {
 	//calculate signature
 	result, err := json.Marshal(config)
 	deByte := base64.StdEncoding.EncodeToString(result)
-	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte("" /*global.ServerConfig.OssInfo.ApiSecret*/))
+	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(global.OSSConfig.SecretKey))
 	_, _ = io.WriteString(h, deByte)
 	signedStr := base64.StdEncoding.EncodeToString(h.Sum(nil))
 	var callbackParam CallbackParam
@@ -84,7 +84,7 @@ func GetPolicyToken() string {
 
 	var policyToken PolicyToken
 	policyToken.AccessKeyId = global.OSSConfig.AccessKey
-	policyToken.Host = global.OSSConfig.Endpoint
+	policyToken.Url = global.OSSConfig.Endpoint + global.OSSConfig.Bucket
 	policyToken.Expire = expireEnd
 	policyToken.Signature = signedStr
 	policyToken.Directory = global.OSSConfig.UploadDir
