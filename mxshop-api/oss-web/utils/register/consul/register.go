@@ -3,6 +3,7 @@ package consul
 import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
+	"oss-web/global"
 )
 
 type Registry struct {
@@ -30,7 +31,7 @@ func (r *Registry) Register(address string, port uint32, name string, tags []str
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("health url:", fmt.Sprintf("http://%s:%d/health", address, port))
+	global.Logger.Info(fmt.Sprintf("health url:%s", fmt.Sprintf("http://%s:%d/health", address, port)))
 	// 生成对应的检查对象
 	check := &api.AgentServiceCheck{
 		HTTP:                           fmt.Sprintf("http://%s:%d/health", address, port),

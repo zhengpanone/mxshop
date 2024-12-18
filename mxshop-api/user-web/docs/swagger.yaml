@@ -16,8 +16,6 @@ definitions:
         minLength: 3
         type: string
     required:
-    - captcha
-    - captcha_id
     - mobile
     - password
     type: object

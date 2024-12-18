@@ -33,10 +33,11 @@ func GenerateCaptcha(ctx *gin.Context) {
 		})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
+	h := gin.H{
 		"captchaId": id,
 		"picPath":   base64,
-	})
+	}
+	utils.OkWithData(ctx, h)
 }
 
 func HandleGrpcErrorToHttp(err error, c *gin.Context, srvName string) {
@@ -45,27 +46,15 @@ func HandleGrpcErrorToHttp(err error, c *gin.Context, srvName string) {
 		if e, ok := status.FromError(err); ok {
 			switch e.Code() {
 			case codes.NotFound:
-
-				c.JSON(http.StatusNotFound, gin.H{
-					"msg": srvName + ":" + e.Message(),
-				})
+				utils.ErrorWithCodeMsg(c, http.StatusNotFound, srvName+":"+e.Message())
 			case codes.Internal:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": srvName + ":" + "内部错误" + e.Message(),
-				})
-
+				utils.ErrorWithCodeMsg(c, http.StatusInternalServerError, srvName+":"+"内部错误"+e.Message())
 			case codes.InvalidArgument:
-				c.JSON(http.StatusBadRequest, gin.H{
-					"msg": srvName + ":" + "参数错误" + e.Message(),
-				})
+				utils.ErrorWithCodeMsg(c, http.StatusBadRequest, srvName+":"+"参数错误"+e.Message())
 			case codes.Unavailable:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": srvName + ":" + "不可用",
-				})
+				utils.ErrorWithCodeMsg(c, http.StatusInternalServerError, srvName+":"+"不可用")
 			default:
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"msg": srvName + ":" + "其他错误" + e.Message(),
-				})
+				utils.ErrorWithCodeMsg(c, http.StatusInternalServerError, srvName+":"+"其他错误"+e.Message())
 			}
 
 		}

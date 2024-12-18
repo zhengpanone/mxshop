@@ -3,6 +3,7 @@ package main
 import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
+	commonUtils "common/utils"
 	"context"
 	"errors"
 	"fmt"
@@ -81,12 +82,14 @@ func main() {
 
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
 	serviceId := uuid.NewV4().String()
-	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	err = registerClient.Register(commonUtils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+
 	if err != nil {
 		zap.S().Panic("用户服务注册失败：", err.Error())
 	}
-	zap.S().Debugf("启动用户服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port)
-	zap.S().Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("用户服务user-web服务注册到注册中心"))
+	zap.S().Debugf("启动用户服务器，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port)
+	zap.S().Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", commonUtils.GetIP(), global.ServerConfig.Port))
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", global.ServerConfig.Port),
 		Handler: Router,

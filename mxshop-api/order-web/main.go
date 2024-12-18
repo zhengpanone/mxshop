@@ -3,6 +3,7 @@ package main
 import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
+	commonUtils "common/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -12,7 +13,7 @@ import (
 	"go.uber.org/zap"
 	"order-web/global"
 	"order-web/initialize"
-	"order-web/utils"
+
 	"order-web/utils/register/consul"
 	myValidator "order-web/validator"
 	"os"
@@ -62,19 +63,20 @@ func main() {
 	//
 	currentMod := gin.Mode()
 	if currentMod == gin.ReleaseMode {
-		port, err := utils.GetFreePort()
+		port, err := commonUtils.GetFreePort()
 		if err == nil {
 			global.ServerConfig.Port = port
 		}
 	}
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
 	serviceId := uuid.NewV4().String()
-	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	err = registerClient.Register(commonUtils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
 	if err != nil {
 		zap.S().Panic("订单服务注册失败：", err.Error())
 	}
-	global.Logger.Info(fmt.Sprintf("启动订单服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port))
-	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("订单服务order-web服务注册到注册中心"))
+	global.Logger.Info(fmt.Sprintf("启动订单服务器，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", commonUtils.GetIP(), global.ServerConfig.Port))
 	go func() {
 		if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
 			zap.S().Panic("订单服务启动失败：", err.Error())

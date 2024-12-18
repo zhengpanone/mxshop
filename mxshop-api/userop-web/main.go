@@ -3,6 +3,7 @@ package main
 import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
+	commonUtils "common/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -16,7 +17,6 @@ import (
 	"syscall"
 	"userop-web/global"
 	"userop-web/initialize"
-	"userop-web/utils"
 	"userop-web/utils/register/consul"
 	myValidator "userop-web/validator"
 )
@@ -65,19 +65,20 @@ func main() {
 	//
 	currentMod := gin.Mode()
 	if currentMod == gin.ReleaseMode {
-		port, err := utils.GetFreePort()
+		port, err := commonUtils.GetFreePort()
 		if err == nil {
 			global.ServerConfig.Port = port
 		}
 	}
 	registerClient := consul.NewRegistryClient(global.ServerConfig.Consul.Host, global.ServerConfig.Consul.Port)
 	serviceId := uuid.NewV4().String()
-	err = registerClient.Register(utils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
+	err = registerClient.Register(commonUtils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
 	if err != nil {
 		zap.S().Panic("用户操作服务注册失败：", err.Error())
 	}
-	global.Logger.Info(fmt.Sprintf("启动用户操作服务器，访问地址：http://%s:%d", utils.GetIP(), global.ServerConfig.Port))
-	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", utils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("用户操作服务userop-web服务注册到注册中心"))
+	global.Logger.Info(fmt.Sprintf("启动用户操作服务器，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port))
+	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", commonUtils.GetIP(), global.ServerConfig.Port))
 	go func() {
 		if err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port)); err != nil {
 			zap.S().Panic("用户操作服务启动失败：", err.Error())

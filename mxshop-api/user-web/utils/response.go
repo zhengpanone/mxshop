@@ -81,8 +81,8 @@ func ErrorWithMsg(ctx *gin.Context, msg string) {
 	ResultJson(ctx, ERROR, msg, nil, map[string]interface{}{})
 }
 
-// ErrorWithCodeAndMsg 错误码和信息
-func ErrorWithCodeAndMsg(ctx *gin.Context, code int, msg string) {
+// ErrorWithCodeMsg 错误码和信息
+func ErrorWithCodeMsg(ctx *gin.Context, code int, msg string) {
 	ResultJson(ctx, code, msg, nil, map[string]interface{}{})
 }
 

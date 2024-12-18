@@ -72,7 +72,7 @@ func GetUserList(ctx *gin.Context) {
 		"total": rsp.Total,
 		"data":  result,
 	}
-	ctx.JSON(http.StatusOK, reMap)
+	utils.OkWithData(ctx, reMap)
 }
 
 // PasswordLogin
@@ -92,7 +92,7 @@ func PasswordLogin(ctx *gin.Context) {
 	}
 	if global.ServerConfig.EnableCaptcha {
 		if !utils.VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.Captcha) {
-			utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
+			utils.ErrorWithCodeMsg(ctx, http.StatusBadRequest, "验证码不正确")
 			return
 		}
 	}
@@ -110,7 +110,7 @@ func PasswordLogin(ctx *gin.Context) {
 			EncryptedPassword: rsp.Password,
 			Password:          passwordLogin.Password,
 		}); passErr != nil {
-			utils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "登录失败")
+			utils.ErrorWithCodeMsg(ctx, http.StatusInternalServerError, "登录失败")
 			return
 		} else {
 			if passRsp.Success {
@@ -132,7 +132,7 @@ func PasswordLogin(ctx *gin.Context) {
 				}
 				token, err := j.CreateToken(claims)
 				if err != nil {
-					utils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
+					utils.ErrorWithCodeMsg(ctx, http.StatusInternalServerError, "生成token失败")
 					return
 				}
 				utils.OkWithData(ctx, gin.H{
@@ -143,7 +143,7 @@ func PasswordLogin(ctx *gin.Context) {
 				})
 				return
 			} else {
-				utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "登录失败")
+				utils.ErrorWithCodeMsg(ctx, http.StatusBadRequest, "登录失败")
 				return
 			}
 		}
@@ -169,11 +169,11 @@ func Register(ctx *gin.Context) {
 	// 验证码校验
 	code, err := global.RedisClient.Get(context.Background(), registerForm.Mobile).Result()
 	if err != nil {
-		utils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
+		utils.ErrorWithCodeMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
 		return
 	}
 	if code != registerForm.Code {
-		utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
+		utils.ErrorWithCodeMsg(ctx, http.StatusBadRequest, "验证码不正确")
 		return
 	}
 	user, err := global.UserSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
@@ -205,24 +205,20 @@ func Register(ctx *gin.Context) {
 	}
 	token, err := j.CreateToken(claims)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": "生成token失败",
-		})
+		utils.ErrorWithCodeMsg(ctx, http.StatusInternalServerError, "生成token失败")
 		return
 	}
-	ctx.JSON(http.StatusInternalServerError, gin.H{
+	data := gin.H{
 		"id":         user.Id,
 		"nick_name":  user.Nickname,
 		"token":      token,
 		"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
-	})
-
+	}
+	utils.OkWithData(ctx, data)
 }
 
 func Ping(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"msg": "ok",
-	})
+	utils.Ok(ctx)
 }
 
 func HandleValidatorError(ctx *gin.Context, err error) {
@@ -230,7 +226,7 @@ func HandleValidatorError(ctx *gin.Context, err error) {
 	var errs validator.ValidationErrors
 	ok := errors.As(err, &errs)
 	if !ok {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"msg": err.Error(),
 		})
 		return

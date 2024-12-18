@@ -12,7 +12,6 @@ import (
 	"go.uber.org/zap"
 	"goods-web/global"
 	"goods-web/initialize"
-	"goods-web/utils"
 	"goods-web/utils/register/consul"
 	"net/http"
 	"os"
@@ -60,7 +59,7 @@ func main() {
 	//
 	currentMod := gin.Mode()
 	if currentMod == gin.ReleaseMode {
-		port, err := utils.GetFreePort()
+		port, err := commonUtils.GetFreePort()
 		if err == nil {
 			global.ServerConfig.Port = port
 		}

@@ -164,8 +164,6 @@ const docTemplate = `{
         "forms.PasswordLoginForm": {
             "type": "object",
             "required": [
-                "captcha",
-                "captcha_id",
                 "mobile",
                 "password"
             ],

@@ -19,7 +19,7 @@ func InitSrvConn() {
 	}
 	consul := global.ServerConfig.Consul
 	url := fmt.Sprintf("consul://%s:%d/%s?wait=14s&tag=srv", consul.Host, consul.Port, global.ServerConfig.GoodsSrvConfig.Name)
-	goodsConn, err := grpc.Dial(
+	goodsConn, err := grpc.NewClient(
 		url,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		//轮询调度策略
@@ -38,7 +38,7 @@ func InitSrvConn() {
 		global.OrderConn.Close()
 	}
 
-	orderConn, err := grpc.Dial(
+	orderConn, err := grpc.NewClient(
 		fmt.Sprintf("consul://%s:%d/%s?wait=14s&tag=srv", consul.Host, consul.Port, global.ServerConfig.OrderSrvConfig.Name),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		//轮询调度策略
@@ -57,7 +57,7 @@ func InitSrvConn() {
 		global.InventoryConn.Close()
 	}
 
-	inventoryConn, err := grpc.Dial(
+	inventoryConn, err := grpc.NewClient(
 		fmt.Sprintf("consul://%s:%d/%s?wait=14s&tag=srv", consul.Host, consul.Port, global.ServerConfig.InventorySrvConfig.Name),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		//轮询调度策略
