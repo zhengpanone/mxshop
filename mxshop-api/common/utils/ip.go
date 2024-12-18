@@ -8,40 +8,42 @@ import (
 
 func GetIP() string {
 	// 获取本机的所有网络接口。
-	interfaces, err := net.InterfaceByName("en0")
+	interfaces, err := net.Interfaces()
 	if err != nil {
 		fmt.Printf("Error getting interfaces : %v", err)
 		os.Exit(1)
 	}
-
-	addrs, err := interfaces.Addrs()
-	if err != nil {
-		fmt.Printf("Error getting addresses : %v", err)
-		os.Exit(1)
-	}
-	var ipStr string
-	for _, addr := range addrs {
-		// 获取接口上的所有地址信息。
-		var ip net.IP
-		switch v := addr.(type) {
-		case *net.IPNet:
-			ip = v.IP
-		case *net.IPAddr:
-			ip = v.IP
-		}
-
-		// 仅选择IPv4地址，忽略环回地址，并且确保IP不是nil。
-		if ip == nil || ip.IsLoopback() {
+	for _, iface := range interfaces {
+		// 忽略未启用的接口或环回接口
+		if iface.Flags&net.FlagUp == 0 || iface.Flags&net.FlagLoopback != 0 {
 			continue
 		}
 
-		ip = ip.To4()
-		if ip == nil {
-			continue // not an ipv4 address
+		// 获取接口地址
+		addrs, err := iface.Addrs()
+		if err != nil {
+			fmt.Printf("Error getting addresses : %v", err)
+			continue
 		}
-		if interfaces.Name == "en0" {
-			ipStr = ip.String()
+
+		for _, addr := range addrs {
+			// 获取接口上的所有地址信息。
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+
+			// 检查是否为IPv4，并排除环回地址
+			if ip != nil && ip.To4() != nil && !ip.IsLoopback() {
+				return ip.String()
+			}
 		}
+
 	}
-	return ipStr
+	fmt.Println("No valid IPv4 address found.")
+	os.Exit(1)
+	return ""
 }
