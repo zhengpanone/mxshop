@@ -4,6 +4,7 @@ import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
 	commonUtils "common/utils"
+	"common/utils/register/consul"
 	"context"
 	"errors"
 	"fmt"
@@ -12,7 +13,6 @@ import (
 	"go.uber.org/zap"
 	"goods-web/global"
 	"goods-web/initialize"
-	"goods-web/utils/register/consul"
 	"net/http"
 	"os"
 	"os/signal"
@@ -34,13 +34,13 @@ func main() {
 	initialize.InitConfig()
 	// 2.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
-	logger, err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
+	err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("Failed to initialize logger:%v", err))
 	}
-	global.Logger = logger
-	zap.ReplaceGlobals(logger)
-	zap.L().Info("日志初始化成功")
+	global.Logger = commonInitialize.GetLogger()
+	zap.ReplaceGlobals(global.Logger)
+	global.Logger.Info("日志初始化成功")
 
 	// 3.初始化routers
 	Router := initialize.Routers()

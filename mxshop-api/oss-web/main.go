@@ -4,19 +4,18 @@ import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
 	commonUtils "common/utils"
+	"common/utils/register/consul"
 	"context"
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
-	"oss-web/global"
-	"oss-web/initialize"
-	"oss-web/utils/register/consul"
-
 	"net/http"
 	"os"
 	"os/signal"
+	"oss-web/global"
+	"oss-web/initialize"
 	"path/filepath"
 	"syscall"
 	"time"
@@ -29,13 +28,13 @@ func main() {
 
 	// 2.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
-	zapLogger, err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
+	err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("Failed to initialize logger:%v", err))
 	}
-	global.Logger = zapLogger
-	zap.ReplaceGlobals(zapLogger)
-	zap.L().Info("日志初始化成功")
+	global.Logger = commonInitialize.GetLogger()
+	zap.ReplaceGlobals(global.Logger)
+	global.Logger.Info("日志初始化成功")
 
 	// 初始化oss
 	initialize.InitOSS(global.ServerConfig.OssInfo)

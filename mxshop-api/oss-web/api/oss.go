@@ -1,6 +1,7 @@
 package api
 
 import (
+	"common/utils"
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -8,7 +9,6 @@ import (
 	"net/http"
 	"net/url"
 	"oss-web/global"
-	"oss-web/utils"
 	"oss-web/utils/storage"
 	"strings"
 	"time"

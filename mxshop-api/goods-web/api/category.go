@@ -1,6 +1,7 @@
 package api
 
 import (
+	commonUtils "common/utils"
 	"context"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,6 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net/http"
 	"strconv"
-	"user-web/utils"
 )
 
 type CategoryController struct{}
@@ -34,7 +34,7 @@ func GetCategoryList(ctx *gin.Context) {
 		})
 		return
 	}
-	utils.OkWithData(ctx, data)
+	commonUtils.OkWithData(ctx, data)
 }
 
 func Detail(ctx *gin.Context) {

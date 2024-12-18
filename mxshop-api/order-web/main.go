@@ -4,6 +4,7 @@ import (
 	commonInitialize "common/initialize"
 	commonMiddleware "common/middleware"
 	commonUtils "common/utils"
+	"common/utils/register/consul"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -14,7 +15,6 @@ import (
 	"order-web/global"
 	"order-web/initialize"
 
-	"order-web/utils/register/consul"
 	myValidator "order-web/validator"
 	"os"
 	"os/signal"
@@ -27,13 +27,13 @@ func main() {
 	initialize.InitConfig()
 	// 2.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
-	logger, err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
+	err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("Failed to initialize logger:%v", err))
 	}
-	global.Logger = logger
-	zap.ReplaceGlobals(logger)
-	zap.L().Info("日志初始化成功")
+	global.Logger = commonInitialize.GetLogger()
+	zap.ReplaceGlobals(global.Logger)
+	global.Logger.Info("日志初始化成功")
 
 	// 3.初始化routers
 	Router := initialize.Routers()

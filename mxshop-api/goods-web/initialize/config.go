@@ -11,6 +11,7 @@ import (
 	"go.uber.org/zap"
 	"goods-web/global"
 	"log"
+
 	"strings"
 )
 
@@ -114,7 +115,7 @@ func InitConfig() {
 	if err := v.Unmarshal(global.ServerConfig); err != nil {
 		panic(err)
 	}
-	zap.S().Infof("配置信息：%v", global.ServerConfig)
+	//zap.S().Infof("配置信息：%v", global.ServerConfig)
 	// 从nacos中读取配置信息
 	GetConfigFromNacos()
 	zap.S().Infof("配置信息：%v", global.ServerConfig)
