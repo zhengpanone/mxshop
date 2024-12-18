@@ -36,6 +36,12 @@ func GinLogger(logger *zap.Logger) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		start := time.Now()
 		path := ctx.Request.URL.Path
+		// 跳过 /health 路径的日志记录
+		if path == "/health" {
+			ctx.Next()
+			return
+		}
+
 		query := ctx.Request.URL.RawQuery
 		logger.Info(fmt.Sprintf("请求开始：%s", path),
 			zap.String("method", ctx.Request.Method),

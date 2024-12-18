@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
+	"strings"
 	//"order-web/global"
 	//"order-web/models"
 )
@@ -15,11 +16,18 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 		// 这里jwt鉴权取头部信息x-token，登录时返回token信息
 		token := c.Request.Header.Get("x-token")
 		if token == "" {
+			// 尝试从 Authorization 中获取 token
+			token = c.Request.Header.Get("Authorization")
+		}
+		if token == "" {
 			c.JSON(http.StatusUnauthorized, map[string]string{
 				"msg": "请登录",
 			})
 			c.Abort()
 			return
+		}
+		if strings.Contains(token, "Bearer ") {
+			token = strings.Split(token, " ")[1]
 		}
 		j := NewJWT(signingKey)
 		// parseToken解析token包含的信息
