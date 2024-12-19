@@ -1,6 +1,7 @@
 package api
 
 import (
+	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -18,7 +19,7 @@ func GetShopCartList(ctx *gin.Context) {
 	})
 	if err != nil {
 		zap.S().Errorw("查询【购物车列表】失败")
-		HandleGrpcErrorToHttp(err, ctx, "订单srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 	ids := make([]int32, 0)
@@ -35,7 +36,7 @@ func GetShopCartList(ctx *gin.Context) {
 	goodsRsp, err := global.GoodsSrvClient.BatchGetGoods(context.Background(), &proto.BatchGoodsIdInfo{Id: ids})
 	if err != nil {
 		zap.S().Errorw("批量查询【商品列表】失败")
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	reMap := gin.H{
@@ -65,7 +66,7 @@ func NewShopCart(ctx *gin.Context) {
 	// 添加商品到购物车
 	itemForm := forms.ShopCartItemForm{}
 	if err := ctx.ShouldBindJSON(&itemForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	// 添加商品到购物车前，检查商品是否存在
@@ -74,7 +75,7 @@ func NewShopCart(ctx *gin.Context) {
 	})
 	if err != nil {
 		zap.S().Errorw("查询【商品信息】失败")
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	// 添加到购物车的数量大于库存
@@ -83,7 +84,7 @@ func NewShopCart(ctx *gin.Context) {
 	})
 	if err != nil {
 		zap.S().Errorw("查询【库存信息】失败")
-		HandleGrpcErrorToHttp(err, ctx, "库存srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "库存srv")
 		return
 	}
 	if invRsp.Num < itemForm.Nums {
@@ -100,7 +101,7 @@ func NewShopCart(ctx *gin.Context) {
 	})
 	if err != nil {
 		zap.S().Errorw("添加到购物车失败")
-		HandleGrpcErrorToHttp(err, ctx, "订单srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 	reMap := map[string]interface{}{}
@@ -122,7 +123,7 @@ func DeleteShopCart(ctx *gin.Context) {
 	_, err = global.OrderSrvClient.DeleteCartItem(context.Background(), &proto.CartItemRequest{UserId: int32(userId.(uint)), GoodsId: int32(i)})
 	if err != nil {
 		zap.S().Errorw("删除购物车失败")
-		HandleGrpcErrorToHttp(err, ctx, "订单srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 	ctx.Status(http.StatusOK)
@@ -139,7 +140,7 @@ func UpdateShopCart(ctx *gin.Context) {
 	}
 	itemForm := forms.ShopCartItemUpdateForm{}
 	if err := ctx.ShouldBindJSON(&itemForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	userId, _ := ctx.Get("userId")
@@ -155,7 +156,7 @@ func UpdateShopCart(ctx *gin.Context) {
 	_, err = global.OrderSrvClient.UpdateCartItem(context.Background(), &request)
 	if err != nil {
 		zap.S().Errorw("更新购物车失败")
-		HandleGrpcErrorToHttp(err, ctx, "订单srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 	ctx.Status(http.StatusOK)

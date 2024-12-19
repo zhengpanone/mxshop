@@ -12,7 +12,29 @@ import (
 	"strconv"
 )
 
-func GetGoodsList(ctx *gin.Context) {
+type GoodsController struct{}
+
+// GetGoodsList 获取商品列表
+// @Summary 获取商品列表
+// @Description 根据多个查询条件（价格区间、是否热销、是否新品、分类、品牌等）获取商品列表。
+// @Tags Goods 商品管理
+// @Accept json
+// @Produce json
+// @Param pMin query int false "最低价格" default(0)
+// @Param pMax query int false "最高价格" default(0)
+// @Param ih query int false "是否热销商品" default(0) Enum(0, 1)
+// @Param ih query int false "是否新品商品" default(0) Enum(0, 1)
+// @Param ih query int false "是否Tab商品" default(0) Enum(0, 1)
+// @Param c query int false "分类ID" default(0)
+// @Param page query int false "页码" default(1)
+// @Param size query int false "每页数量" default(10)
+// @Param kw query string false "搜索关键词"
+// @Param brand query int false "品牌ID" default(0)
+// @Success 200 {object} utils.Response "成功获取商品列表"
+// @Failure 400 {object} utils.Response "无效的请求参数"
+// @Failure 500 {object} utils.Response "服务器错误"
+// @Router /v1/goods/list [get]
+func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 	request := &proto.GoodsFilterRequest{}
 	priceMin := ctx.DefaultQuery("pMin", "0")
 	priceMinInt, _ := strconv.Atoi(priceMin)
@@ -100,7 +122,19 @@ func GetGoodsList(ctx *gin.Context) {
 
 }
 
-func NewGoods(ctx *gin.Context) {
+// NewGoods 创建新的商品
+// @Summary 创建一个新的商品
+// @Description 根据提交的商品信息创建一个新的商品。
+// @Tags Goods 商品管理
+// @Accept json
+// @Produce json
+// @Param x-token header string true "认证令牌"
+// @Param goods body forms.GoodsForm true "商品信息"
+// @Success 201 {object} utils.Response "商品创建成功"
+// @Failure 400 {object} utils.Response "无效的请求参数"
+// @Failure 500 {object} utils.Response "服务器错误"
+// @Router /v1/goods/create [post]
+func (*GoodsController) NewGoods(ctx *gin.Context) {
 	goodsForm := forms.GoodsForm{}
 	if err := ctx.ShouldBindJSON(&goodsForm); err != nil {
 		commonUtils.HandleValidatorError(ctx, global.Trans, err)
@@ -130,7 +164,20 @@ func NewGoods(ctx *gin.Context) {
 	commonUtils.OkWithData(ctx, rsp)
 }
 
-func UpdateStatus(ctx *gin.Context) {
+// UpdateStatus 更新商品的状态
+// @Summary 更新商品的状态（如上架、下架）
+// @Description 根据商品ID更新商品的状态，支持上架、下架等操作。
+// @Tags Goods 商品管理
+// @Accept json
+// @Produce json
+// @Param x-token header string true "认证令牌"
+// @Param id path int true "商品ID"
+// @Param status body forms.GoodsStatusForm true "商品状态信息"
+// @Success 200 {object} utils.Response "商品状态更新成功"
+// @Failure 400 {object} utils.Response "无效的请求参数"
+// @Failure 500 {object} utils.Response "服务器错误"
+// @Router /v1/goods/status/{id} [put]
+func (*GoodsController) UpdateStatus(ctx *gin.Context) {
 	goodsStatusForm := forms.GoodsStatusForm{}
 	if err := ctx.ShouldBindJSON(&goodsStatusForm); err != nil {
 		commonUtils.HandleValidatorError(ctx, global.Trans, err)

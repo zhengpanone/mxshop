@@ -109,8 +109,6 @@ func GinRecovery(logger *zap.Logger, stack bool) gin.HandlerFunc {
 					)
 				}
 				ctx.AbortWithStatus(http.StatusInternalServerError)
-				// c.JSON(200, gin.H{"code": 1, "msg": "出错啦"})
-				// return
 
 			}
 		}()

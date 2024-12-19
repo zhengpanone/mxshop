@@ -22,12 +22,19 @@ import (
 )
 
 // @title 商品服务
-// @description 慕学商城项目
+// @description 慕学商城项目，提供商品的查询、创建、更新等功能。
 // @version 1.0
 // @contact.name zhengpanone
-// @contact.url http://.....
-// @host localhost:8080
-// @BasePath
+// @contact.url http://127.0.0.1:18022/swagger/index.html
+// @host 127.0.0.1:18022
+// @BasePath /v1/goods
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
+// @tag.name 商品管理
+// @tag.description 提供商品的增删改查功能
 
 func main() {
 	// 1.初始化配置文件
@@ -44,6 +51,7 @@ func main() {
 
 	// 3.初始化routers
 	Router := initialize.Routers()
+	registerMiddleware(Router) //注册全局中间件
 	// 4.初始化翻译
 	if err := initialize.InitTrans("zh"); err != nil {
 		zap.S().Errorf("初始化翻译器错误")
@@ -51,8 +59,6 @@ func main() {
 	}
 	// 5. 初始化srv连接
 	initialize.InitSrvConn()
-
-	registerMiddleware(Router) //注册全局中间件
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	fmt.Printf("run exe dir is %v\n", dir)
