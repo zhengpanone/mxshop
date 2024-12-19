@@ -1,11 +1,11 @@
 package api
 
 import (
+	commonUtils "common/utils"
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
-	"go.uber.org/zap"
 	"net/http"
 	"order-web/global"
 	"order-web/proto"
@@ -50,28 +50,26 @@ func AliPayNotify(ctx *gin.Context) {
 	err := client.LoadAliPayPublicKey(global.ServerConfig.AliPayConfig.AliPublicKey)
 
 	if err != nil {
-		zap.S().Errorw(err.Error())
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
+		global.Logger.Error(err.Error())
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	notification, err := client.DecodeNotification(ctx.Request.Form)
 	if err != nil {
-		zap.S().Errorw(err.Error())
-		ctx.JSON(http.StatusInternalServerError, gin.H{})
+		global.Logger.Error(err.Error())
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
-	fmt.Println("交易状态" + notification.TradeStatus)
+	global.Logger.Info(fmt.Sprintf("交易状态%s", notification.TradeStatus))
 	_, err = global.OrderSrvClient.UpdateOrderStatus(context.Background(), &proto.OrderStatus{
 		OrderSn: notification.OutTradeNo,
 		Status:  string(notification.TradeStatus),
 		// TODO payTime
 	})
 	if err != nil {
-		zap.S().Errorw("新建订单详情失败")
-		ctx.JSON(http.StatusInternalServerError, gin.H{})
+		global.Logger.Error("新建订单详情失败")
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.String(http.StatusOK, "success")
+	commonUtils.OkWithMsg(ctx, "success")
 }

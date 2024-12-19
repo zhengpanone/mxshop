@@ -2,10 +2,10 @@ package api
 
 import (
 	commonClaims "common/claims"
+	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
-	"go.uber.org/zap"
 	"net/http"
 	"order-web/forms"
 	"order-web/global"
@@ -33,8 +33,8 @@ func GetOrderList(ctx *gin.Context) {
 
 	rsp, err := global.OrderSrvClient.OrderList(context.Background(), &request)
 	if err != nil {
-		zap.S().Errorw("获取订单列表失败")
-		HandleGrpcErrorToHttp(err, ctx, "订单srv")
+		global.Logger.Error("获取订单列表失败")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 	reMap := map[string]interface{}{
@@ -57,13 +57,13 @@ func GetOrderList(ctx *gin.Context) {
 		})
 	}
 	reMap["data"] = orderList
-	ctx.JSON(http.StatusOK, reMap)
+	commonUtils.OkWithData(ctx, reMap)
 }
 
 func NewOrder(ctx *gin.Context) {
 	orderForm := forms.CreateOrderForm{}
 	if err := ctx.ShouldBindJSON(&orderForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	userId, _ := ctx.Get("userId")
@@ -76,25 +76,21 @@ func NewOrder(ctx *gin.Context) {
 	}
 	rsp, err := global.OrderSrvClient.CreateOrder(context.Background(), &request)
 	if err != nil {
-		zap.S().Errorw("新建订单详情失败")
-		HandleGrpcErrorToHttp(err, ctx, "订单srv")
+		global.Logger.Error("新建订单详情失败")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 	//  返回支付宝的支付url
 	client, err := alipay.New(global.ServerConfig.AliPayConfig.AppId, global.ServerConfig.AliPayConfig.PrivateKey, false)
 	if err != nil {
-		zap.S().Errorw("实例化支付宝客户端支付失败")
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
+		global.Logger.Error("实例化支付宝客户端支付失败")
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	err = client.LoadAliPayPublicKey(global.ServerConfig.AliPayConfig.AliPublicKey)
 	if err != nil {
-		zap.S().Errorw("加载支付宝公钥失败")
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
+		global.Logger.Error("加载支付宝公钥失败")
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -108,14 +104,11 @@ func NewOrder(ctx *gin.Context) {
 
 	url, err := client.TradePagePay(p)
 	if err != nil {
-		zap.S().Errorw("生成支付url失败")
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
+		global.Logger.Error("生成支付url失败")
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
-
-	ctx.JSON(http.StatusOK, gin.H{
+	commonUtils.OkWithData(ctx, gin.H{
 		"id":         rsp.Id,
 		"alipay_url": url.String(),
 	})
@@ -127,9 +120,8 @@ func GetOrderDetail(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	i, err := strconv.Atoi(id)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"msg": "url格式错误",
-		})
+
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusNotFound, "url格式错误")
 		return
 	}
 	claims, _ := ctx.Get("claims")
@@ -144,8 +136,8 @@ func GetOrderDetail(ctx *gin.Context) {
 
 	rsp, err := global.OrderSrvClient.OrderDetail(context.Background(), &request)
 	if err != nil {
-		zap.S().Errorw("获取订单详情失败")
-		HandleGrpcErrorToHttp(err, ctx, "订单srv")
+		global.Logger.Error("获取订单详情失败")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 
@@ -174,18 +166,14 @@ func GetOrderDetail(ctx *gin.Context) {
 	//  返回支付宝的支付url
 	client, err := alipay.New(global.ServerConfig.AliPayConfig.AppId, global.ServerConfig.AliPayConfig.PrivateKey, false)
 	if err != nil {
-		zap.S().Errorw("实例化支付宝客户端支付失败")
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
+		global.Logger.Error("实例化支付宝客户端支付失败")
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	err = client.LoadAliPayPublicKey(global.ServerConfig.AliPayConfig.AliPublicKey)
 	if err != nil {
-		zap.S().Errorw("加载支付宝公钥失败")
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
+		global.Logger.Error("加载支付宝公钥失败")
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -199,10 +187,8 @@ func GetOrderDetail(ctx *gin.Context) {
 
 	url, err := client.TradePagePay(p)
 	if err != nil {
-		zap.S().Errorw("生成支付url失败")
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
+		global.Logger.Error("生成支付url失败")
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	reMap["alipay_url"] = url.String()

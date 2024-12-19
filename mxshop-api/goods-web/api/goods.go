@@ -1,7 +1,7 @@
 package api
 
 import (
-	"common/utils"
+	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -59,7 +59,7 @@ func GetGoodsList(ctx *gin.Context) {
 	r, err := global.GoodsSrvClient.GoodsList(context.WithValue(context.Background(), "ginContext", ctx), request)
 	if err != nil {
 		zap.S().Errorw("[GetGoodsList]查询【商品列表】失败")
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 
@@ -96,14 +96,14 @@ func GetGoodsList(ctx *gin.Context) {
 		})
 	}
 	reMap["list"] = goodsList
-	utils.OkWithData(ctx, reMap)
+	commonUtils.OkWithData(ctx, reMap)
 
 }
 
 func NewGoods(ctx *gin.Context) {
 	goodsForm := forms.GoodsForm{}
 	if err := ctx.ShouldBindJSON(&goodsForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	goodsClient := global.GoodsSrvClient
@@ -123,17 +123,17 @@ func NewGoods(ctx *gin.Context) {
 		BrandId:         goodsForm.Brand,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	// 如何设置库存
-	utils.OkWithData(ctx, rsp)
+	commonUtils.OkWithData(ctx, rsp)
 }
 
 func UpdateStatus(ctx *gin.Context) {
 	goodsStatusForm := forms.GoodsStatusForm{}
 	if err := ctx.ShouldBindJSON(&goodsStatusForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	id := ctx.Param("id")
@@ -144,8 +144,8 @@ func UpdateStatus(ctx *gin.Context) {
 		IsNew:  *goodsStatusForm.IsNew,
 		OnSale: *goodsStatusForm.OnSale,
 	}); err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	utils.OkWithMsg(ctx, "修改成功")
+	commonUtils.OkWithMsg(ctx, "修改成功")
 }

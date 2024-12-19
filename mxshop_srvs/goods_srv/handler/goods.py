@@ -130,14 +130,14 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
     def CreateGoods(self, request: goods_pb2.CreateGoodsInfo, context):
         """新建商品"""
         try:
-            category = Category.get(Category.id == request.category_id)
+            category = Category.get(Category.id == request.categoryId)
         except DoesNotExist as e:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("商品分类不存在，创建商品失败")
             return goods_pb2.GoodsInfoResponse()
 
         try:
-            brand = Brands.get(Brands.id == request.brand_id)
+            brand = Brands.get(Brands.id == request.brandId)
         except DoesNotExist as e:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("品牌不存在，创建商品失败")
@@ -147,19 +147,19 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         goods.brand = brand
         goods.category = category
         goods.name = request.name
-        goods.goods_sn = request.goods_sn
+        goods.goods_sn = request.goodsSn
         goods.stocks = request.stocks
-        goods.market_price = request.market_price
-        goods.shop_price = request.shop_price
-        goods.goods_brief = request.goods_brief
-        goods.goods_desc = request.goods_desc
-        goods.ship_free = request.ship_free
+        goods.market_price = request.marketPrice
+        goods.shop_price = request.shopPrice
+        goods.goods_brief = request.goodsBrief
+        goods.goods_desc = request.goodsDesc
+        goods.ship_free = request.shipFree
         goods.images = list(request.images)
-        goods.desc_images = list(request.desc_images)
-        goods.goods_front_image = request.goods_front_image
-        goods.is_new = request.is_new
-        goods.is_hot = request.is_hot
-        goods.on_sale = request.on_sale
+        goods.desc_images = list(request.descImages)
+        goods.goods_front_image = request.goodsFrontImage
+        goods.is_new = request.isNew
+        goods.is_hot = request.isHot
+        goods.on_sale = request.onSale
         goods.save()
         # TODO 此处完善库存的设置 - 分布式事务
 
@@ -169,41 +169,43 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
     def UpdateGoods(self, request: goods_pb2.CreateGoodsInfo, context):
         """更新商品"""
         try:
-            category = Category.get(Category.id == request.category_id)
-        except DoesNotExist as e:
-            context.set_code(grpc.StatusCode.NOT_FOUND)
-            context.set_details("商品分类不存在，创建商品失败")
-            return goods_pb2.GoodsInfoResponse()
-
-        try:
-            brand = Brands.get(Brands.id == request.brand_id)
-        except DoesNotExist as e:
-            context.set_code(grpc.StatusCode.NOT_FOUND)
-            context.set_details("品牌不存在，创建商品失败")
-            return goods_pb2.GoodsInfoResponse()
-
-        try:
             goods = Goods.get(Goods.id == request.id)
         except DoesNotExist as e:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("商品不存在，更新商品失败")
             return goods_pb2.GoodsInfoResponse()
-        goods.brand = brand
-        goods.category = category
+
+        if request.categoryId:
+            try:
+                category = Category.get(Category.id == request.categoryId)
+                goods.category = category
+            except DoesNotExist as e:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("商品分类不存在，创建商品失败")
+                return goods_pb2.GoodsInfoResponse()
+        if request.brandId:
+            try:
+                brand = Brands.get(Brands.id == request.brandId)
+                goods.brand = brand
+            except DoesNotExist as e:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("品牌不存在，创建商品失败")
+                return goods_pb2.GoodsInfoResponse()
+
         goods.name = request.name
-        goods.goods_sn = request.goods_sn
+        goods.goods_sn = request.goodsSn
         goods.stocks = request.stocks
-        goods.market_price = request.market_price
-        goods.shop_price = request.shop_price
-        goods.goods_brief = request.goods_brief
-        goods.goods_desc = request.goods_desc
-        goods.ship_free = request.ship_free
+        goods.market_price = request.marketPrice
+        goods.shop_price = request.shopPrice
+        goods.goods_brief = request.goodsBrief
+        goods.goods_desc = request.goodsDesc
+        goods.ship_free = request.shipFree
         goods.images = list(request.images)
-        goods.desc_images = list(request.desc_images)
-        goods.goods_front_image = request.goods_front_image
-        goods.is_new = request.is_new
-        goods.is_hot = request.is_hot
-        goods.on_sale = request.on_sale
+        goods.desc_images = list(request.descImages)
+        goods.goods_front_image = request.goodsFrontImage
+        goods.is_new = request.isNew
+        goods.is_hot = request.isHot
+        goods.on_sale = request.onSale
         goods.save()
         # TODO 此处完善库存的设置 - 分布式事务
         return self.convert_model_to_message(goods)
@@ -553,7 +555,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             category_brand = GoodsCategoryBrand.get(request.id)
             brand = Brands.get(request.brand_id)
             category_brand.brand = brand
-            category = Category.get(request.category_id)
+            category = Category.get(request.categoryId)
             category_brand.category = category
             category_brand.save()
 

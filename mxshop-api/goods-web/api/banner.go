@@ -1,6 +1,7 @@
 package api
 
 import (
+	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"goods-web/forms"
@@ -14,7 +15,7 @@ import (
 func ListBanner(ctx *gin.Context) {
 	rsp, err := global.GoodsSrvClient.BannerList(context.Background(), &emptypb.Empty{})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	result := make([]interface{}, 0)
@@ -26,13 +27,13 @@ func ListBanner(ctx *gin.Context) {
 		reMap["url"] = value.Url
 		result = append(result, reMap)
 	}
-	ctx.JSON(http.StatusOK, result)
+	commonUtils.OkWithData(ctx, result)
 }
 
 func NewBanner(ctx *gin.Context) {
 	bannerForm := forms.BannerForm{}
 	if err := ctx.ShouldBindJSON(&bannerForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 
@@ -44,7 +45,7 @@ func NewBanner(ctx *gin.Context) {
 		})
 
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	response := make(map[string]interface{})
@@ -53,13 +54,13 @@ func NewBanner(ctx *gin.Context) {
 	response["url"] = rsp.Url
 	response["image"] = rsp.Image
 
-	ctx.JSON(http.StatusOK, response)
+	commonUtils.OkWithData(ctx, response)
 }
 
 func UpdateBanner(ctx *gin.Context) {
 	bannerForm := forms.BannerForm{}
 	if err := ctx.ShouldBindJSON(&bannerForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	id := ctx.Param("id")
@@ -74,10 +75,10 @@ func UpdateBanner(ctx *gin.Context) {
 		Url:   bannerForm.Url,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	ctx.Status(http.StatusOK)
+	commonUtils.Ok(ctx)
 }
 
 func DeleteBanner(ctx *gin.Context) {
@@ -89,8 +90,8 @@ func DeleteBanner(ctx *gin.Context) {
 	}
 	_, err = global.GoodsSrvClient.DeleteBanner(context.Background(), &proto.BannerRequest{Id: int32(idInt)})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	ctx.Status(http.StatusOK)
+	commonUtils.Ok(ctx)
 }

@@ -21,7 +21,7 @@ func GetCategoryList(ctx *gin.Context) {
 
 	if err != nil {
 		zap.S().Errorw("[GetCategoryList]查询【商品分类列表】失败：", err.Error())
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 
@@ -49,7 +49,7 @@ func Detail(ctx *gin.Context) {
 	if r, err := global.GoodsSrvClient.GetSubCategory(context.Background(), &proto.CategoryListRequest{
 		Id: int32(i),
 	}); err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	} else {
 		for _, value := range r.SubCategoryList {
@@ -66,7 +66,7 @@ func Detail(ctx *gin.Context) {
 		reMap["parent_category"] = r.Info.ParentCategory
 		reMap["is_tab"] = r.Info.IsTab
 		reMap["sub_category_list"] = subCategorys
-		ctx.JSON(http.StatusOK, reMap)
+		commonUtils.OkWithData(ctx, reMap)
 	}
 	return
 }
@@ -86,7 +86,7 @@ func (c *CategoryController) CreateCategory(ctx *gin.Context) {
 	// @Failure 400 {object} api_helper.ErrorResponse
 	categoryForm := forms.CategoryForm{}
 	if err := ctx.ShouldBindJSON(&categoryForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	goodsClient := global.GoodsSrvClient
@@ -97,7 +97,7 @@ func (c *CategoryController) CreateCategory(ctx *gin.Context) {
 		ParentCategory: categoryForm.ParentCategory,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	response := make(map[string]interface{})
@@ -107,13 +107,13 @@ func (c *CategoryController) CreateCategory(ctx *gin.Context) {
 	response["level"] = rsp.Level
 	response["is_tab"] = rsp.IsTab
 
-	ctx.JSON(http.StatusOK, response)
+	commonUtils.OkWithData(ctx, response)
 }
 
 func UpdateCategory(ctx *gin.Context) {
 	categoryForm := forms.UpdateCategoryForm{}
 	if err := ctx.ShouldBindJSON(&categoryForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	id := ctx.Param("id")
@@ -131,8 +131,8 @@ func UpdateCategory(ctx *gin.Context) {
 	}
 	_, err = global.GoodsSrvClient.UpdateCategory(context.Background(), request)
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	ctx.Status(http.StatusOK)
+	commonUtils.Ok(ctx)
 }

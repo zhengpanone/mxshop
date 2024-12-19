@@ -1,6 +1,7 @@
 package api
 
 import (
+	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"goods-web/forms"
@@ -13,7 +14,7 @@ import (
 func NewBrand(ctx *gin.Context) {
 	brandForm := forms.BrandForm{}
 	if err := ctx.ShouldBindJSON(&brandForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	rsp, err := global.GoodsSrvClient.CreateBrand(context.Background(), &proto.BrandRequest{
@@ -22,13 +23,13 @@ func NewBrand(ctx *gin.Context) {
 	})
 
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 	}
 	response := make(map[string]interface{})
 	response["id"] = rsp.Id
 	response["name"] = rsp.Name
 	response["logo"] = rsp.Logo
-	ctx.JSON(http.StatusOK, response)
+	commonUtils.OkWithData(ctx, response)
 }
 
 func DeleteBrand(ctx *gin.Context) {
@@ -40,16 +41,16 @@ func DeleteBrand(ctx *gin.Context) {
 	}
 	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &proto.BrandRequest{Id: int32(idInt)})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	ctx.Status(http.StatusOK)
+	commonUtils.Ok(ctx)
 }
 
 func UpdateBrand(ctx *gin.Context) {
 	brandForm := forms.BrandForm{}
 	if err := ctx.ShouldBindJSON(brandForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	id := ctx.Param("id")
@@ -64,10 +65,10 @@ func UpdateBrand(ctx *gin.Context) {
 		Logo: brandForm.Logo,
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	ctx.Status(http.StatusOK)
+	commonUtils.Ok(ctx)
 }
 
 func ListBrand(ctx *gin.Context) {
@@ -81,7 +82,7 @@ func ListBrand(ctx *gin.Context) {
 		Size: int32(sizeInt),
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	result := make([]interface{}, 0)
@@ -95,7 +96,7 @@ func ListBrand(ctx *gin.Context) {
 		result = append(result, responseMap)
 	}
 	response["data"] = result
-	ctx.JSON(http.StatusOK, response)
+	commonUtils.OkWithData(ctx, response)
 }
 
 func GetCategoryBrandList(ctx *gin.Context) {
@@ -109,7 +110,7 @@ func GetCategoryBrandList(ctx *gin.Context) {
 		Id: int32(categoryId),
 	})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	result := make([]interface{}, 0)
@@ -121,9 +122,7 @@ func GetCategoryBrandList(ctx *gin.Context) {
 
 		result = append(result, reMap)
 	}
-
-	ctx.JSON(http.StatusOK, result)
-
+	commonUtils.OkWithData(ctx, result)
 }
 
 func UpdateCategoryBrand(ctx *gin.Context) {
@@ -140,7 +139,7 @@ func CategoryBrandList(ctx *gin.Context) {
 	*/
 	rsp, err := global.GoodsSrvClient.CategoryBrandList(context.Background(), &proto.CategoryBrandFilterRequest{})
 	if err != nil {
-		HandleGrpcErrorToHttp(err, ctx, "商品srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
 	reMap := map[string]interface{}{
@@ -165,8 +164,9 @@ func CategoryBrandList(ctx *gin.Context) {
 	}
 
 	reMap["data"] = result
-	ctx.JSON(http.StatusOK, reMap)
+	commonUtils.OkWithData(ctx, reMap)
 }
+
 func NewCategoryBrand(ctx *gin.Context) {
 
 }
