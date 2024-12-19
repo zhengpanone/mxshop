@@ -1,4 +1,161 @@
+definitions:
+  utils.ErrorItem:
+    properties:
+      error:
+        type: string
+      key:
+        type: string
+    type: object
+  utils.Meta:
+    properties:
+      request_id:
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      code:
+        description: 业务状态码
+        type: integer
+      data:
+        description: 响应数据
+      errors:
+        description: Errors 错误提示，如 xx字段不能为空等
+        items:
+          $ref: '#/definitions/utils.ErrorItem'
+        type: array
+      meta:
+        allOf:
+        - $ref: '#/definitions/utils.Meta'
+        description: Meta 源数据,存储如请求ID,分页等信息
+      msg:
+        description: 提示信息
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /v1/order/detail:
+    get:
+      consumes:
+      - application/json
+      description: 根据订单ID获取订单的详细信息，包括商品信息、支付信息等
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 订单ID
+        in: query
+        name: order_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 订单详情获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 订单未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取指定订单的详细信息
+      tags:
+      - Order
+  /v1/shop-cart/list:
+    get:
+      consumes:
+      - application/json
+      description: 根据用户的ID获取购物车中的所有商品列表
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 购物车列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 购物车未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取用户的购物车列表
+      tags:
+      - ShopCart
+  /v1/shop-cart/new:
+    post:
+      consumes:
+      - application/json
+      description: 根据商品ID和用户ID将商品添加到购物车
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: 商品ID
+        in: query
+        name: product_id
+        required: true
+        type: integer
+      - description: 商品数量
+        in: query
+        name: quantity
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商品添加成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 商品未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 将新商品添加到购物车
+      tags:
+      - ShopCart
 swagger: "2.0"

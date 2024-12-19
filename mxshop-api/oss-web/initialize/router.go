@@ -4,7 +4,7 @@ import (
 	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"oss-web/router"
+	"oss-web/api/router"
 )
 
 func Routers() *gin.Engine {

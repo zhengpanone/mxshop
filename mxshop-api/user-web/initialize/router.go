@@ -4,7 +4,7 @@ import (
 	"common/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"user-web/router"
+	router2 "user-web/api/router"
 )
 
 func Routers() *gin.Engine {
@@ -20,7 +20,7 @@ func Routers() *gin.Engine {
 	// 配置跨域
 	Router.Use(middleware.Cors())
 	ApiGroup := Router.Group("/v1")
-	router.InitBaseRouter(ApiGroup)
-	router.InitUserRouter(ApiGroup)
+	router2.InitBaseRouter(ApiGroup)
+	router2.InitUserRouter(ApiGroup)
 	return Router
 }

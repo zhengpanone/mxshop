@@ -4,7 +4,7 @@ import (
 	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"order-web/router"
+	router2 "order-web/api/router"
 )
 
 func Routers() *gin.Engine {
@@ -19,8 +19,8 @@ func Routers() *gin.Engine {
 	// 配置跨域
 	Router.Use(commonMiddleware.Cors())
 	ApiGroup := Router.Group("/v1/order/")
-	router.InitOrderRouter(ApiGroup)
-	router.InitShopCartRouter(ApiGroup)
+	router2.InitOrderRouter(ApiGroup)
+	router2.InitShopCartRouter(ApiGroup)
 
 	return Router
 }
