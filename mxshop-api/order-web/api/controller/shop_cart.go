@@ -15,18 +15,19 @@ import (
 type ShopCartApi struct{}
 
 // GetShopCartList 获取购物车列表
-// @Summary 获取用户的购物车列表
-// @Description 根据用户的ID获取购物车中的所有商品列表
-// @Tags ShopCart
-// @Accept json
-// @Produce json
-// @Param x-token header string true "认证令牌" // 用户认证令牌，通常为JWT
-// @Param user_id query int true "用户ID" // 查询参数，用户的ID
-// @Success 200 {object} utils.Response "购物车列表获取成功"
-// @Failure 400 {object} utils.Response "无效的请求参数"
-// @Failure 404 {object} utils.Response "购物车未找到"
-// @Failure 500 {object} utils.Response "服务器错误"
-// @Router /v1/shop-cart/list [get]
+//
+//	@Summary		获取用户的购物车列表
+//	@Description	根据用户的ID获取购物车中的所有商品列表
+//	@Tags			ShopCart
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token	header		string			true	"认证令牌"	//	用户认证令牌，通常为JWT
+//	@Param			user_id	query		int				true	"用户ID"	//	查询参数，用户的ID
+//	@Success		200		{object}	utils.Response	"购物车列表获取成功"
+//	@Failure		400		{object}	utils.Response	"无效的请求参数"
+//	@Failure		404		{object}	utils.Response	"购物车未找到"
+//	@Failure		500		{object}	utils.Response	"服务器错误"
+//	@Router			/v1/shop-cart/list [get]
 func (*ShopCartApi) GetShopCartList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	rsp, err := global.OrderSrvClient.CarItemList(context.Background(), &proto.UserInfo{
@@ -78,20 +79,21 @@ func (*ShopCartApi) GetShopCartList(ctx *gin.Context) {
 }
 
 // NewShopCart 添加新商品到购物车
-// @Summary 将新商品添加到购物车
-// @Description 根据商品ID和用户ID将商品添加到购物车
-// @Tags ShopCart
-// @Accept json
-// @Produce json
-// @Param x-token header string true "认证令牌" // 用户认证令牌，通常为JWT
-// @Param user_id query int true "用户ID" // 用户ID
-// @Param product_id query int true "商品ID" // 商品ID
-// @Param quantity query int true "商品数量" // 商品数量
-// @Success 200 {object} utils.Response "商品添加成功"
-// @Failure 400 {object} utils.Response "无效的请求参数"
-// @Failure 404 {object} utils.Response "商品未找到"
-// @Failure 500 {object} utils.Response "服务器错误"
-// @Router /v1/shop-cart/new [post]
+//
+//	@Summary		将新商品添加到购物车
+//	@Description	根据商品ID和用户ID将商品添加到购物车
+//	@Tags			ShopCart
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"	//	用户认证令牌，通常为JWT
+//	@Param			user_id		query		int				true	"用户ID"	//	用户ID
+//	@Param			product_id	query		int				true	"商品ID"	//	商品ID
+//	@Param			quantity	query		int				true	"商品数量"	//	商品数量
+//	@Success		200			{object}	utils.Response	"商品添加成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"商品未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/shop-cart/new [post]
 func (*ShopCartApi) NewShopCart(ctx *gin.Context) {
 	// 添加商品到购物车
 	itemForm := forms.ShopCartItemForm{}

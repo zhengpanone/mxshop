@@ -1,6 +1,8 @@
 # swaggo
 ```shell
-swag init --parseDependency
+swag init -g ./user-web/cmd/main.go -d . --exclude golang.org/x/exp --parseDependency true
+swag init -g ./goods-web/cmd/main.go -d .
+swag fmt
 ```
 
 # 构建镜像

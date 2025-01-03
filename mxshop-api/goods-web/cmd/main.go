@@ -21,20 +21,20 @@ import (
 	"time"
 )
 
-// @title 商品服务
-// @description 慕学商城项目，提供商品的查询、创建、更新等功能。
-// @version 1.0
-// @contact.name zhengpanone
-// @contact.url http://127.0.0.1:18022/swagger/index.html
-// @host 127.0.0.1:18022
-// @BasePath /v1/goods
+//	@title			商品服务
+//	@description	慕学商城项目，提供商品的查询、创建、更新等功能。
+//	@version		1.0
+//	@contact.name	zhengpanone
+//	@contact.url	http://127.0.0.1:18022/swagger/index.html
+//	@host			127.0.0.1:18022
+//	@BasePath		/v1/goods
 
-// @securityDefinitions.apikey ApiKeyAuth
-// @in header
-// @name Authorization
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							header
+//	@name						Authorization
 
-// @tag.name 商品管理
-// @tag.description 提供商品的增删改查功能
+//	@tag.name			商品管理
+//	@tag.description	提供商品的增删改查功能
 
 func main() {
 	// 1.初始化配置文件

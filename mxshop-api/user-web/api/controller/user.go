@@ -30,17 +30,18 @@ func removeTopStruct(fields map[string]string) map[string]string {
 }
 
 // GetUserList 获取用户列表
-// @Summary 用户列表
-// @Description 获取用户列表
-// @Tags  用户管理
-// @Accept  json
-// @Produce json
-// @Param x-token header string true "token令牌"
-// @Param page query int true "页码" default(1)
-// @Param size query int true "页面大小" default(10)
-// @success 200  {array} response.UserResponse
-// @Router  /v1/user/list [get]
-// @ID /v1/user/list
+//
+//	@Summary		用户列表
+//	@Description	获取用户列表
+//	@Tags			用户管理
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token	header	string	true	"token令牌"
+//	@Param			page	query	int		true	"页码"	default(1)
+//	@Param			size	query	int		true	"页面大小"	default(10)
+//	@success		200		{array}	response.UserResponse
+//	@Router			/v1/user/list [get]
+//	@ID				/v1/user/list
 func GetUserList(ctx *gin.Context) {
 
 	page, _ := strconv.Atoi(ctx.DefaultQuery("pageNum", "1"))
@@ -77,14 +78,15 @@ func GetUserList(ctx *gin.Context) {
 }
 
 // PasswordLogin
-// @Summary 用户登录
-// @Description 用户账号密码登录
-// @Tags  用户管理
-// @Accept  json
-// @Produce json
-// @Param  request body  forms.PasswordLoginForm true "请求参数"
-// @success 200  {object} utils.Response{data=interface{}}
-// @Router  /v1/user/pwd_login [post]
+//
+//	@Summary		用户登录
+//	@Description	用户账号密码登录
+//	@Tags			用户管理
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		forms.PasswordLoginForm	true	"请求参数"
+//	@success		200		{object}	utils.Response{data=interface{}}
+//	@Router			/v1/user/pwd_login [post]
 func PasswordLogin(ctx *gin.Context) {
 	passwordLogin := forms.PasswordLoginForm{}
 	if err := ctx.ShouldBind(&passwordLogin); err != nil {
@@ -153,14 +155,15 @@ func PasswordLogin(ctx *gin.Context) {
 }
 
 // Register 用户注册
-// @Summary 用户注册
-// @Description 用户注册
-// @Tags  用户管理
-// @Accept  json
-// @Produce json
-// @Param  request body  forms.RegisterForm true "请求参数"
-// @success 200  {object} utils.Response{data=interface{}}
-// @Router  /v1/user/register [post]
+//
+//	@Summary		用户注册
+//	@Description	用户注册
+//	@Tags			用户管理
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		forms.RegisterForm	true	"请求参数"
+//	@success		200		{object}	utils.Response{data=interface{}}
+//	@Router			/v1/user/register [post]
 func Register(ctx *gin.Context) {
 	registerForm := forms.RegisterForm{}
 	if err := ctx.ShouldBind(&registerForm); err != nil {

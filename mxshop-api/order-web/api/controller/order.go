@@ -118,18 +118,19 @@ func (*OrderApi) NewOrder(ctx *gin.Context) {
 }
 
 // GetOrderDetail 获取订单详情
-// @Summary 获取指定订单的详细信息
-// @Description 根据订单ID获取订单的详细信息，包括商品信息、支付信息等
-// @Tags Order
-// @Accept json
-// @Produce json
-// @Param x-token header string true "认证令牌" // 用户认证令牌，通常为JWT
-// @Param order_id query int true "订单ID" // 订单ID
-// @Success 200 {object} utils.Response "订单详情获取成功"
-// @Failure 400 {object} utils.Response "无效的请求参数"
-// @Failure 404 {object} utils.Response "订单未找到"
-// @Failure 500 {object} utils.Response "服务器错误"
-// @Router /v1/order/detail [get]
+//
+//	@Summary		获取指定订单的详细信息
+//	@Description	根据订单ID获取订单的详细信息，包括商品信息、支付信息等
+//	@Tags			Order
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"	//	用户认证令牌，通常为JWT
+//	@Param			order_id	query		int				true	"订单ID"	//	订单ID
+//	@Success		200			{object}	utils.Response	"订单详情获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"订单未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/order/detail [get]
 func (*OrderApi) GetOrderDetail(ctx *gin.Context) {
 	id := ctx.Param("id")
 	userId, _ := ctx.Get("userId")
