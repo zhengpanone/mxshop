@@ -1,10 +1,11 @@
 package initialize
 
 import (
-	"common/middleware"
 	"github.com/gin-gonic/gin"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	"github.com/zhengpanone/mxshop/user-web/api/router"
+	"github.com/zhengpanone/mxshop/user-web/middleware"
 	"net/http"
-	router2 "user-web/api/router"
 )
 
 func Routers() *gin.Engine {
@@ -18,9 +19,9 @@ func Routers() *gin.Engine {
 		})
 	})
 	// 配置跨域
-	Router.Use(middleware.Cors())
+	Router.Use(commonMiddleware.Cors())
 	ApiGroup := Router.Group("/v1")
-	router2.InitBaseRouter(ApiGroup)
-	router2.InitUserRouter(ApiGroup)
+	router.InitBaseRouter(ApiGroup)
+	router.InitUserRouter(ApiGroup)
 	return Router
 }

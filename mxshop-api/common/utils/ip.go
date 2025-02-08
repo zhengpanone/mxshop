@@ -2,11 +2,13 @@ package utils
 
 import (
 	"fmt"
+	"github.com/zhengpanone/mxshop/common/initialize"
 	"net"
 	"os"
 )
 
 func GetIP() string {
+	var logger = initialize.GetLogger()
 	// 获取本机的所有网络接口。
 	interfaces, err := net.Interfaces()
 	if err != nil {
@@ -38,12 +40,13 @@ func GetIP() string {
 
 			// 检查是否为IPv4，并排除环回地址
 			if ip != nil && ip.To4() != nil && !ip.IsLoopback() {
+				logger.Info("IPV4 address: " + ip.String())
 				return ip.String()
 			}
 		}
 
 	}
-	fmt.Println("No valid IPv4 address found.")
+	logger.Warn("No valid IPv4 address found.")
 	os.Exit(1)
 	return ""
 }

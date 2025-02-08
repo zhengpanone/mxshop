@@ -2,9 +2,9 @@ package initialize
 
 import (
 	"fmt"
+	"github.com/zhengpanone/mxshop/oss-web/config"
+	"github.com/zhengpanone/mxshop/oss-web/global"
 	"go.uber.org/zap"
-	"oss-web/config"
-	"oss-web/global"
 )
 
 func InitOSS(ossConfigs map[config.StorageType]config.OssConfig) {

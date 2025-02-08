@@ -1,14 +1,14 @@
 package initialize
 
 import (
-	"common/interceptor"
-	"common/utils"
 	"fmt"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	_ "github.com/mbobakov/grpc-consul-resolver"
+	"github.com/zhengpanone/mxshop/common/interceptor"
+	"github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/goods-web/global"
+	"github.com/zhengpanone/mxshop/goods-web/proto"
 	"go.uber.org/zap"
-	"goods-web/global"
-	"goods-web/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

@@ -2,9 +2,9 @@ package global
 
 import (
 	ut "github.com/go-playground/universal-translator"
+	"github.com/zhengpanone/mxshop/goods-web/config"
+	"github.com/zhengpanone/mxshop/goods-web/proto"
 	"go.uber.org/zap"
-	"goods-web/config"
-	"goods-web/proto"
 	"google.golang.org/grpc"
 )
 

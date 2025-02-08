@@ -1,0 +1,1249 @@
+definitions:
+  forms.BannerForm:
+    properties:
+      image:
+        type: string
+      index:
+        type: integer
+      url:
+        type: string
+    required:
+    - index
+    type: object
+  forms.BrandForm:
+    properties:
+      logo:
+        description: 品牌logo
+        type: string
+      name:
+        description: 品牌名称
+        maxLength: 10
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
+  forms.CategoryForm:
+    properties:
+      is_tab:
+        type: boolean
+      level:
+        enum:
+        - 1
+        - 2
+        - 3
+        type: integer
+      name:
+        maxLength: 20
+        minLength: 1
+        type: string
+      parent:
+        type: integer
+    required:
+    - is_tab
+    - level
+    - name
+    type: object
+  forms.GoodsForm:
+    properties:
+      brand:
+        type: integer
+      category:
+        type: integer
+      desc_images:
+        items:
+          type: string
+        minItems: 1
+        type: array
+      front_image:
+        type: string
+      goods_brief:
+        minLength: 3
+        type: string
+      goods_desc:
+        minLength: 3
+        type: string
+      goods_sn:
+        minLength: 2
+        type: string
+      images:
+        items:
+          type: string
+        minItems: 1
+        type: array
+      market_price:
+        minimum: 0
+        type: number
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      ship_free:
+        type: boolean
+      shop_price:
+        minimum: 0
+        type: number
+      stocks:
+        minimum: 1
+        type: integer
+    required:
+    - brand
+    - category
+    - desc_images
+    - front_image
+    - goods_brief
+    - goods_desc
+    - goods_sn
+    - images
+    - market_price
+    - name
+    - ship_free
+    - shop_price
+    - stocks
+    type: object
+  forms.GoodsStatusForm:
+    properties:
+      hot:
+        type: boolean
+      new:
+        type: boolean
+      sale:
+        type: boolean
+    required:
+    - hot
+    - new
+    - sale
+    type: object
+  forms.PasswordLoginForm:
+    properties:
+      captcha:
+        type: string
+      captcha_id:
+        type: string
+      mobile:
+        description: 手机号码 自定义validator
+        type: string
+      password:
+        description: 密码
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - mobile
+    - password
+    type: object
+  forms.RegisterForm:
+    properties:
+      code:
+        description: 短信验证码
+        maxLength: 5
+        minLength: 5
+        type: string
+      mobile:
+        description: 手机号码 自定义validator
+        type: string
+      password:
+        description: 密码
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - code
+    - mobile
+    - password
+    type: object
+  response.UserResponse:
+    properties:
+      birthday:
+        description: Birthday time.Time `json:"birthday"`
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      mobile:
+        type: string
+      nickName:
+        type: string
+    type: object
+  utils.ErrorItem:
+    properties:
+      error:
+        type: string
+      key:
+        type: string
+    type: object
+  utils.Meta:
+    properties:
+      request_id:
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      code:
+        description: 业务状态码
+        type: integer
+      data:
+        description: 响应数据
+      errors:
+        description: Errors 错误提示，如 xx字段不能为空等
+        items:
+          $ref: '#/definitions/utils.ErrorItem'
+        type: array
+      meta:
+        allOf:
+        - $ref: '#/definitions/utils.Meta'
+        description: Meta 源数据,存储如请求ID,分页等信息
+      msg:
+        description: 提示信息
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/banner:
+    get:
+      consumes:
+      - application/json
+      description: 返回所有可用的横幅信息列表，支持分页。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 返回品牌列表
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取所有品牌（Banner）列表
+      tags:
+      - Banner
+    post:
+      consumes:
+      - application/json
+      description: 根据提供的品牌信息创建一个新的品牌（Banner）
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 品牌信息
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/forms.BannerForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 品牌创建成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 创建新的品牌（Banner）
+      tags:
+      - Banner
+  /v1/banner/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 根据轮播图ID删除指定的轮播图
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 轮播图ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 轮播图删除成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 轮播图未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 删除轮播图
+      tags:
+      - Banner
+    put:
+      consumes:
+      - application/json
+      description: 根据轮播图ID更新轮播图的图片URL、链接和描述等信息
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 轮播图ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新的轮播图信息
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/forms.BannerForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 轮播图更新成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 轮播图未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 更新轮播图信息
+      tags:
+      - Banner
+  /v1/brand/category/{categoryId}:
+    get:
+      consumes:
+      - application/json
+      description: 根据分类ID获取该分类下的所有品牌信息。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 品牌列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取指定分类下的品牌列表
+      tags:
+      - Brand
+  /v1/brand/category/{categoryId}/brand:
+    post:
+      consumes:
+      - application/json
+      description: 根据分类ID为该分类添加新的品牌信息。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 品牌添加成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 为指定分类添加新的品牌
+      tags:
+      - Brand
+  /v1/brand/category/{categoryId}/brand/{brandId}:
+    delete:
+      consumes:
+      - application/json
+      description: 根据分类ID和品牌ID删除该分类下的品牌。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      - description: 品牌ID
+        in: path
+        name: brandId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 品牌删除成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类或品牌未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 删除指定分类下的品牌
+      tags:
+      - Brand
+    put:
+      consumes:
+      - application/json
+      description: 根据给定的分类ID和品牌ID更新分类下的品牌信息。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      - description: 品牌ID
+        in: path
+        name: brandId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类或品牌未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 更新分类的品牌信息
+      tags:
+      - Brand
+  /v1/brand/category/{categoryId}/brands:
+    get:
+      consumes:
+      - application/json
+      description: 根据分类ID获取该分类下所有的品牌信息。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 品牌列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取指定分类下的所有品牌信息
+      tags:
+      - Brand
+  /v1/brand/create:
+    post:
+      consumes:
+      - application/json
+      description: 根据提交的品牌信息创建一个新的品牌。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 品牌信息
+        in: body
+        name: brand
+        required: true
+        schema:
+          $ref: '#/definitions/forms.BrandForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 品牌创建成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 创建一个新的品牌
+      tags:
+      - Brand
+  /v1/brand/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 根据品牌ID删除指定的品牌。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 品牌ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 品牌删除成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 品牌未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 删除指定的品牌
+      tags:
+      - Brand
+  /v1/brand/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取品牌列表，可以根据分页参数进行分页。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 品牌列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取所有品牌的列表
+      tags:
+      - Brand
+  /v1/brand/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: 根据品牌ID更新指定品牌的名称和Logo等信息。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 品牌ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新品牌信息
+        in: body
+        name: brand
+        required: true
+        schema:
+          $ref: '#/definitions/forms.BrandForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 品牌更新成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 品牌未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 更新指定品牌的信息
+      tags:
+      - Brand
+  /v1/goods/category/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建分类
+      parameters:
+      - description: x-token header
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类信息
+        in: body
+        name: forms.CategoryForm
+        required: true
+        schema:
+          $ref: '#/definitions/forms.CategoryForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 创建成功的响应数据
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 根据给定的参数创建分类
+      tags:
+      - Category 分类管理
+  /v1/goods/category/detail/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据分类ID获取指定分类的详细信息，包括名称、父级分类等
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功获取分类详情
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取指定分类的详细信息
+      tags:
+      - Category 分类管理
+  /v1/goods/category/list:
+    get:
+      consumes:
+      - application/json
+      description: 根据条件获取分类列表，支持分页和过滤
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - default: 1
+        description: 页码，默认为1
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量，默认为10
+        in: query
+        name: page_size
+        type: integer
+      - description: 按名称过滤分类
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功获取分类列表的响应数据
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取分类列表
+      tags:
+      - Category 分类管理
+  /v1/goods/category/update/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 根据分类ID更新分类信息，支持修改名称、父级分类等属性
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 分类信息
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/forms.CategoryForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分类信息更新成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 更新指定分类的信息
+      tags:
+      - Category 分类管理
+  /v1/goods/create:
+    post:
+      consumes:
+      - application/json
+      description: 根据提交的商品信息创建一个新的商品。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 商品信息
+        in: body
+        name: goods
+        required: true
+        schema:
+          $ref: '#/definitions/forms.GoodsForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 商品创建成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 创建一个新的商品
+      tags:
+      - Goods 商品管理
+  /v1/goods/list:
+    get:
+      consumes:
+      - application/json
+      description: 根据多个查询条件（价格区间、是否热销、是否新品、分类、品牌等）获取商品列表。
+      parameters:
+      - default: 0
+        description: 最低价格
+        in: query
+        name: pMin
+        type: integer
+      - default: 0
+        description: 最高价格
+        in: query
+        name: pMax
+        type: integer
+      - default: 0
+        description: 是否热销商品
+        in: query
+        name: ih
+        type: integer
+      - default: 0
+        description: 是否新品商品
+        in: query
+        name: ih
+        type: integer
+      - default: 0
+        description: 是否Tab商品
+        in: query
+        name: ih
+        type: integer
+      - default: 0
+        description: 分类ID
+        in: query
+        name: c
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      - description: 搜索关键词
+        in: query
+        name: kw
+        type: string
+      - default: 0
+        description: 品牌ID
+        in: query
+        name: brand
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功获取商品列表
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取商品列表
+      tags:
+      - Goods 商品管理
+  /v1/goods/status/{id}:
+    put:
+      consumes:
+      - application/json
+      description: 根据商品ID更新商品的状态，支持上架、下架等操作。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 商品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 商品状态信息
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/forms.GoodsStatusForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商品状态更新成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 更新商品的状态（如上架、下架）
+      tags:
+      - Goods 商品管理
+  /v1/order/detail:
+    get:
+      consumes:
+      - application/json
+      description: 根据订单ID获取订单的详细信息，包括商品信息、支付信息等
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 订单ID
+        in: query
+        name: order_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 订单详情获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 订单未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取指定订单的详细信息
+      tags:
+      - Order
+  /v1/shop-cart/list:
+    get:
+      consumes:
+      - application/json
+      description: 根据用户的ID获取购物车中的所有商品列表
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 购物车列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 购物车未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取用户的购物车列表
+      tags:
+      - ShopCart
+  /v1/shop-cart/new:
+    post:
+      consumes:
+      - application/json
+      description: 根据商品ID和用户ID将商品添加到购物车
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: 商品ID
+        in: query
+        name: product_id
+        required: true
+        type: integer
+      - description: 商品数量
+        in: query
+        name: quantity
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商品添加成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 商品未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 将新商品添加到购物车
+      tags:
+      - ShopCart
+  /v1/user/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户列表
+      operationId: /v1/user/list
+      parameters:
+      - description: token令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        required: true
+        type: integer
+      - default: 10
+        description: 页面大小
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.UserResponse'
+            type: array
+      summary: 用户列表
+      tags:
+      - 用户管理
+  /v1/user/pwd_login:
+    post:
+      consumes:
+      - application/json
+      description: 用户账号密码登录
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/forms.PasswordLoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data: {}
+              type: object
+      summary: 用户登录
+      tags:
+      - 用户管理
+  /v1/user/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册
+      parameters:
+      - description: 请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/forms.RegisterForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data: {}
+              type: object
+      summary: 用户注册
+      tags:
+      - 用户管理
+swagger: "2.0"

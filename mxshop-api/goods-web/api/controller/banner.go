@@ -1,12 +1,12 @@
 package controller
 
 import (
-	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
-	"goods-web/forms"
-	"goods-web/global"
-	"goods-web/proto"
+	commonUtils "github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/goods-web/forms"
+	"github.com/zhengpanone/mxshop/goods-web/global"
+	"github.com/zhengpanone/mxshop/goods-web/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net/http"
 	"strconv"

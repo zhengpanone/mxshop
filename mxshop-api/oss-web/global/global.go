@@ -1,10 +1,10 @@
 package global
 
 import (
-	commonConfig "common/config"
 	ut "github.com/go-playground/universal-translator"
+	commonConfig "github.com/zhengpanone/mxshop/common/config"
+	"github.com/zhengpanone/mxshop/oss-web/config"
 	"go.uber.org/zap"
-	"oss-web/config"
 )
 
 var (

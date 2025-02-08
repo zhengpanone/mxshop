@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"github.com/zhengpanone/mxshop/user-web/global"
 	"time"
-	"user-web/global"
 )
 
 func InitRedis() {

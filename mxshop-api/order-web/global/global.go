@@ -2,10 +2,10 @@ package global
 
 import (
 	ut "github.com/go-playground/universal-translator"
+	"github.com/zhengpanone/mxshop/order-web/config"
+	"github.com/zhengpanone/mxshop/order-web/proto"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
-	"order-web/config"
-	"order-web/proto"
 )
 
 var (

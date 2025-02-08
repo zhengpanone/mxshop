@@ -1,10 +1,10 @@
 package router
 
 import (
-	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
-	"goods-web/api/controller"
-	"goods-web/global"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	"github.com/zhengpanone/mxshop/goods-web/api/controller"
+	"github.com/zhengpanone/mxshop/goods-web/global"
 )
 
 func InitBannerRouter(router *gin.RouterGroup) {

@@ -1,12 +1,12 @@
 package middleware
 
 import (
-	"common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
-	"goods-web/global"
+	"github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/goods-web/global"
 )
 
 // https://github.dev/lixd/i-go/tree/master/apm/trace/gin

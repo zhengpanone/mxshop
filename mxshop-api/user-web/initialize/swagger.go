@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"user-web/docs"
+	"github.com/zhengpanone/mxshop/user-web/docs"
 )
 
 // SwaggerInit swagger初始化

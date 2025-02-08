@@ -1,14 +1,14 @@
 package controller
 
 import (
-	commonUtils "common/utils"
 	"github.com/gin-gonic/gin"
+	commonUtils "github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/user-web/forms"
+	"github.com/zhengpanone/mxshop/user-web/utils"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"net/http"
-	"user-web/forms"
-	"user-web/utils"
 )
 
 func GenerateCaptcha(ctx *gin.Context) {

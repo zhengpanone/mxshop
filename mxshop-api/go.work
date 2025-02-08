@@ -1,13 +1,13 @@
 go 1.22.1
 
 use (
-	common
-	order-web
-	goods-web
-	user-web
-	oss-web
-	userop-web
-	jaeger-test
-	sentinel-test
+	./common
+	./order-web
+	./goods-web
+	./user-web
+	./oss-web
+	./userop-web
+	./jaeger-test
+	./sentinel-test
 )
 

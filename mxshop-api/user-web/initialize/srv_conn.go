@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
 	_ "github.com/mbobakov/grpc-consul-resolver"
+	"github.com/zhengpanone/mxshop/user-web/global"
+	"github.com/zhengpanone/mxshop/user-web/proto"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"user-web/global"
-	"user-web/proto"
 )
 
 // InitSrvConn 初始化Srv连接

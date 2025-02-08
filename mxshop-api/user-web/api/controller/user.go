@@ -1,24 +1,24 @@
 package controller
 
 import (
-	"common/claims"
-	commonMiddleware "common/middleware"
-	commonUtils "common/utils"
 	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/zhengpanone/mxshop/common/claims"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	commonUtils "github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/user-web/forms"
+	"github.com/zhengpanone/mxshop/user-web/global"
+	"github.com/zhengpanone/mxshop/user-web/global/response"
+	"github.com/zhengpanone/mxshop/user-web/proto"
+	"github.com/zhengpanone/mxshop/user-web/utils"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
-	"user-web/forms"
-	"user-web/global"
-	"user-web/global/response"
-	"user-web/proto"
-	"user-web/utils"
 )
 
 func removeTopStruct(fields map[string]string) map[string]string {

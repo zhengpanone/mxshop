@@ -1,10 +1,10 @@
 package router
 
 import (
-	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
-	"order-web/api/controller"
-	"order-web/global"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	"github.com/zhengpanone/mxshop/order-web/api/controller"
+	"github.com/zhengpanone/mxshop/order-web/global"
 )
 
 func InitOrderRouter(router *gin.RouterGroup) {

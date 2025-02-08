@@ -1,7 +1,7 @@
 package config
 
 import (
-	commonConfig "common/config"
+	commonConfig "github.com/zhengpanone/mxshop/common/config"
 	"time"
 )
 
@@ -35,17 +35,18 @@ type System struct {
 }
 
 type ServerConfig struct {
-	Name          string                   `mapstructure:"name" json:"name" yaml:"name"`
-	Host          string                   `mapstructure:"host" json:"host" yaml:"host"`
-	Port          uint32                   `mapstructure:"port" json:"port" yaml:"port"`
-	Tags          []string                 `mapstructure:"tags" json:"tags" yaml:"tags"`
-	UserSrvConfig UserSrvConfig            `mapstructure:"user-srv" json:"user-srv" yaml:"user-srv"`
-	JWTInfo       commonConfig.JWTConfig   `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
-	SMSConfig     SMSConfig                `mapstructure:"sms" json:"smd,omitempty" yaml:"sms"`
-	RedisConfig   RedisConfig              `mapstructure:"redis" json:"redis" yaml:"redis"`
-	System        System                   `mapstructure:"system" json:"system" yaml:"system"`
-	Consul        commonConfig.Consul      `mapstructure:"consul" json:"consul" yaml:"consul"`
-	Nacos         commonConfig.NacosConfig `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
-	EnableCaptcha bool                     `mapstructure:"enable-captcha" json:"enable-captcha" yaml:"enable-captcha"`
-	LogConfig     commonConfig.LogConfig   `mapstructure:"log" json:"log" yaml:"log"` // 日志配置
+	Name          string                    `mapstructure:"name" json:"name" yaml:"name"`
+	Host          string                    `mapstructure:"host" json:"host" yaml:"host"`
+	Port          uint32                    `mapstructure:"port" json:"port" yaml:"port"`
+	Tags          []string                  `mapstructure:"tags" json:"tags" yaml:"tags"`
+	UserSrvConfig UserSrvConfig             `mapstructure:"user-srv" json:"user-srv" yaml:"user-srv"`
+	SMSConfig     SMSConfig                 `mapstructure:"sms" json:"smd,omitempty" yaml:"sms"`
+	RedisConfig   RedisConfig               `mapstructure:"redis" json:"redis" yaml:"redis"`
+	System        System                    `mapstructure:"system" json:"system" yaml:"system"`
+	EnableCaptcha bool                      `mapstructure:"enable-captcha" json:"enable-captcha" yaml:"enable-captcha"`
+	JWTInfo       commonConfig.JWTConfig    `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
+	Consul        commonConfig.Consul       `mapstructure:"consul" json:"consul" yaml:"consul"`
+	Nacos         commonConfig.NacosConfig  `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
+	LogConfig     commonConfig.LogConfig    `mapstructure:"log" json:"log" yaml:"log"` // 日志配置
+	Jaeger        commonConfig.JaegerConfig `mapstructure:"jaeger" json:"jaeger" yaml:"jaeger"`
 }

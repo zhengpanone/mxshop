@@ -14,12 +14,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/zhengpanone/mxshop/oss-web/global"
 	"go.uber.org/zap"
 	"hash"
 	"io"
 	"net/http"
 	"net/url"
-	"oss-web/global"
 	"time"
 )
 

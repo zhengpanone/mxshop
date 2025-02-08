@@ -1,7 +1,7 @@
 package config
 
 import (
-	commonConfig "common/config"
+	commonConfig "github.com/zhengpanone/mxshop/common/config"
 )
 
 type GoodsSrvConfig struct {
@@ -19,9 +19,9 @@ type ServerConfig struct {
 	Host           string                    `mapstructure:"host" json:"host" yaml:"host"`
 	Port           uint32                    `mapstructure:"port" json:"port" yaml:"port"`
 	Tags           []string                  `mapstructure:"tags" json:"tags" yaml:"tags"`
+	System         System                    `mapstructure:"system" json:"system" yaml:"system"`
 	GoodsSrvConfig GoodsSrvConfig            `mapstructure:"user-srv" json:"user-srv" yaml:"user-srv"`
 	JWTInfo        commonConfig.JWTConfig    `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
-	System         System                    `mapstructure:"system" json:"system" yaml:"system"`
 	Consul         commonConfig.Consul       `mapstructure:"consul" json:"consul" yaml:"consul"`
 	Nacos          commonConfig.NacosConfig  `mapstructure:"nacos" json:"nacos" yaml:"nacos"`
 	Jaeger         commonConfig.JaegerConfig `mapstructure:"jaeger" json:"jaeger" yaml:"jaeger"`

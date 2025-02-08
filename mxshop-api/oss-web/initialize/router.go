@@ -1,10 +1,10 @@
 package initialize
 
 import (
-	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	"github.com/zhengpanone/mxshop/oss-web/api/router"
 	"net/http"
-	"oss-web/api/router"
 )
 
 func Routers() *gin.Engine {

@@ -7,5 +7,5 @@ swag fmt
 
 # 构建镜像
 ```shell
-docker build --no-cache -f goods-web/Dockerfile -t goods-web .
+docker build --no-cache -f goods-web/Dockerfile -t zhengpanone/goods-web .
 ```

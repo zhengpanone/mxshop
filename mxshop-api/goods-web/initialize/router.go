@@ -2,13 +2,16 @@ package initialize
 
 import (
 	"github.com/gin-gonic/gin"
-	middleware2 "goods-web/api/middleware"
-	router2 "goods-web/api/router"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	routers "github.com/zhengpanone/mxshop/goods-web/api/router"
+	"github.com/zhengpanone/mxshop/goods-web/middleware"
 	"net/http"
 )
 
 func Routers() *gin.Engine {
 	Router := gin.Default()
+	// 配置跨域
+	Router.Use(gin.LoggerWithConfig(gin.LoggerConfig{}), commonMiddleware.Cors(), middleware.Trace())
 	SwaggerInit(Router)
 	Router.GET("/health", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
@@ -16,12 +19,11 @@ func Routers() *gin.Engine {
 			"success": true,
 		})
 	})
-	// 配置跨域
-	Router.Use(middleware2.Cors(), middleware2.Trace())
+
 	ApiGroup := Router.Group("/v1/goods")
-	router2.InitGoodsRouter(ApiGroup)
-	router2.InitCategoryRouter(ApiGroup)
-	router2.InitBannerRouter(ApiGroup)
-	router2.InitBrandRouter(ApiGroup)
+	routers.InitGoodsRouter(ApiGroup)
+	routers.InitCategoryRouter(ApiGroup)
+	routers.InitBannerRouter(ApiGroup)
+	routers.InitBrandRouter(ApiGroup)
 	return Router
 }

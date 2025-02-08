@@ -1,15 +1,15 @@
 package controller
 
 import (
-	commonClaims "common/claims"
-	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
+	commonClaims "github.com/zhengpanone/mxshop/common/claims"
+	commonUtils "github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/order-web/forms"
+	"github.com/zhengpanone/mxshop/order-web/global"
+	"github.com/zhengpanone/mxshop/order-web/proto"
 	"net/http"
-	"order-web/forms"
-	"order-web/global"
-	"order-web/proto"
 	"strconv"
 )
 

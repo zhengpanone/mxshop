@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	commonClaims "common/claims"
 	"github.com/gin-gonic/gin"
+	commonClaims "github.com/zhengpanone/mxshop/common/claims"
 	"net/http"
 )
 

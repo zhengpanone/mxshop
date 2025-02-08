@@ -8,9 +8,9 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"github.com/spf13/viper"
+	"github.com/zhengpanone/mxshop/oss-web/global"
 	"go.uber.org/zap"
 	"log"
-	"oss-web/global"
 	"strings"
 )
 

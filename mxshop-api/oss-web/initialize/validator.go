@@ -9,7 +9,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	entranslations "github.com/go-playground/validator/v10/translations/en"
 	zhtranslations "github.com/go-playground/validator/v10/translations/zh"
-	"oss-web/global"
+	"github.com/zhengpanone/mxshop/oss-web/global"
 	"reflect"
 	"strings"
 )

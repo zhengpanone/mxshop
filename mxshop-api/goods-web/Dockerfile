@@ -1,16 +1,13 @@
 #https://mp.weixin.qq.com/s/vGjvIb4uWRCbuzafZuljyw
-# 使用 Go 官方的 alpine 镜像作为基础镜像
+# 使用 Go 官方的 Alpine 镜像作为基础镜像
 FROM golang:alpine AS mod
-# 设置 Go 代理
+# 设置 Go 代理，并安装 git 和构建所需的依赖
 ENV GOPROXY=https://goproxy.cn,direct
-# 安装 git 依赖
 RUN apk add --no-cache git
-# 设置工作目录为 /workspace
+# 设置工作目录
 WORKDIR /workspace/mxshop-api
 
-# 将上层目录的所有内容复制到 /workspace
-COPY ../common /workspace/mxshop-api/common
-COPY . .
+COPY .  .
 
 # 切换到 goods-web 目录
 WORKDIR /workspace/mxshop-api/goods-web
@@ -20,19 +17,24 @@ WORKDIR /workspace/mxshop-api/goods-web
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod tidy && go mod download
 
-
-# 使用 mod 阶段的结果，继续在同一目录下构建应用程序
+# 使用 mod 阶段的结果，继续构建应用
 FROM mod AS build
-# 在 /workspace 目录中进行构建
-RUN  CGO_ENABLED=0 go build -o goods-web -ldflags '-w -extldflags "-static"' .
 
+WORKDIR /workspace/mxshop-api/goods-web/cmd
 
-# 使用 Alpine 作为最终镜像，并将构建的应用程序复制进去
+# 构建 Go 应用
+RUN CGO_ENABLED=0 go build -o goods-web -ldflags '-w -extldflags "-static"' .
+
+# 使用更小的 Alpine 镜像作为最终镜像
 FROM alpine:latest
-# 安装时区数据和 CA 证书
+
+# 安装时区数据和 CA 证书（由第一阶段的构建继承）
 RUN apk add --no-cache tzdata ca-certificates
-# 将构建好的应用程序从 build 阶段复制到最终镜像中
+
+# 设置工作目录
 WORKDIR /app
+
+# 复制构建好的应用程序和配置文件
 COPY --from=build /workspace/mxshop-api/goods-web/goods-web /app
 COPY --from=build /workspace/mxshop-api/goods-web/config-dev.yaml /app
 

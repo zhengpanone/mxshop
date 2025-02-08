@@ -1,14 +1,14 @@
 package controller
 
 import (
-	commonUtils "common/utils"
 	"context"
 	"github.com/gin-gonic/gin"
+	commonUtils "github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/order-web/forms"
+	"github.com/zhengpanone/mxshop/order-web/global"
+	"github.com/zhengpanone/mxshop/order-web/proto"
 	"go.uber.org/zap"
 	"net/http"
-	"order-web/forms"
-	"order-web/global"
-	"order-web/proto"
 	"strconv"
 )
 

@@ -1,15 +1,15 @@
 package controller
 
 import (
-	"common/utils"
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/oss-web/global"
+	"github.com/zhengpanone/mxshop/oss-web/utils/storage"
 	"go.uber.org/zap"
 	"net/http"
 	"net/url"
-	"oss-web/global"
-	"oss-web/utils/storage"
 	"strings"
 	"time"
 )
