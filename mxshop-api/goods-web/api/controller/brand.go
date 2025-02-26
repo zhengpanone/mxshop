@@ -153,7 +153,7 @@ func (*BrandController) ListBrand(ctx *gin.Context) {
 		responseMap["logo"] = value.Logo
 		result = append(result, responseMap)
 	}
-	response["data"] = result
+	response["list"] = result
 	commonUtils.OkWithData(ctx, response)
 }
 
