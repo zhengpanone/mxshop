@@ -1,13 +1,13 @@
 package initialize
 
 import (
-	commonUtils "common/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"userop-web/docs"
-	"userop-web/global"
+	commonUtils "github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/userop-web/docs"
+	"github.com/zhengpanone/mxshop/userop-web/global"
 )
 
 // SwaggerInit swagger初始化

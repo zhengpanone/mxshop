@@ -1,14 +1,14 @@
 package initialize
 
 import (
-	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	"github.com/zhengpanone/mxshop/userop-web/api/router"
 	"net/http"
-	router2 "userop-web/api/router"
 )
 
 func Routers() *gin.Engine {
-	Router := gin.Default()
+	Router := gin.New()
 	SwaggerInit(Router)
 	Router.GET("/health", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
@@ -19,9 +19,9 @@ func Routers() *gin.Engine {
 	// 配置跨域
 	Router.Use(commonMiddleware.Cors())
 	ApiGroup := Router.Group("/v1/userop/")
-	router2.InitMessageRouter(ApiGroup)
-	router2.InitAddressRouter(ApiGroup)
-	router2.InitUserFavRouter(ApiGroup)
+	router.InitMessageRouter(ApiGroup)
+	router.InitAddressRouter(ApiGroup)
+	router.InitUserFavRouter(ApiGroup)
 
 	return Router
 }

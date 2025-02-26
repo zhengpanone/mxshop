@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/zhengpanone/mxshop/common/utils"
 	"go.uber.org/zap"
 	"net"
 	"net/http"
@@ -34,6 +35,15 @@ func (w CustomResponseWriter) WriteString(s string) (int, error) {
 // GinLogger 日志中间件
 func GinLogger(logger *zap.Logger) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		value, exists := ctx.Get("skipPaths")
+		if exists && value != nil {
+			if skipPaths, ok := value.(utils.Set[string]); !ok {
+				if skipPaths.Contains(ctx.Request.URL.Path) {
+					ctx.Next()
+					return
+				}
+			}
+		}
 		start := time.Now()
 		path := ctx.Request.URL.Path
 		// 跳过 /health 路径的日志记录
@@ -53,7 +63,7 @@ func GinLogger(logger *zap.Logger) gin.HandlerFunc {
 		blw := &CustomResponseWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
 		ctx.Writer = blw
 
-		ctx.Set("example", "123456")
+		//ctx.Set("example", "123456")
 		// 让原本执行的逻辑继续执行
 		ctx.Next()
 		end := time.Since(start)
@@ -113,5 +123,14 @@ func GinRecovery(logger *zap.Logger, stack bool) gin.HandlerFunc {
 			}
 		}()
 		ctx.Next()
+	}
+}
+
+func CustomLoggerWithConfig(skipPaths []string) gin.HandlerFunc {
+	logger := gin.LoggerWithConfig(gin.LoggerConfig{SkipPaths: skipPaths})
+	return func(ctx *gin.Context) {
+		ctx.Set("skipPaths", utils.NewSet(skipPaths))
+		// 执行原 Logger 中间件
+		logger(ctx)
 	}
 }

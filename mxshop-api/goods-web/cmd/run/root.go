@@ -13,6 +13,7 @@ import (
 	"github.com/zhengpanone/mxshop/common/utils/register/consul"
 	"github.com/zhengpanone/mxshop/goods-web/global"
 	"github.com/zhengpanone/mxshop/goods-web/initialize"
+	"github.com/zhengpanone/mxshop/goods-web/middleware"
 	"go.uber.org/zap"
 	"io"
 	"net/http"
@@ -71,7 +72,6 @@ func runFunction(cmd *cobra.Command, args []string) {
 	// 5. 初始化srv连接
 	initialize.InitSrvConn()
 
-	//
 	currentMod := gin.Mode()
 	if currentMod == gin.ReleaseMode {
 		port, err := commonUtils.GetFreePort()
@@ -85,7 +85,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	err = registerClient.Register(commonUtils.GetIP(), global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
 
 	if err != nil {
-		zap.S().Panic("商品服务goods-web 注册失败：", err.Error())
+		global.Logger.Panic("商品服务goods-web 注册失败：", zap.Error(err))
 	}
 
 	global.Logger.Info(fmt.Sprintf("商品服务goods-web服务注册到注册中心"))
@@ -108,8 +108,8 @@ func runFunction(cmd *cobra.Command, args []string) {
 
 // registerMiddleware 注册中间件
 func registerMiddleware(r *gin.Engine) {
-	// 打印日志 、异常保护
-	r.Use(commonMiddleware.GinLogger(global.Logger), commonMiddleware.GinRecovery(global.Logger, true))
+	// 跨域和链路跟踪
+	r.Use(commonMiddleware.Cors(), middleware.Trace())
 
 }
 
@@ -131,7 +131,7 @@ func shutdown(server *http.Server, serviceId string, registerClient consul.Regis
 	defer cancel()
 	// 在注册中心注销服务
 	if err := registerClient.DeRegister(serviceId); err != nil {
-		zap.S().Info("商品服务goods-web 在注册中心注销失败：", err.Error())
+		global.Logger.Info("商品服务goods-web 在注册中心注销失败：", zap.Error(err))
 	}
 	global.Logger.Info("商品服务goods-web 在注册中心注销成功：")
 

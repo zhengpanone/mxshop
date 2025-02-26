@@ -13,8 +13,20 @@ import (
 // https://www.lixueduan.com/posts/tracing/04-jaeger-gin-grpc/
 func Trace() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		value, exists := c.Get("skipPaths")
+		if exists && value != nil {
+			if skipPaths, ok := value.(utils.Set[string]); ok {
+				if skipPaths.Contains(c.Request.URL.Path) {
+					c.Next()
+					return
+				}
+			}
+		}
 		var parentSpan opentracing.Span
-
+		/*if c.Request.URL.Path == "/health" {
+			c.Next()
+			return
+		}*/
 		tracer, closer := utils.InitJaeger(global.ServerConfig.Name, global.ServerConfig.Jaeger.Host, global.ServerConfig.Jaeger.Port)
 
 		defer closer.Close()

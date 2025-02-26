@@ -20,12 +20,12 @@ func InitJaeger(serviceName string, host string, port uint32) (opentracing.Trace
 			Param: 1,
 		},
 		Reporter: &config.ReporterConfig{
-			LogSpans:           true,
-			LocalAgentHostPort: fmt.Sprintf("%s:%d", host, port), // Jaeger's agent address
+			LogSpans:           true,                             // 开启本地 `span` 日志
+			LocalAgentHostPort: fmt.Sprintf("%s:%d", host, port), // Jaeger agent address
 		},
 	}
 
-	tracer, closer, err := cfg.NewTracer(config.Logger(jaeger.StdLogger))
+	tracer, closer, err := cfg.NewTracer(config.Logger(jaeger.StdLogger)) // 使用 NullLogger 以避免 `span` 频繁打印
 	if err != nil {
 		log.Fatalf("Could not initialize jaeger tracer: %s", err.Error())
 	}

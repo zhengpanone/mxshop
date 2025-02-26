@@ -4,11 +4,11 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/zhengpanone/mxshop/userop-web/global"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"net/http"
 	"strings"
-	"userop-web/global"
 )
 
 func removeTopStruct(fields map[string]string) map[string]string {

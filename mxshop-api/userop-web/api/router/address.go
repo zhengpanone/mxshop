@@ -1,10 +1,10 @@
 package router
 
 import (
-	commonMiddleware "common/middleware"
 	"github.com/gin-gonic/gin"
-	"userop-web/api/controller"
-	"userop-web/global"
+	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
+	"github.com/zhengpanone/mxshop/userop-web/api/controller"
+	"github.com/zhengpanone/mxshop/userop-web/global"
 )
 
 func InitAddressRouter(router *gin.RouterGroup) {

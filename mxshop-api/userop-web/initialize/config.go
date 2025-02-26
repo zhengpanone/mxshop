@@ -8,10 +8,10 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"github.com/spf13/viper"
+	"github.com/zhengpanone/mxshop/userop-web/global"
 	"go.uber.org/zap"
 	"log"
 	"strings"
-	"userop-web/global"
 )
 
 func GetEnvInfo(env string) bool {

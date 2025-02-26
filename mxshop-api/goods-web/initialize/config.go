@@ -73,7 +73,7 @@ func GetConfigFromNacos() {
 		DataId: serverConfig.Nacos.DataId,
 		Group:  serverConfig.Nacos.Group,
 		OnChange: func(namespace, group, dataId, data string) {
-			fmt.Println("配置文件变化-------")
+			global.Logger.Info("配置文件变化-------")
 			//fmt.Println("config changed group:" + group + ", dataId:" + dataId + ", content:" + data)
 
 			/*err = yaml.Unmarshal([]byte(content), &global.ServerConfig)
@@ -82,9 +82,9 @@ func GetConfigFromNacos() {
 			}*/
 			// 当配置变化时，更新 Viper 中的配置。
 			if err := viper.ReadConfig(strings.NewReader(data)); err != nil {
-				fmt.Printf("Viper read config error: %v\n", err)
+				global.Logger.Info("Viper read config error: %v\n", zap.Error(err))
 			} else {
-				fmt.Println("Config has been updated.")
+				global.Logger.Info("Config has been updated.")
 				if err := viper.Unmarshal(global.ServerConfig); err != nil {
 					panic(err)
 				}

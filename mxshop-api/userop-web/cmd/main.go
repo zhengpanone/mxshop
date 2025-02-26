@@ -18,7 +18,7 @@ func main() {
 	}
 	time.Local = local
 
-	rootCmd := &cobra.Command{Use: "goods-web"}
+	rootCmd := &cobra.Command{Use: "userop-web"}
 	rootCmd.AddCommand(run.CmdRun)
 	_ = rootCmd.Execute()
 }

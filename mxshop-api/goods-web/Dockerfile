@@ -36,7 +36,7 @@ WORKDIR /app
 
 # 复制构建好的应用程序和配置文件
 COPY --from=build /workspace/mxshop-api/goods-web/goods-web /app
-COPY --from=build /workspace/mxshop-api/goods-web/config-dev.yaml /app
+COPY --from=build /workspace/mxshop-api/goods-web/config-*.yaml /app
 
 # 设置容器启动时运行的命令
 CMD ["/app/goods-web"]

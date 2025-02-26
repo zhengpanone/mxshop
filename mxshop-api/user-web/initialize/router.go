@@ -9,7 +9,8 @@ import (
 )
 
 func Routers() *gin.Engine {
-	Router := gin.Default()
+	//Router := gin.Default()
+	Router := gin.New()
 	SwaggerInit(Router)
 	Router.Use(middleware.Recovery())
 	Router.GET("/health", func(context *gin.Context) {

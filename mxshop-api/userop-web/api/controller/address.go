@@ -1,15 +1,15 @@
 package controller
 
 import (
-	customClaims "common/claims"
 	"context"
 	"github.com/gin-gonic/gin"
+	customClaims "github.com/zhengpanone/mxshop/common/claims"
+	"github.com/zhengpanone/mxshop/userop-web/forms"
+	"github.com/zhengpanone/mxshop/userop-web/global"
+	"github.com/zhengpanone/mxshop/userop-web/proto"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
-	"userop-web/forms"
-	"userop-web/global"
-	"userop-web/proto"
 )
 
 func GetAddressList(ctx *gin.Context) {

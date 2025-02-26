@@ -14,8 +14,8 @@ import (
 	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
 	commonUtils "github.com/zhengpanone/mxshop/common/utils"
 	"github.com/zhengpanone/mxshop/common/utils/register/consul"
-	"github.com/zhengpanone/mxshop/goods-web/global"
-	"github.com/zhengpanone/mxshop/goods-web/initialize"
+	"github.com/zhengpanone/mxshop/userop-web/global"
+	"github.com/zhengpanone/mxshop/userop-web/initialize"
 	myValidator "github.com/zhengpanone/mxshop/userop-web/validator"
 	"go.uber.org/zap"
 	"io"
@@ -53,7 +53,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	}
 
 	// 1.初始化配置文件
-	initialize.InitConfig(configPath)
+	initialize.InitConfig()
 
 	// 2.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
