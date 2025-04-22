@@ -11,6 +11,20 @@ import (
 	"strconv"
 )
 
+// GetFavList 获取用户收藏列表
+//
+//	@Summary		获取用户收藏列表
+//	@Description	根据用户收藏列表。
+//	@Tags			UserFav
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/userfavs/list [get]
 func GetFavList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	userFavRsp, err := global.UserFavSrvClient.GetFavList(context.Background(), &proto.UserFavRequest{UserId: int32(userId.(uint))})
@@ -57,6 +71,20 @@ func GetFavList(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, reMap)
 }
 
+// AddUserFav 		新增收藏
+//
+//	@Summary		新增用户收藏
+//	@Description	新增用户收藏。
+//	@Tags			UserFav
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/userfavs/create [post]
 func AddUserFav(ctx *gin.Context) {
 	userFavForm := forms.UserFavForm{}
 	if err := ctx.ShouldBindJSON(&userFavForm); err != nil {
@@ -80,6 +108,20 @@ func AddUserFav(ctx *gin.Context) {
 
 }
 
+// DeleteUserFav 		删除收藏
+//
+//	@Summary		新增用户收藏
+//	@Description	新增用户收藏。
+//	@Tags			UserFav
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/userfavs/delete [delete]
 func DeleteUserFav(ctx *gin.Context) {
 	id := ctx.Param("id")
 	userId, _ := ctx.Get("userId")
@@ -103,6 +145,20 @@ func DeleteUserFav(ctx *gin.Context) {
 	})
 }
 
+// GetUserFavDetail 		获取用户收藏详情
+//
+//	@Summary		获取用户收藏详情
+//	@Description	获取用户收藏详情。
+//	@Tags			UserFav
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/userfavs/detail [get]
 func GetUserFavDetail(ctx *gin.Context) {
 	goodsId := ctx.Param("id")
 	userId, _ := ctx.Get("userId")

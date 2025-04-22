@@ -8,17 +8,15 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"github.com/spf13/viper"
+	"github.com/zhengpanone/mxshop/common/utils/filesystem"
 	"github.com/zhengpanone/mxshop/oss-web/global"
 	"go.uber.org/zap"
 	"log"
+	"path/filepath"
 	"strings"
 )
 
-// GetEnvInfo 获取环境变量信息
-func GetEnvInfo(env string) bool {
-	viper.AutomaticEnv()
-	return viper.GetBool(env)
-}
+var RootPath string
 
 func GetConfigFromNacos() {
 	serverConfig := global.ServerConfig
@@ -95,17 +93,23 @@ func GetConfigFromNacos() {
 	})
 }
 
-func InitConfig() {
+func InitConfig(path string) {
+	if path == "" {
+		callerPath, _ := filesystem.CallerPath()
+		RootPath = filepath.Dir(callerPath)
+	} else {
+
+	}
 	mode := gin.Mode()
 	configFilePrefix := "config"
 
-	configFileName := fmt.Sprintf("./%s-pro.yaml", configFilePrefix)
+	configFileName := fmt.Sprintf("%s-pro.yaml", configFilePrefix)
 	if mode == gin.DebugMode {
-		configFileName = fmt.Sprintf("./%s-dev.yaml", configFilePrefix)
+		configFileName = fmt.Sprintf("%s-dev.yaml", configFilePrefix)
 	}
 	v := viper.New()
 	v.SetConfigType("yaml")
-	v.SetConfigFile(configFileName)
+	v.SetConfigFile(filepath.Join(RootPath, configFileName))
 
 	if err := v.ReadInConfig(); err != nil {
 		log.Fatalf("Error reading config file, %s", err)

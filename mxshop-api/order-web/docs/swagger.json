@@ -1,8 +1,16 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "慕学商城项目，提供订单的查询、创建、更新等功能。",
+        "title": "订单服务",
+        "contact": {
+            "name": "zhengpanone",
+            "url": "http://127.0.0.1:18022/swagger/index.html"
+        },
+        "version": "1.0"
     },
+    "host": "127.0.0.1:18022",
+    "basePath": "/v1/order",
     "paths": {
         "/v1/order/detail": {
             "get": {
@@ -241,5 +249,18 @@
                 }
             }
         }
-    }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "提供订单的增删改查功能",
+            "name": "订单管理"
+        }
+    ]
 }

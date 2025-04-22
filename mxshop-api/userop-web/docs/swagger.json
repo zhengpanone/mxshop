@@ -1,7 +1,651 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "慕学商城项目，提供商品的查询、创建、更新等功能。",
+        "title": "用户操作服务",
+        "contact": {
+            "name": "zhengpanone",
+            "url": "http://127.0.0.1:18022/swagger/index.html"
+        },
+        "version": "1.0"
     },
-    "paths": {}
+    "host": "127.0.0.1:18022",
+    "basePath": "/v1/goods",
+    "paths": {
+        "/v1/userop/address/create": {
+            "post": {
+                "description": "创建用户地址信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Address"
+                ],
+                "summary": "新增用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/address/delete": {
+            "delete": {
+                "description": "删除用户地址信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Address"
+                ],
+                "summary": "删除用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/address/list": {
+            "get": {
+                "description": "根据用户ID获取该用户的地址信息。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Address"
+                ],
+                "summary": "获取用户地址列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/address/update": {
+            "put": {
+                "description": "更新用户地址信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Address"
+                ],
+                "summary": "更新用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/message/create": {
+            "post": {
+                "description": "新增留言。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Message"
+                ],
+                "summary": "新增留言",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/message/list": {
+            "get": {
+                "description": "获取留言列表。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Message"
+                ],
+                "summary": "获取留言列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/userfavs/create": {
+            "post": {
+                "description": "新增用户收藏。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserFav"
+                ],
+                "summary": "新增用户收藏",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/userfavs/delete": {
+            "delete": {
+                "description": "新增用户收藏。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserFav"
+                ],
+                "summary": "新增用户收藏",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/userfavs/detail": {
+            "get": {
+                "description": "获取用户收藏详情。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserFav"
+                ],
+                "summary": "获取用户收藏详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userop/userfavs/list": {
+            "get": {
+                "description": "根据用户收藏列表。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserFav"
+                ],
+                "summary": "获取用户收藏列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类ID",
+                        "name": "categoryId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址列表获取成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "分类未找到",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "utils.ErrorItem": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Meta": {
+            "type": "object",
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "响应数据"
+                },
+                "errors": {
+                    "description": "Errors 错误提示，如 xx字段不能为空等",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/utils.ErrorItem"
+                    }
+                },
+                "meta": {
+                    "description": "Meta 源数据,存储如请求ID,分页等信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/utils.Meta"
+                        }
+                    ]
+                },
+                "msg": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "提供用户操作的增删改查功能",
+            "name": "用户操作管理"
+        }
+    ]
 }

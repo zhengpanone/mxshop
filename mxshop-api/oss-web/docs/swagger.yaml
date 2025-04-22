@@ -1,4 +1,4 @@
-basePath: /v1/order
+basePath: /v1/oss
 definitions:
   utils.ErrorItem:
     properties:
@@ -38,133 +38,96 @@ info:
     name: zhengpanone
     url: http://127.0.0.1:18022/swagger/index.html
   description: 慕学商城项目，提供订单的查询、创建、更新等功能。
-  title: 订单服务
+  title: oss服务
   version: "1.0"
 paths:
-  /v1/order/detail:
-    get:
-      consumes:
-      - application/json
-      description: 根据订单ID获取订单的详细信息，包括商品信息、支付信息等
-      parameters:
-      - description: 认证令牌
-        in: header
-        name: x-token
-        required: true
-        type: string
-      - description: 订单ID
-        in: query
-        name: order_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 订单详情获取成功
-          schema:
-            $ref: '#/definitions/utils.Response'
-        "400":
-          description: 无效的请求参数
-          schema:
-            $ref: '#/definitions/utils.Response'
-        "404":
-          description: 订单未找到
-          schema:
-            $ref: '#/definitions/utils.Response'
-        "500":
-          description: 服务器错误
-          schema:
-            $ref: '#/definitions/utils.Response'
-      summary: 获取指定订单的详细信息
-      tags:
-      - Order
-  /v1/shop-cart/list:
-    get:
-      consumes:
-      - application/json
-      description: 根据用户的ID获取购物车中的所有商品列表
-      parameters:
-      - description: 认证令牌
-        in: header
-        name: x-token
-        required: true
-        type: string
-      - description: 用户ID
-        in: query
-        name: user_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 购物车列表获取成功
-          schema:
-            $ref: '#/definitions/utils.Response'
-        "400":
-          description: 无效的请求参数
-          schema:
-            $ref: '#/definitions/utils.Response'
-        "404":
-          description: 购物车未找到
-          schema:
-            $ref: '#/definitions/utils.Response'
-        "500":
-          description: 服务器错误
-          schema:
-            $ref: '#/definitions/utils.Response'
-      summary: 获取用户的购物车列表
-      tags:
-      - ShopCart
-  /v1/shop-cart/new:
+  /v1/oss/callback:
     post:
       consumes:
       - application/json
-      description: 根据商品ID和用户ID将商品添加到购物车
+      description: 处理上传回调请求
       parameters:
       - description: 认证令牌
         in: header
         name: x-token
         required: true
         type: string
-      - description: 用户ID
-        in: query
-        name: user_id
-        required: true
-        type: integer
-      - description: 商品ID
-        in: query
-        name: product_id
-        required: true
-        type: integer
-      - description: 商品数量
-        in: query
-        name: quantity
-        required: true
-        type: integer
       produces:
       - application/json
       responses:
-        "200":
-          description: 商品添加成功
+        "201":
+          description: 品牌创建成功
           schema:
             $ref: '#/definitions/utils.Response'
         "400":
           description: 无效的请求参数
           schema:
             $ref: '#/definitions/utils.Response'
-        "404":
-          description: 商品未找到
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 处理上传回调请求
+      tags:
+      - OSS
+  /v1/oss/token:
+    get:
+      consumes:
+      - application/json
+      description: 生成上传凭证
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 品牌创建成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
           schema:
             $ref: '#/definitions/utils.Response'
         "500":
           description: 服务器错误
           schema:
             $ref: '#/definitions/utils.Response'
-      summary: 将新商品添加到购物车
+      summary: 生成上传凭证
       tags:
-      - ShopCart
+      - OSS
+  /v1/oss/upload:
+    post:
+      consumes:
+      - application/json
+      description: 文件上传接口
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 品牌创建成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 文件上传接口
+      tags:
+      - OSS
 securityDefinitions:
   ApiKeyAuth:
     in: header
@@ -172,5 +135,5 @@ securityDefinitions:
     type: apiKey
 swagger: "2.0"
 tags:
-- description: 提供订单的增删改查功能
-  name: 订单管理
+- description: 提供oss的增删改查功能
+  name: oss管理

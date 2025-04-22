@@ -15,6 +15,17 @@ import (
 )
 
 // GenerateUploadToken 生成上传凭证
+//
+//	@Summary		生成上传凭证
+//	@Description	生成上传凭证
+//	@Tags			OSS
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token	header		string				true	"认证令牌"
+//	@Success		201		{object}	utils.Response		"品牌创建成功"
+//	@Failure		400		{object}	utils.Response		"无效的请求参数"
+//	@Failure		500		{object}	utils.Response		"服务器错误"
+//	@Router			/v1/oss/token [get]
 func GenerateUploadToken(ctx *gin.Context) {
 	response := storage.GetPolicyToken()
 	ctx.Header("Access-Control-Allow-Methods", "POST")
@@ -23,6 +34,18 @@ func GenerateUploadToken(ctx *gin.Context) {
 
 }
 
+// HandlerRequest 处理上传回调请求
+//
+//	@Summary		处理上传回调请求
+//	@Description	处理上传回调请求
+//	@Tags			OSS
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token	header		string				true	"认证令牌"
+//	@Success		201		{object}	utils.Response		"品牌创建成功"
+//	@Failure		400		{object}	utils.Response		"无效的请求参数"
+//	@Failure		500		{object}	utils.Response		"服务器错误"
+//	@Router			/v1/oss/callback [post]
 func HandlerRequest(ctx *gin.Context) {
 	fmt.Println("\nHandle Post Request ... ")
 	// Get PublicKey bytes
@@ -74,6 +97,17 @@ func HandlerRequest(ctx *gin.Context) {
 }
 
 // UploadFile 文件上传接口
+//
+//	@Summary		文件上传接口
+//	@Description	文件上传接口
+//	@Tags			OSS
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token	header		string				true	"认证令牌"
+//	@Success		201		{object}	utils.Response		"品牌创建成功"
+//	@Failure		400		{object}	utils.Response		"无效的请求参数"
+//	@Failure		500		{object}	utils.Response		"服务器错误"
+//	@Router			/v1/oss/upload [post]
 func UploadFile(c *gin.Context) {
 	// 获取上传的文件
 	file, header, err := c.Request.FormFile("file")

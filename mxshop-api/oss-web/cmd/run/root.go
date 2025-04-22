@@ -25,7 +25,7 @@ import (
 
 var CmdRun = &cobra.Command{
 	Use:   "run",
-	Short: "Run order-web server",
+	Short: "Run oss-web server",
 	Run:   runFunction,
 }
 
@@ -50,7 +50,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	}
 
 	// 1.初始化配置文件
-	initialize.InitConfig()
+	initialize.InitConfig(configPath)
 
 	// 2.初始化Logger
 	logConfig := global.ServerConfig.LogConfig

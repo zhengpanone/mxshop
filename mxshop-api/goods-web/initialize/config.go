@@ -129,7 +129,6 @@ func InitConfig(path string) {
 	// 监听本地配置文件的变化（可选）
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		//fmt.Println("Config file changed:", e.Name)
 		zap.S().Infof("Local Config File Changed:%e", e.Name)
 		_ = v.ReadInConfig()
 		_ = v.Unmarshal(global.ServerConfig)

@@ -12,6 +12,20 @@ import (
 	"strconv"
 )
 
+// GetAddressList 获取用户地址列表
+//
+//	@Summary		获取用户地址列表
+//	@Description	根据用户ID获取该用户的地址信息。
+//	@Tags			Address
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/address/list [get]
 func GetAddressList(ctx *gin.Context) {
 	request := proto.AddressRequest{}
 	userId, _ := ctx.Get("userId")
@@ -48,6 +62,20 @@ func GetAddressList(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, reMap)
 }
 
+// CreateAddress 新增用户地址
+//
+//	@Summary		新增用户地址
+//	@Description	创建用户地址信息
+//	@Tags			Address
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/address/create [post]
 func CreateAddress(ctx *gin.Context) {
 	addressForm := forms.AddressForm{}
 	if err := ctx.ShouldBindJSON(addressForm); err != nil {
@@ -72,6 +100,20 @@ func CreateAddress(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, reMap)
 }
 
+// DeleteAddress 删除用户地址
+//
+//	@Summary		删除用户地址
+//	@Description	删除用户地址信息
+//	@Tags			Address
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/address/delete [delete]
 func DeleteAddress(ctx *gin.Context) {
 	id := ctx.Param("id")
 	i, err := strconv.ParseInt(id, 10, 32)
@@ -90,6 +132,20 @@ func DeleteAddress(ctx *gin.Context) {
 	})
 }
 
+// UpdateAddress 更新用户地址
+//
+//	@Summary		更新用户地址
+//	@Description	更新用户地址信息
+//	@Tags			Address
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/address/update [put]
 func UpdateAddress(ctx *gin.Context) {
 	addressForm := forms.AddressForm{}
 	if err := ctx.ShouldBindJSON(addressForm); err != nil {

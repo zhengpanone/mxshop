@@ -18,123 +18,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/order/detail": {
-            "get": {
-                "description": "根据订单ID获取订单的详细信息，包括商品信息、支付信息等",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Order"
-                ],
-                "summary": "获取指定订单的详细信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "认证令牌",
-                        "name": "x-token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "订单ID",
-                        "name": "order_id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "订单详情获取成功",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "无效的请求参数",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "订单未找到",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "服务器错误",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/shop-cart/list": {
-            "get": {
-                "description": "根据用户的ID获取购物车中的所有商品列表",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ShopCart"
-                ],
-                "summary": "获取用户的购物车列表",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "认证令牌",
-                        "name": "x-token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "用户ID",
-                        "name": "user_id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "购物车列表获取成功",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "无效的请求参数",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "购物车未找到",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "服务器错误",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/shop-cart/new": {
+        "/v1/oss/callback": {
             "post": {
-                "description": "根据商品ID和用户ID将商品添加到购物车",
+                "description": "处理上传回调请求",
                 "consumes": [
                     "application/json"
                 ],
@@ -142,9 +28,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ShopCart"
+                    "OSS"
                 ],
-                "summary": "将新商品添加到购物车",
+                "summary": "处理上传回调请求",
                 "parameters": [
                     {
                         "type": "string",
@@ -152,32 +38,11 @@ const docTemplate = `{
                         "name": "x-token",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "用户ID",
-                        "name": "user_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "商品ID",
-                        "name": "product_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "商品数量",
-                        "name": "quantity",
-                        "in": "query",
-                        "required": true
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "商品添加成功",
+                    "201": {
+                        "description": "品牌创建成功",
                         "schema": {
                             "$ref": "#/definitions/utils.Response"
                         }
@@ -188,8 +53,90 @@ const docTemplate = `{
                             "$ref": "#/definitions/utils.Response"
                         }
                     },
-                    "404": {
-                        "description": "商品未找到",
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/oss/token": {
+            "get": {
+                "description": "生成上传凭证",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OSS"
+                ],
+                "summary": "生成上传凭证",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "品牌创建成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器错误",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/oss/upload": {
+            "post": {
+                "description": "文件上传接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OSS"
+                ],
+                "summary": "文件上传接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "认证令牌",
+                        "name": "x-token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "品牌创建成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "无效的请求参数",
                         "schema": {
                             "$ref": "#/definitions/utils.Response"
                         }
@@ -265,8 +212,8 @@ const docTemplate = `{
     },
     "tags": [
         {
-            "description": "提供订单的增删改查功能",
-            "name": "订单管理"
+            "description": "提供oss的增删改查功能",
+            "name": "oss管理"
         }
     ]
 }`
@@ -275,9 +222,9 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "127.0.0.1:18022",
-	BasePath:         "/v1/order",
+	BasePath:         "/v1/oss",
 	Schemes:          []string{},
-	Title:            "订单服务",
+	Title:            "oss服务",
 	Description:      "慕学商城项目，提供订单的查询、创建、更新等功能。",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

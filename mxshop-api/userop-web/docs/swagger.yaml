@@ -1,4 +1,432 @@
+basePath: /v1/goods
+definitions:
+  utils.ErrorItem:
+    properties:
+      error:
+        type: string
+      key:
+        type: string
+    type: object
+  utils.Meta:
+    properties:
+      request_id:
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      code:
+        description: 业务状态码
+        type: integer
+      data:
+        description: 响应数据
+      errors:
+        description: Errors 错误提示，如 xx字段不能为空等
+        items:
+          $ref: '#/definitions/utils.ErrorItem'
+        type: array
+      meta:
+        allOf:
+        - $ref: '#/definitions/utils.Meta'
+        description: Meta 源数据,存储如请求ID,分页等信息
+      msg:
+        description: 提示信息
+        type: string
+    type: object
+host: 127.0.0.1:18022
 info:
-  contact: {}
-paths: {}
+  contact:
+    name: zhengpanone
+    url: http://127.0.0.1:18022/swagger/index.html
+  description: 慕学商城项目，提供商品的查询、创建、更新等功能。
+  title: 用户操作服务
+  version: "1.0"
+paths:
+  /v1/userop/address/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建用户地址信息
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 新增用户地址
+      tags:
+      - Address
+  /v1/userop/address/delete:
+    delete:
+      consumes:
+      - application/json
+      description: 删除用户地址信息
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 删除用户地址
+      tags:
+      - Address
+  /v1/userop/address/list:
+    get:
+      consumes:
+      - application/json
+      description: 根据用户ID获取该用户的地址信息。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取用户地址列表
+      tags:
+      - Address
+  /v1/userop/address/update:
+    put:
+      consumes:
+      - application/json
+      description: 更新用户地址信息
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 更新用户地址
+      tags:
+      - Address
+  /v1/userop/message/create:
+    post:
+      consumes:
+      - application/json
+      description: 新增留言。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 新增留言
+      tags:
+      - Message
+  /v1/userop/message/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取留言列表。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取留言列表
+      tags:
+      - Message
+  /v1/userop/userfavs/create:
+    post:
+      consumes:
+      - application/json
+      description: 新增用户收藏。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 新增用户收藏
+      tags:
+      - UserFav
+  /v1/userop/userfavs/delete:
+    delete:
+      consumes:
+      - application/json
+      description: 新增用户收藏。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 新增用户收藏
+      tags:
+      - UserFav
+  /v1/userop/userfavs/detail:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户收藏详情。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取用户收藏详情
+      tags:
+      - UserFav
+  /v1/userop/userfavs/list:
+    get:
+      consumes:
+      - application/json
+      description: 根据用户收藏列表。
+      parameters:
+      - description: 认证令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址列表获取成功
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: 无效的请求参数
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: 分类未找到
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: 获取用户收藏列表
+      tags:
+      - UserFav
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
+tags:
+- description: 提供用户操作的增删改查功能
+  name: 用户操作管理

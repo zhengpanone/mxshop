@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	customClaims "github.com/zhengpanone/mxshop/common/claims"
+	commonUtils "github.com/zhengpanone/mxshop/common/utils"
 	"github.com/zhengpanone/mxshop/userop-web/forms"
 	"github.com/zhengpanone/mxshop/userop-web/global"
 	"github.com/zhengpanone/mxshop/userop-web/proto"
@@ -11,6 +12,20 @@ import (
 	"net/http"
 )
 
+// GetMessageList 获取用户地址列表
+//
+//	@Summary		获取留言列表
+//	@Description	获取留言列表。
+//	@Tags			Message
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	commonUtils.Response{}	"地址列表获取成功"
+//	@Failure		400			{object}	commonUtils.Response	"无效的请求参数"
+//	@Failure		404			{object}	commonUtils.Response	"分类未找到"
+//	@Failure		500			{object}	commonUtils.Response	"服务器错误"
+//	@Router			/v1/userop/message/list [get]
 func GetMessageList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	claims, _ := ctx.Get("claims")
@@ -41,10 +56,24 @@ func GetMessageList(ctx *gin.Context) {
 		result = append(result, reMap)
 	}
 	reMap["data"] = result
-	ctx.JSON(http.StatusOK, reMap)
+	commonUtils.OkWithData(ctx, reMap)
 
 }
 
+// CreateMessage 新增留言
+//
+//	@Summary		新增留言
+//	@Description	新增留言。
+//	@Tags			Message
+//	@Accept			json
+//	@Produce		json
+//	@Param			x-token		header		string			true	"认证令牌"
+//	@Param			categoryId	path		int				true	"分类ID"
+//	@Success		200			{object}	utils.Response	"地址列表获取成功"
+//	@Failure		400			{object}	utils.Response	"无效的请求参数"
+//	@Failure		404			{object}	utils.Response	"分类未找到"
+//	@Failure		500			{object}	utils.Response	"服务器错误"
+//	@Router			/v1/userop/message/create [post]
 func CreateMessage(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	messageForm := forms.MessageForm{}
