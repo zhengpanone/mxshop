@@ -5,7 +5,6 @@ import (
 	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
 	routers "github.com/zhengpanone/mxshop/goods-web/api/router"
 	"github.com/zhengpanone/mxshop/goods-web/global"
-	"github.com/zhengpanone/mxshop/goods-web/middleware"
 	"net/http"
 )
 
@@ -18,7 +17,6 @@ func Routers() *gin.Engine {
 	// 配置跨域
 	Router.Use(
 		commonMiddleware.Cors(),
-		middleware.Trace(),
 		commonMiddleware.CustomLoggerWithConfig([]string{"/health", "/swagger/index.html"}),
 		commonMiddleware.GinLogger(global.Logger),
 		commonMiddleware.GinRecovery(global.Logger, true),

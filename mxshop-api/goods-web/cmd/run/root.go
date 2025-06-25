@@ -13,7 +13,6 @@ import (
 	"github.com/zhengpanone/mxshop/common/utils/register/consul"
 	"github.com/zhengpanone/mxshop/goods-web/global"
 	"github.com/zhengpanone/mxshop/goods-web/initialize"
-	"github.com/zhengpanone/mxshop/goods-web/middleware"
 	"go.uber.org/zap"
 	"io"
 	"net/http"
@@ -109,7 +108,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 // registerMiddleware 注册中间件
 func registerMiddleware(r *gin.Engine) {
 	// 跨域和链路跟踪
-	r.Use(commonMiddleware.Cors(), middleware.Trace())
+	r.Use(commonMiddleware.Cors() /*, middleware.Trace()*/)
 
 }
 
