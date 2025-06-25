@@ -59,7 +59,6 @@ func GetConfigFromNacos() {
 	if err := viper.Unmarshal(global.ServerConfig); err != nil {
 		panic(err)
 	}
-	fmt.Printf("----1---%v\n", global.ServerConfig)
 
 	/*config := global.ServerConfig
 	err = yaml.Unmarshal([]byte(content), &config)

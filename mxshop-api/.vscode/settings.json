@@ -1,0 +1,8 @@
+{
+    "go.toolsEnvVars": {
+        "GOROOT": "/Users/mac/development/go",
+    },
+    "go.alternateTools": {
+        "dlv": "/Users/mac/go/bin/dlv",
+    }
+}

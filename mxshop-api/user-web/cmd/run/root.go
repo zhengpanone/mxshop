@@ -111,7 +111,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	if err != nil {
 		zap.S().Panic("用户服务注册失败：", err.Error())
 	}
-	global.Logger.Info(fmt.Sprintf("用户服务user-web服务注册到注册中心"))
+	global.Logger.Info("用户服务user-web服务注册到注册中心")
 	zap.S().Debugf("启动用户服务器，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port)
 	zap.S().Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", commonUtils.GetIP(), global.ServerConfig.Port))
 	server := &http.Server{

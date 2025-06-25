@@ -104,7 +104,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	if err != nil {
 		zap.S().Panic("用户操作服务注册失败：", err.Error())
 	}
-	global.Logger.Info(fmt.Sprintf("用户操作服务userop-web服务注册到注册中心"))
+	global.Logger.Info("用户操作服务userop-web服务注册到注册中心")
 	global.Logger.Info(fmt.Sprintf("启动用户操作服务器，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port))
 	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", commonUtils.GetIP(), global.ServerConfig.Port))
 

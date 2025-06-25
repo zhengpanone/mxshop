@@ -4,6 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
@@ -14,12 +21,6 @@ import (
 	"github.com/zhengpanone/mxshop/goods-web/global"
 	"github.com/zhengpanone/mxshop/goods-web/initialize"
 	"go.uber.org/zap"
-	"io"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 var CmdRun = &cobra.Command{
@@ -87,7 +88,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 		global.Logger.Panic("商品服务goods-web 注册失败：", zap.Error(err))
 	}
 
-	global.Logger.Info(fmt.Sprintf("商品服务goods-web服务注册到注册中心"))
+	global.Logger.Info("商品服务goods-web服务注册到注册中心")
 
 	global.Logger.Info(fmt.Sprintf("启动商品服务goods-web，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port))
 	global.Logger.Info(fmt.Sprintf("swagger，访问地址：http://%s:%d/swagger/index.html", commonUtils.GetIP(), global.ServerConfig.Port))

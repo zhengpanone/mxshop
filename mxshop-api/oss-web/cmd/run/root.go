@@ -92,7 +92,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	if err != nil {
 		zap.S().Panic("oss服务注册失败：", err.Error())
 	}
-	global.Logger.Info(fmt.Sprintf("oss服务oss-web服务注册到注册中心"))
+	global.Logger.Info("oss服务oss-web服务注册到注册中心")
 
 	global.Logger.Info(fmt.Sprintf("启动oss服务器，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port))
 
