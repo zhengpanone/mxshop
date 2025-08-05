@@ -14,7 +14,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zhengpanone/mxshop/oss-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/global"
 	"go.uber.org/zap"
 	"hash"
 	"io"

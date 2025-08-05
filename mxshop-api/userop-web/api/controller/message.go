@@ -3,11 +3,11 @@ package controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	customClaims "github.com/zhengpanone/mxshop/common/claims"
-	commonUtils "github.com/zhengpanone/mxshop/common/utils"
-	"github.com/zhengpanone/mxshop/userop-web/forms"
-	"github.com/zhengpanone/mxshop/userop-web/global"
-	"github.com/zhengpanone/mxshop/userop-web/proto"
+	customClaims "github.com/zhengpanone/mxshop/mxshop-api/common/claims"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/proto"
 	"go.uber.org/zap"
 	"net/http"
 )

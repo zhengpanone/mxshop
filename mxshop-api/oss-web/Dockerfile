@@ -22,7 +22,7 @@ RUN go mod tidy && go mod download
 # 使用 mod 阶段的结果，继续构建应用
 FROM mod AS build
 # 构建 Go 应用
-RUN CGO_ENABLED=0 go build -o oss-web -ldflags '-w -extldflags "-static"' .
+RUN CGO_ENABLED=0 go build -o ../oss-web -ldflags '-w -extldflags "-static"' .
 
 # 使用更小的 Alpine 镜像作为最终镜像
 FROM alpine:latest
@@ -35,7 +35,9 @@ WORKDIR /app
 
 # 复制构建好的应用程序和配置文件
 COPY --from=build /workspace/mxshop-api/oss-web/oss-web /app
-COPY --from=build /workspace/mxshop-api/oss-web/config-dev.yaml /app
+COPY --from=build /workspace/mxshop-api/oss-web/config-*.yaml /app
+
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone
 
 # 设置容器启动时运行的命令
-CMD ["/app/oss-web"]
+CMD ["/app/oss-web", "run", "-c", ".","-m", "release"]

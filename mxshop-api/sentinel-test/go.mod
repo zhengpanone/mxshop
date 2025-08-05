@@ -1,4 +1,4 @@
-module github.com/zhengpanone/mxshop/sentinel-test
+module github.com/zhengpanone/mxshop/mxshop-api/sentinel-test
 
 go 1.22.1
 

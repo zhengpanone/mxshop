@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zhengpanone/mxshop/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"go.uber.org/zap"
 	"net"
 	"net/http"

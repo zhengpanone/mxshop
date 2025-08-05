@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	commonUtils "github.com/zhengpanone/mxshop/common/utils"
-	"github.com/zhengpanone/mxshop/user-web/forms"
-	"github.com/zhengpanone/mxshop/user-web/utils"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/forms"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/utils"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

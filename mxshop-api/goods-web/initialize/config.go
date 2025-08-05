@@ -8,8 +8,8 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"github.com/spf13/viper"
-	"github.com/zhengpanone/mxshop/common/utils/filesystem"
-	"github.com/zhengpanone/mxshop/goods-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/utils/filesystem"
+	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
 	"go.uber.org/zap"
 	"log"
 	"path/filepath"
@@ -123,6 +123,7 @@ func InitConfig(path string) {
 	// 从nacos中读取配置信息
 	GetConfigFromNacos()
 	zap.S().Infof("配置信息：%v", global.ServerConfig)
+	log.Printf("配置信息：%v", global.ServerConfig)
 	// viper的功能-动态监控变化
 
 	// 监听本地配置文件的变化（可选）

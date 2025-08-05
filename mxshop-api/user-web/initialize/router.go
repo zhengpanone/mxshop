@@ -2,9 +2,9 @@ package initialize
 
 import (
 	"github.com/gin-gonic/gin"
-	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
-	"github.com/zhengpanone/mxshop/user-web/api/router"
-	"github.com/zhengpanone/mxshop/user-web/middleware"
+	commonMiddleware "github.com/zhengpanone/mxshop/mxshop-api/common/middleware"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/api/router"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/middleware"
 	"net/http"
 )
 

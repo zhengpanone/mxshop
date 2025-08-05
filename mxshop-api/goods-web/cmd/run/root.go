@@ -14,12 +14,12 @@ import (
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
-	commonInitialize "github.com/zhengpanone/mxshop/common/initialize"
-	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
-	commonUtils "github.com/zhengpanone/mxshop/common/utils"
-	"github.com/zhengpanone/mxshop/common/utils/register/consul"
-	"github.com/zhengpanone/mxshop/goods-web/global"
-	"github.com/zhengpanone/mxshop/goods-web/initialize"
+	commonInitialize "github.com/zhengpanone/mxshop/mxshop-api/common/initialize"
+	commonMiddleware "github.com/zhengpanone/mxshop/mxshop-api/common/middleware"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/utils/register/consul"
+	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/initialize"
 	"go.uber.org/zap"
 )
 
@@ -73,7 +73,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	initialize.InitSrvConn()
 
 	currentMod := gin.Mode()
-	if currentMod == gin.ReleaseMode {
+	if currentMod != gin.ReleaseMode {
 		port, err := commonUtils.GetFreePort()
 		if err == nil {
 			global.ServerConfig.Port = port

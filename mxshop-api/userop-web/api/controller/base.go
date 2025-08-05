@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/zhengpanone/mxshop/userop-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"net/http"

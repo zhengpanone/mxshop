@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/zhengpanone/mxshop/user-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 	"go.uber.org/zap"
 	"net/http"
 )

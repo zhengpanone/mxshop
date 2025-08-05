@@ -3,8 +3,8 @@ package initialize
 import (
 	"fmt"
 	_ "github.com/mbobakov/grpc-consul-resolver"
-	"github.com/zhengpanone/mxshop/order-web/global"
-	"github.com/zhengpanone/mxshop/order-web/proto"
+	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/order-web/proto"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

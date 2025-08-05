@@ -1,7 +1,7 @@
 package config
 
 import (
-	commonConfig "github.com/zhengpanone/mxshop/common/config"
+	commonConfig "github.com/zhengpanone/mxshop/mxshop-api/common/config"
 )
 
 type SrvConfig struct {

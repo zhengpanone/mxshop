@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/zhengpanone/mxshop/oss-web/cmd/run"
+	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/cmd/run"
 	"os"
 	"time"
 )

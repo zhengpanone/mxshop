@@ -5,9 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	commonUtils "github.com/zhengpanone/mxshop/common/utils"
-	"github.com/zhengpanone/mxshop/userop-web/docs"
-	"github.com/zhengpanone/mxshop/userop-web/global"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/docs"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
 )
 
 // SwaggerInit swagger初始化

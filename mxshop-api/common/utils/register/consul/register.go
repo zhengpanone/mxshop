@@ -3,6 +3,7 @@ package consul
 import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
+	"github.com/zhengpanone/mxshop/mxshop-api/common"
 )
 
 type Registry struct {
@@ -35,7 +36,7 @@ func (r *Registry) Register(address string, port uint32, name string, tags []str
 	}
 
 	// 3、配置注册服务的参数
-	fmt.Println("health url:", fmt.Sprintf("http://%s:%d/health", address, port))
+	common.Logger.Info(fmt.Sprintf("health url: http://%s:%d/health", address, port))
 	// 3.1 生成对应的检查对象
 	check := &api.AgentServiceCheck{
 		HTTP:                           fmt.Sprintf("http://%s:%d/health", address, port),

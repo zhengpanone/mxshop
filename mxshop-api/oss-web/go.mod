@@ -1,4 +1,4 @@
-module github.com/zhengpanone/mxshop/oss-web
+module github.com/zhengpanone/mxshop/mxshop-api/oss-web
 
 go 1.22.1
 
@@ -17,7 +17,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
-	github.com/zhengpanone/mxshop/common v0.0.0
+	github.com/zhengpanone/mxshop/mxshop-api/common v0.0.0
 	go.uber.org/zap v1.27.0
 )
 
@@ -128,4 +128,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/zhengpanone/mxshop/common => ../common
+replace github.com/zhengpanone/mxshop/mxshop-api/common => ../common

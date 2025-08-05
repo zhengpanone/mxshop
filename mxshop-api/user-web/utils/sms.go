@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dysmsapi"
-	"github.com/zhengpanone/mxshop/user-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 	"time"
 )
 

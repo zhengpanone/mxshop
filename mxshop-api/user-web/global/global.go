@@ -3,8 +3,8 @@ package global
 import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-redis/redis/v8"
-	"github.com/zhengpanone/mxshop/user-web/config"
-	"github.com/zhengpanone/mxshop/user-web/proto"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/config"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/proto"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )

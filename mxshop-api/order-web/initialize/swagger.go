@@ -5,9 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/zhengpanone/mxshop/common/utils"
-	"github.com/zhengpanone/mxshop/order-web/docs"
-	"github.com/zhengpanone/mxshop/order-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/order-web/docs"
+	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
 )
 
 // SwaggerInit swagger初始化

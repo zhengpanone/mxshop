@@ -9,5 +9,8 @@ cd userop-web && swag init -g cmd/main.go -d . --parseDependency=true --parseInt
 
 # 构建镜像
 ```shell
-docker build --no-cache -f goods-web/Dockerfile -t zhengpanone/goods-web .
+docker build --no-cache -f goods-web/Dockerfile -t zhengpanone/mxshop-api/goods-web .
+docker build --no-cache -f order-web/Dockerfile -t zhengpanone/mxshop-api/order-web .
+docker build --no-cache -f user-web/Dockerfile -t zhengpanone/mxshop-api/user-web .
+docker build --no-cache -f userop-web/Dockerfile -t zhengpanone/mxshop-api/userop-web .
 ```

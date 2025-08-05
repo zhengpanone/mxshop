@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zhengpanone/mxshop/user-web/forms"
-	"github.com/zhengpanone/mxshop/user-web/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/forms"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/utils"
 	"go.uber.org/zap"
 	"net/http"
 )

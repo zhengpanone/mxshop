@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
-	"github.com/zhengpanone/mxshop/user-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 	"time"
 )
 

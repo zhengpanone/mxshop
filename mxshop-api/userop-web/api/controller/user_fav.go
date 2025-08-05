@@ -3,9 +3,9 @@ package controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/zhengpanone/mxshop/userop-web/forms"
-	"github.com/zhengpanone/mxshop/userop-web/global"
-	"github.com/zhengpanone/mxshop/userop-web/proto"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/proto"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"

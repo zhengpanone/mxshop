@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zhengpanone/mxshop/oss-web/api/controller"
+	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/api/controller"
 )
 
 func InitOssRouter(Router *gin.RouterGroup) {

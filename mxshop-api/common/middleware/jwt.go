@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/zhengpanone/mxshop/common/claims"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
 	"net/http"
 	"strings"
 	//"order-web/global"

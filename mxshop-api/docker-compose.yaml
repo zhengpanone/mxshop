@@ -4,7 +4,30 @@ services:
     build:
       context: .
       dockerfile: goods-web/Dockerfile
+    image: zhengpanone/mxshop-api/goods-web
+    ports:
+      - "18022:18022"
+
   order-web:
     build:
       context: .
       dockerfile: order-web/Dockerfile
+    image: zhengpanone/mxshop-api/order-web
+    ports:
+      - "18023:18023"
+
+  user-web:
+    build:
+      context: .
+      dockerfile: user-web/Dockerfile
+    image: zhengpanone/mxshop-api/user-web
+    ports:
+      - "18021:18021"
+
+  userop-web:
+    build:
+      context: .
+      dockerfile: userop-web/Dockerfile
+    image: zhengpanone/mxshop-api/userop-web
+    ports:
+      - "18024:18024"

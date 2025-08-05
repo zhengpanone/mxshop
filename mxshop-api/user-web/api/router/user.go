@@ -2,9 +2,9 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	commonMiddleware "github.com/zhengpanone/mxshop/common/middleware"
-	"github.com/zhengpanone/mxshop/user-web/api/controller"
-	"github.com/zhengpanone/mxshop/user-web/global"
+	commonMiddleware "github.com/zhengpanone/mxshop/mxshop-api/common/middleware"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/api/controller"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 )
 
 func InitUserRouter(router *gin.RouterGroup) {

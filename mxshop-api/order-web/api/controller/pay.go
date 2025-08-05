@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
-	commonUtils "github.com/zhengpanone/mxshop/common/utils"
-	"github.com/zhengpanone/mxshop/order-web/global"
-	"github.com/zhengpanone/mxshop/order-web/proto"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/order-web/proto"
 	"net/http"
 )
 

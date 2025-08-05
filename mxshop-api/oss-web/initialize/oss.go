@@ -2,8 +2,8 @@ package initialize
 
 import (
 	"fmt"
-	"github.com/zhengpanone/mxshop/oss-web/config"
-	"github.com/zhengpanone/mxshop/oss-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/config"
+	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/global"
 	"go.uber.org/zap"
 )
 

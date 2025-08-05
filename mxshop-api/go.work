@@ -1,13 +1,14 @@
-go 1.22.1
+go 1.23.8
+
+toolchain go1.23.11
 
 use (
 	./common
-	./order-web
 	./goods-web
-	./user-web
-	./oss-web
-	./userop-web
 	./jaeger-test
+	./order-web
+	./oss-web
 	./sentinel-test
+	./user-web
+	./userop-web
 )
-
