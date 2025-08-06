@@ -33,11 +33,11 @@ def get_server_ip():
 
 
 NACOS = {
-    "host": "127.0.0.1",
+    "host": "192.168.1.4",
     "port": 8848,
     "namespace": "ac2997b0-1569-47d9-a792-efc10375341b",
     "dataId": "userop-srv.json",
-    "groupId": "dev",
+    "groupId": "pro",
     "user": "nacos",
     "password": "nacos"
 }
