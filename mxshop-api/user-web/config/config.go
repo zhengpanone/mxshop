@@ -2,7 +2,6 @@ package config
 
 import (
 	commonConfig "github.com/zhengpanone/mxshop/mxshop-api/common/config"
-	"time"
 )
 
 type UserSrvConfig struct {
@@ -22,14 +21,6 @@ type SMSConfig struct {
 	ApiName         string `mapstructure:"apiName" yaml:"apiName"`
 }
 
-type RedisConfig struct {
-	Host        string        `mapstructure:"host" yaml:"host"`
-	Port        uint32        `mapstructure:"port" yaml:"port"`
-	Password    string        `mapstructure:"password" yaml:"password"`
-	DefaultDB   int           `mapstructure:"defaultDB" yaml:"defaultDB"`
-	DialTimeout time.Duration `mapstructure:"dialTimeout" yaml:"dialTimeout"`
-}
-
 type System struct {
 	UseRedis bool `mapstructure:"use-redis" json:"user-redis" yaml:"use-redis"` // 使用redis
 }
@@ -41,7 +32,7 @@ type ServerConfig struct {
 	Tags          []string                  `mapstructure:"tags" json:"tags" yaml:"tags"`
 	UserSrvConfig UserSrvConfig             `mapstructure:"user-srv" json:"user-srv" yaml:"user-srv"`
 	SMSConfig     SMSConfig                 `mapstructure:"sms" json:"smd,omitempty" yaml:"sms"`
-	RedisConfig   RedisConfig               `mapstructure:"redis" json:"redis" yaml:"redis"`
+	RedisConfig   commonConfig.RedisConfig  `mapstructure:"redis" json:"redis" yaml:"redis"`
 	System        System                    `mapstructure:"system" json:"system" yaml:"system"`
 	EnableCaptcha bool                      `mapstructure:"enable-captcha" json:"enable-captcha" yaml:"enable-captcha"`
 	JWTInfo       commonConfig.JWTConfig    `mapstructure:"jwt" json:"jwt" yaml:"jwt"`

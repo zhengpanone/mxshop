@@ -61,15 +61,20 @@ func runFunction(cmd *cobra.Command, args []string) {
 	zap.ReplaceGlobals(global.Logger)
 	global.Logger.Info("日志初始化成功")
 
-	// 3.初始化routers
+	// 3. 初始化连接redis
+	if global.ServerConfig.System.UseRedis {
+		commonInitialize.InitRedis()
+	}
+
+	// 4.初始化routers
 	Router := initialize.Routers()
 	registerMiddleware(Router) //注册全局中间件
-	// 4.初始化翻译
+	// 5.初始化翻译
 	if err := initialize.InitTrans("zh"); err != nil {
 		zap.S().Errorf("初始化翻译器错误")
 		return
 	}
-	// 5. 初始化srv连接
+	// 6. 初始化srv连接
 	initialize.InitSrvConn()
 
 	currentMod := gin.Mode()

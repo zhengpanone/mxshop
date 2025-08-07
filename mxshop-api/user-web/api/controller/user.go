@@ -7,6 +7,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
+	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
 	commonMiddleware "github.com/zhengpanone/mxshop/mxshop-api/common/middleware"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/forms"
@@ -156,7 +157,20 @@ func PasswordLogin(ctx *gin.Context) {
 
 // LogOut 用户退出
 func LogOut(ctx *gin.Context) {
-
+	token := commonMiddleware.ExtractToken(ctx)
+	if token == "" {
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "退出失败")
+		return
+	}
+	j := commonMiddleware.NewJWT(global.ServerConfig.JWTInfo.SigningKey)
+	tokenClaims, err := j.ParseToken(token)
+	if err != nil {
+		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "token不合法")
+		return
+	}
+	// 将 Token 加入黑名单
+	_ = commonMiddleware.BlacklistToken(token, tokenClaims.ExpiresAt.Time)
+	commonUtils.OkWithMsg(ctx, "登出成功")
 }
 
 // Register 用户注册
@@ -176,7 +190,7 @@ func Register(ctx *gin.Context) {
 		return
 	}
 	// 验证码校验
-	code, err := global.RedisClient.Get(context.Background(), registerForm.Mobile).Result()
+	code, err := commonGlobal.RedisClient.Get(context.Background(), registerForm.Mobile).Result()
 	if err != nil {
 		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
 		return

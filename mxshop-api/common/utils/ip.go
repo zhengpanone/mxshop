@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"github.com/zhengpanone/mxshop/mxshop-api/common"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/global"
 	"net"
 	"os"
 )
@@ -39,13 +39,13 @@ func GetIP() string {
 
 			// 检查是否为IPv4，并排除环回地址
 			if ip != nil && ip.To4() != nil && !ip.IsLoopback() {
-				common.Logger.Info("IPV4 address: " + ip.String())
+				global.Logger.Info("IPV4 address: " + ip.String())
 				return ip.String()
 			}
 		}
 
 	}
-	common.Logger.Warn("No valid IPv4 address found.")
+	global.Logger.Warn("No valid IPv4 address found.")
 	os.Exit(1)
 	return ""
 }

@@ -68,19 +68,19 @@ func runFunction(cmd *cobra.Command, args []string) {
 
 	// 3. 初始化连接redis
 	if global.ServerConfig.System.UseRedis {
-		initialize.InitRedis()
+		commonInitialize.InitRedis()
 	}
-	// 3.初始化routers
+	// 4.初始化routers
 	Router := initialize.Routers()
-	// 4.初始化翻译
+	// 5.初始化翻译
 	if err := initialize.InitTrans("zh"); err != nil {
 		zap.S().Errorf("初始化翻译器错误")
 		return
 	}
-	// 5. 初始化srv连接
+	// 6. 初始化srv连接
 	initialize.InitSrvConn()
 
-	// 注册验证器
+	// 7. 注册验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		_ = v.RegisterValidation("mobile", myValidator.ValidateMobile)
 		_ = v.RegisterTranslation("mobile", global.Trans, func(ut ut.Translator) error {

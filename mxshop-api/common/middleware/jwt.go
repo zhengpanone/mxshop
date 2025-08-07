@@ -1,24 +1,23 @@
 package middleware
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/global"
+	"time"
+
 	"net/http"
 	"strings"
-	//"order-web/global"
-	//"order-web/models"
 )
 
 func JWTAuth(signingKey string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 这里jwt鉴权取头部信息x-token，登录时返回token信息
-		token := c.Request.Header.Get("x-token")
-		if token == "" {
-			// 尝试从 Authorization 中获取 token
-			token = c.Request.Header.Get("Authorization")
-		}
+		token := ExtractToken(c)
 		if token == "" {
 			c.JSON(http.StatusUnauthorized, map[string]string{
 				"msg": "请登录",
@@ -26,12 +25,17 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		if strings.Contains(token, "Bearer ") {
-			token = strings.Split(token, " ")[1]
+
+		// 检查 Token 是否在黑名单中
+		if isTokenBlacklisted(token) {
+			c.JSON(http.StatusUnauthorized, "token已经失效")
+			c.Abort()
+			return
 		}
+
 		j := NewJWT(signingKey)
 		// parseToken解析token包含的信息
-		claims, err := j.ParseToken(token)
+		tokenClaims, err := j.ParseToken(token)
 		if err != nil {
 			if err == TokenExpired {
 				c.JSON(http.StatusUnauthorized, map[string]string{
@@ -44,10 +48,39 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set("claims", claims)
-		c.Set("userId", claims.ID)
+
+		// 将用户信息存储到上下文
+		c.Set("claims", tokenClaims)
+		c.Set("userId", tokenClaims.ID)
+		c.Set("username", tokenClaims.NickName)
 		c.Next()
 	}
+}
+
+func ExtractToken(c *gin.Context) string {
+	// 1. 自定义 header: x-token
+	if token := c.GetHeader("x-token"); token != "" {
+		return token
+	}
+
+	// 2. 标准 Authorization header: Bearer <token>
+	if authHeader := c.GetHeader("Authorization"); authHeader != "" {
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			return strings.TrimSpace(strings.TrimPrefix(authHeader, "Bearer "))
+		}
+		return authHeader // fallback: return whole header if no Bearer
+	}
+
+	// 3. Cookie
+	if cookieToken, err := c.Cookie("token"); err == nil && cookieToken != "" {
+		return cookieToken
+	}
+
+	// 4. Query 参数 ?token=xxx
+	if queryToken := c.Query("token"); queryToken != "" {
+		return queryToken
+	}
+	return ""
 }
 
 type JWT struct {
@@ -55,10 +88,8 @@ type JWT struct {
 }
 
 var (
-	TokenExpired     = errors.New("Token is expired")
-	TokenNotValidYet = errors.New("Token not active yet")
-	TokenMalformed   = errors.New("That's not even a token")
-	TokenInvalid     = errors.New("couldn't handle this token:")
+	TokenExpired = errors.New("token is expired")
+	TokenInvalid = errors.New("couldn't handle this token")
 )
 
 func NewJWT(signingKey string) *JWT {
@@ -92,4 +123,38 @@ func (j *JWT) ParseToken(tokenString string) (*claims.CustomClaims, error) {
 		return nil, TokenInvalid
 	}
 
+}
+
+// BlacklistToken 将 Token 加入黑名单
+func BlacklistToken(token string, expiry time.Time) error {
+	ctx := context.Background()
+	key := fmt.Sprintf("blacklist:%s", token)
+
+	// 计算剩余过期时间
+	remaining := time.Until(expiry)
+	if remaining <= 0 {
+		return nil // Token 已过期，无需加入黑名单
+	}
+	// 尝试使用 Redis
+	err := global.RedisClient.Set(ctx, key, "1", remaining).Err()
+	if err != nil {
+		// Redis 失败，使用内存存储
+		fmt.Printf("Redis 黑名单存储失败，使用内存: %v\n", err)
+	}
+	return nil
+
+	return nil
+}
+
+// isTokenBlacklisted 检查 Token 是否在黑名单中
+func isTokenBlacklisted(token string) bool {
+	ctx := context.Background()
+	key := fmt.Sprintf("blacklist:%s", token)
+
+	// 检查 Redis 中是否存在
+	_, err := global.RedisClient.Get(ctx, key).Result()
+	if err == nil {
+		return true // 在黑名单中
+	}
+	return false
 }

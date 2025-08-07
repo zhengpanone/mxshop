@@ -20,6 +20,7 @@ type ServerConfig struct {
 	Port           uint32                    `mapstructure:"port" json:"port" yaml:"port"`
 	Tags           []string                  `mapstructure:"tags" json:"tags" yaml:"tags"`
 	System         System                    `mapstructure:"system" json:"system" yaml:"system"`
+	RedisConfig    commonConfig.RedisConfig  `mapstructure:"redis" json:"redis" yaml:"redis"`
 	GoodsSrvConfig GoodsSrvConfig            `mapstructure:"user-srv" json:"user-srv" yaml:"user-srv"`
 	JWTInfo        commonConfig.JWTConfig    `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
 	Consul         commonConfig.Consul       `mapstructure:"consul" json:"consul" yaml:"consul"`

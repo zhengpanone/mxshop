@@ -1,5 +1,7 @@
 package config
 
+import "time"
+
 // LogConfig 日志配置
 type LogConfig struct {
 	// 日志级别
@@ -37,4 +39,12 @@ type NacosConfig struct {
 	Password    string `mapstructure:"password"`
 	DataId      string `mapstructure:"dataId"`
 	Group       string `mapstructure:"group"`
+}
+
+type RedisConfig struct {
+	Host        string        `mapstructure:"host" yaml:"host"`
+	Port        uint32        `mapstructure:"port" yaml:"port"`
+	Password    string        `mapstructure:"password" yaml:"password"`
+	Database    int           `mapstructure:"database" yaml:"database"`
+	DialTimeout time.Duration `mapstructure:"dialTimeout" yaml:"dialTimeout"`
 }
