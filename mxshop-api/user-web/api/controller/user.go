@@ -154,6 +154,11 @@ func PasswordLogin(ctx *gin.Context) {
 
 }
 
+// LogOut 用户退出
+func LogOut(ctx *gin.Context) {
+
+}
+
 // Register 用户注册
 //
 //	@Summary		用户注册

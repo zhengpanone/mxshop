@@ -73,10 +73,14 @@ func runFunction(cmd *cobra.Command, args []string) {
 	initialize.InitSrvConn()
 
 	currentMod := gin.Mode()
+	serverPort := global.ServerConfig.Port
+
 	if currentMod != gin.ReleaseMode {
-		port, err := commonUtils.GetFreePort()
-		if err == nil {
-			global.ServerConfig.Port = port
+		if serverPort == 0 {
+			port, err := commonUtils.GetFreePort()
+			if err == nil {
+				global.ServerConfig.Port = port
+			}
 		}
 	}
 	// 注册到注册中心

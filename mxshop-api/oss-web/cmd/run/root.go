@@ -66,14 +66,14 @@ func runFunction(cmd *cobra.Command, args []string) {
 	initialize.InitOSS(global.ServerConfig.OssInfo)
 	// 3.初始化routers
 	Router := initialize.Routers()
-	Router.Use(gin.Logger())
+	//Router.Use(gin.Logger())
+	registerMiddleware(Router) //注册全局中间件
+
 	// 4.初始化翻译
 	if err := initialize.InitTrans("zh"); err != nil {
 		zap.S().Errorf("初始化翻译器错误")
 		return
 	}
-
-	registerMiddleware(Router) //注册全局中间件
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	fmt.Printf("run exe dir is %v\n", dir)
@@ -92,6 +92,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 	if err != nil {
 		zap.S().Panic("oss服务注册失败：", err.Error())
 	}
+
 	global.Logger.Info("oss服务oss-web服务注册到注册中心")
 
 	global.Logger.Info(fmt.Sprintf("启动oss服务器，访问地址：http://%s:%d", commonUtils.GetIP(), global.ServerConfig.Port))
@@ -112,8 +113,8 @@ func runFunction(cmd *cobra.Command, args []string) {
 // registerMiddleware 注册中间件
 func registerMiddleware(r *gin.Engine) {
 	// 打印日志 、异常保护
-	r.Use(commonMiddleware.GinLogger(global.Logger), commonMiddleware.GinRecovery(global.Logger, true))
-
+	//r.Use(commonMiddleware.GinLogger(global.Logger), commonMiddleware.GinRecovery(global.Logger, true))
+	r.Use(commonMiddleware.Cors() /*, middleware.Trace()*/)
 }
 
 // shutdown 听信号, 执行关机操作

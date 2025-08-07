@@ -69,7 +69,7 @@ func NewJWT(signingKey string) *JWT {
 
 }
 
-// 创建一个token
+// CreateToken 创建一个token
 func (j *JWT) CreateToken(claims claims.CustomClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(j.SigningKey)

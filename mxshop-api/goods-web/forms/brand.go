@@ -1,5 +1,6 @@
 package forms
 
+// BrandForm 品牌分类
 type BrandForm struct {
 	Name string `form:"name" json:"name" binding:"required,min=3,max=10"` // 品牌名称
 	Logo string `form:"logo" json:"logo" binding:"url"`                   // 品牌logo

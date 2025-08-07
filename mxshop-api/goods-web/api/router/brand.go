@@ -11,7 +11,7 @@ func InitBrandRouter(router *gin.RouterGroup) {
 	BrandRouter := router.Group("brand")
 	var brandController = new(controller.BrandController)
 	{
-		BrandRouter.GET("list", brandController.ListBrand)
+		BrandRouter.GET("list", brandController.GetBrandList)
 		BrandRouter.POST("create", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), brandController.NewBrand)
 		BrandRouter.PUT("update", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), brandController.UpdateBrand)
 		BrandRouter.DELETE("delete", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey), commonMiddleware.IsAdmin(), brandController.DeleteBrand)

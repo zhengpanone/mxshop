@@ -1,5 +1,6 @@
 package forms
 
+// CategoryForm 商品分类
 type CategoryForm struct {
 	Name           string `form:"name" json:"name" binding:"required,min=1,max=20"`
 	ParentCategory int32  `form:"parent" json:"parent"`

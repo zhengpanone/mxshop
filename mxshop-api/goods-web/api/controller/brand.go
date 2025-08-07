@@ -115,7 +115,7 @@ func (*BrandController) UpdateBrand(ctx *gin.Context) {
 	commonUtils.Ok(ctx)
 }
 
-// ListBrand 获取品牌列表
+// GetBrandList 获取品牌列表
 //
 //	@Summary		获取所有品牌的列表
 //	@Description	获取品牌列表，可以根据分页参数进行分页。
@@ -129,7 +129,7 @@ func (*BrandController) UpdateBrand(ctx *gin.Context) {
 //	@Failure		400		{object}	utils.Response	"无效的请求参数"
 //	@Failure		500		{object}	utils.Response	"服务器错误"
 //	@Router			/v1/brand/list [get]
-func (*BrandController) ListBrand(ctx *gin.Context) {
+func (*BrandController) GetBrandList(ctx *gin.Context) {
 	page := ctx.DefaultQuery("page", "1")
 	pageInt, _ := strconv.Atoi(page)
 	size := ctx.DefaultQuery("size", "10")
