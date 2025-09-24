@@ -115,13 +115,6 @@ definitions:
     - new
     - sale
     type: object
-  utils.ErrorItem:
-    properties:
-      error:
-        type: string
-      key:
-        type: string
-    type: object
   utils.Meta:
     properties:
       request_id:
@@ -134,11 +127,6 @@ definitions:
         type: integer
       data:
         description: 响应数据
-      errors:
-        description: Errors 错误提示，如 xx字段不能为空等
-        items:
-          $ref: '#/definitions/utils.ErrorItem'
-        type: array
       meta:
         allOf:
         - $ref: '#/definitions/utils.Meta'

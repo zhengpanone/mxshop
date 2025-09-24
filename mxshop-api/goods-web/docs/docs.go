@@ -1422,17 +1422,6 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.ErrorItem": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "key": {
-                    "type": "string"
-                }
-            }
-        },
         "utils.Meta": {
             "type": "object",
             "properties": {
@@ -1450,13 +1439,6 @@ const docTemplate = `{
                 },
                 "data": {
                     "description": "响应数据"
-                },
-                "errors": {
-                    "description": "Errors 错误提示，如 xx字段不能为空等",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/utils.ErrorItem"
-                    }
                 },
                 "meta": {
                     "description": "Meta 源数据,存储如请求ID,分页等信息",
