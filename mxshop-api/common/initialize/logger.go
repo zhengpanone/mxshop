@@ -1,7 +1,7 @@
 package initialize
 
 import (
-	"github.com/zhengpanone/mxshop/mxshop-api/common/global"
+	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -23,12 +23,11 @@ func InitLogger(filename string, maxSize, maxBackup, maxAge int, level string) e
 		zapcore.NewCore(encoder, zapcore.Lock(os.Stdout), l),
 	)
 	// 初始化一个全局对象, 并添加调用栈信息
-	global.Once.Do(func() {
-		global.Logger = zap.New(core, zap.AddCaller())
+	commonGlobal.Once.Do(func() {
+		commonGlobal.Logger = zap.New(core, zap.AddCaller())
 		if err != nil {
-			global.Logger = nil
+			commonGlobal.Logger = nil
 		}
-
 	})
 	return err
 }
@@ -55,8 +54,8 @@ func getEncoder() zapcore.Encoder {
 }
 
 func GetLogger() *zap.Logger {
-	if global.Logger == nil {
+	if commonGlobal.Logger == nil {
 		panic("Logger not initialized. Call InitLogger first!")
 	}
-	return global.Logger
+	return commonGlobal.Logger
 }

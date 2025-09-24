@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
@@ -51,7 +52,7 @@ func (c *CategoryController) GetCategoryList(ctx *gin.Context) {
 		})
 		return
 	}
-	commonUtils.OkWithData(ctx, data)
+	commonResponse.OkWithData(ctx, data)
 }
 
 // Detail 获取分类详情
@@ -98,7 +99,7 @@ func (c *CategoryController) Detail(ctx *gin.Context) {
 		reMap["parent_category"] = r.Info.ParentCategory
 		reMap["is_tab"] = r.Info.IsTab
 		reMap["sub_category_list"] = subCategorys
-		commonUtils.OkWithData(ctx, reMap)
+		commonResponse.OkWithData(ctx, reMap)
 	}
 	return
 }
@@ -144,7 +145,7 @@ func (c *CategoryController) CreateCategory(ctx *gin.Context) {
 	response["level"] = rsp.Level
 	response["is_tab"] = rsp.IsTab
 
-	commonUtils.OkWithData(ctx, response)
+	commonResponse.OkWithData(ctx, response)
 }
 
 // UpdateCategory 更新分类信息
@@ -188,5 +189,5 @@ func (c *CategoryController) UpdateCategory(ctx *gin.Context) {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }

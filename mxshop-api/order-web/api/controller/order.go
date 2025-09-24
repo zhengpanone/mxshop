@@ -6,6 +6,7 @@ import (
 	"github.com/smartwalle/alipay/v3"
 	commonClaims "github.com/zhengpanone/mxshop/mxshop-api/common/claims"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
@@ -59,7 +60,7 @@ func (*OrderApi) GetOrderList(ctx *gin.Context) {
 		})
 	}
 	reMap["data"] = orderList
-	commonUtils.OkWithData(ctx, reMap)
+	commonResponse.OkWithData(ctx, reMap)
 }
 
 func (*OrderApi) NewOrder(ctx *gin.Context) {
@@ -86,13 +87,13 @@ func (*OrderApi) NewOrder(ctx *gin.Context) {
 	client, err := alipay.New(global.ServerConfig.AliPayConfig.AppId, global.ServerConfig.AliPayConfig.PrivateKey, false)
 	if err != nil {
 		global.Logger.Error("实例化支付宝客户端支付失败")
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	err = client.LoadAliPayPublicKey(global.ServerConfig.AliPayConfig.AliPublicKey)
 	if err != nil {
 		global.Logger.Error("加载支付宝公钥失败")
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -107,10 +108,10 @@ func (*OrderApi) NewOrder(ctx *gin.Context) {
 	url, err := client.TradePagePay(p)
 	if err != nil {
 		global.Logger.Error("生成支付url失败")
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
-	commonUtils.OkWithData(ctx, gin.H{
+	commonResponse.OkWithData(ctx, gin.H{
 		"id":         rsp.Id,
 		"alipay_url": url.String(),
 	})
@@ -137,7 +138,7 @@ func (*OrderApi) GetOrderDetail(ctx *gin.Context) {
 	i, err := strconv.Atoi(id)
 	if err != nil {
 
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusNotFound, "url格式错误")
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusNotFound, "url格式错误")
 		return
 	}
 	claims, _ := ctx.Get("claims")
@@ -183,13 +184,13 @@ func (*OrderApi) GetOrderDetail(ctx *gin.Context) {
 	client, err := alipay.New(global.ServerConfig.AliPayConfig.AppId, global.ServerConfig.AliPayConfig.PrivateKey, false)
 	if err != nil {
 		global.Logger.Error("实例化支付宝客户端支付失败")
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	err = client.LoadAliPayPublicKey(global.ServerConfig.AliPayConfig.AliPublicKey)
 	if err != nil {
 		global.Logger.Error("加载支付宝公钥失败")
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -204,9 +205,9 @@ func (*OrderApi) GetOrderDetail(ctx *gin.Context) {
 	url, err := client.TradePagePay(p)
 	if err != nil {
 		global.Logger.Error("生成支付url失败")
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	reMap["alipay_url"] = url.String()
-	commonUtils.OkWithData(ctx, reMap)
+	commonResponse.OkWithData(ctx, reMap)
 }

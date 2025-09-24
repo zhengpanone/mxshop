@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
@@ -43,7 +44,7 @@ func (*BannerController) ListBanner(ctx *gin.Context) {
 		reMap["url"] = value.Url
 		result = append(result, reMap)
 	}
-	commonUtils.OkWithData(ctx, result)
+	commonResponse.OkWithData(ctx, result)
 }
 
 // NewBanner 创建新的品牌（Banner）
@@ -83,7 +84,7 @@ func (*BannerController) NewBanner(ctx *gin.Context) {
 	response["url"] = rsp.Url
 	response["image"] = rsp.Image
 
-	commonUtils.OkWithData(ctx, response)
+	commonResponse.OkWithData(ctx, response)
 }
 
 // UpdateBanner 更新轮播图信息
@@ -122,7 +123,7 @@ func (*BannerController) UpdateBanner(ctx *gin.Context) {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }
 
 // DeleteBanner 删除轮播图
@@ -151,5 +152,5 @@ func (*BannerController) DeleteBanner(ctx *gin.Context) {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }

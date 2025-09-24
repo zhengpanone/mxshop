@@ -18,6 +18,10 @@ type LogConfig struct {
 
 type JWTConfig struct {
 	SigningKey string `mapstructure:"key" yaml:"key"`
+	IsMulti    bool   `mapstructure:"is_multi" yaml:"is_multi"` // 是否多终端登录
+	MaxToken   int64  `mapstructure:"max_token" yaml:"max_token"`
+	TTL        int64  `mapstructure:"ttl" yaml:"ttl"`
+	TTLUnit    string `mapstructure:"ttl_unit" yaml:"ttl_unit"`
 }
 
 type JaegerConfig struct {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
@@ -139,7 +140,7 @@ func (*ShopCartApi) NewShopCart(ctx *gin.Context) {
 	reMap := map[string]interface{}{}
 	reMap["id"] = rsp.Id
 
-	commonUtils.OkWithData(ctx, reMap)
+	commonResponse.OkWithData(ctx, reMap)
 }
 
 func (*ShopCartApi) DeleteShopCart(ctx *gin.Context) {
@@ -158,7 +159,7 @@ func (*ShopCartApi) DeleteShopCart(ctx *gin.Context) {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }
 
 func (*ShopCartApi) UpdateShopCart(ctx *gin.Context) {
@@ -192,5 +193,5 @@ func (*ShopCartApi) UpdateShopCart(ctx *gin.Context) {
 		return
 	}
 
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }

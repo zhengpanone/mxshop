@@ -53,7 +53,7 @@ func GinLogger(logger *zap.Logger) gin.HandlerFunc {
 		}
 
 		query := ctx.Request.URL.RawQuery
-		logger.Info(fmt.Sprintf("请求开始：%s", path),
+		logger.Debug(fmt.Sprintf("请求开始：%s", path),
 			zap.String("method", ctx.Request.Method),
 			zap.String("path", path),
 			zap.String("query", query),
@@ -67,7 +67,7 @@ func GinLogger(logger *zap.Logger) gin.HandlerFunc {
 		// 让原本执行的逻辑继续执行
 		ctx.Next()
 		end := time.Since(start)
-		logger.Info(fmt.Sprintf("请求结束：%s\n 耗时：%v\n", path, end),
+		logger.Debug(fmt.Sprintf("请求结束：%s\n 耗时：%v\n", path, end),
 			zap.Int("status", ctx.Writer.Status()),
 			zap.String("path", path),
 			zap.String("response", blw.body.String()),
@@ -75,8 +75,7 @@ func GinLogger(logger *zap.Logger) gin.HandlerFunc {
 			zap.Int64("cost", time.Since(start).Milliseconds()),
 		)
 
-		status := ctx.Writer.Status()
-		fmt.Printf("状态：%v\n", status)
+		_ = ctx.Writer.Status()
 	}
 }
 

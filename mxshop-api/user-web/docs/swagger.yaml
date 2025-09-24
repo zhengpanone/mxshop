@@ -1,9 +1,8 @@
+basePath: /v1/user
 definitions:
   forms.PasswordLoginForm:
     properties:
       captcha:
-        maxLength: 5
-        minLength: 5
         type: string
       captcha_id:
         type: string
@@ -53,13 +52,6 @@ definitions:
       nickName:
         type: string
     type: object
-  utils.ErrorItem:
-    properties:
-      error:
-        type: string
-      key:
-        type: string
-    type: object
   utils.Meta:
     properties:
       request_id:
@@ -72,11 +64,6 @@ definitions:
         type: integer
       data:
         description: 响应数据
-      errors:
-        description: Errors 错误提示，如 xx字段不能为空等
-        items:
-          $ref: '#/definitions/utils.ErrorItem'
-        type: array
       meta:
         allOf:
         - $ref: '#/definitions/utils.Meta'
@@ -85,8 +72,14 @@ definitions:
         description: 提示信息
         type: string
     type: object
+host: 127.0.0.1:18022
 info:
-  contact: {}
+  contact:
+    name: zhengpanone
+    url: http://127.0.0.1:18022/swagger/index.html
+  description: 慕学商城项目，提供用户的查询、创建、更新等功能。
+  title: 用户管理
+  version: "1.0"
 paths:
   /v1/user/list:
     get:
@@ -145,8 +138,7 @@ paths:
             allOf:
             - $ref: '#/definitions/utils.Response'
             - properties:
-                data:
-                  type: object
+                data: {}
               type: object
       summary: 用户登录
       tags:
@@ -172,10 +164,17 @@ paths:
             allOf:
             - $ref: '#/definitions/utils.Response'
             - properties:
-                data:
-                  type: object
+                data: {}
               type: object
       summary: 用户注册
       tags:
       - 用户管理
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
+tags:
+- description: 提供oss的增删改查功能
+  name: oss管理

@@ -1,16 +1,12 @@
 package middleware
 
 import (
-	"context"
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
-	"github.com/zhengpanone/mxshop/mxshop-api/common/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/common/utils"
-	"time"
-
+	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	"net/http"
 	"strings"
 )
@@ -20,14 +16,7 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 		// 这里jwt鉴权取头部信息x-token，登录时返回token信息
 		token := ExtractToken(c)
 		if token == "" {
-			utils.ErrorWithAppErr(c, global.ErrUnauthorized)
-			c.Abort()
-			return
-		}
-
-		// 检查 Token 是否在黑名单中
-		if isTokenBlacklisted(token) {
-			c.JSON(http.StatusUnauthorized, "token已经失效")
+			commonResponse.ErrorWithAppErr(c, commonGlobal.ErrUnauthorized)
 			c.Abort()
 			return
 		}
@@ -36,7 +25,7 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 		// parseToken解析token包含的信息
 		tokenClaims, err := j.ParseToken(token)
 		if err != nil {
-			if errors.Is(err, global.ErrTokenExpired) {
+			if errors.Is(err, commonGlobal.ErrTokenExpired) {
 				c.JSON(http.StatusUnauthorized, map[string]string{
 					"msg": "授权已过期",
 				})
@@ -48,6 +37,13 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 			return
 		}
 
+		// 检查 Token 是否在黑名单中
+		result, err := commonGlobal.TokenManager.ValidateToken(tokenClaims.ID, token)
+		if !result {
+			c.JSON(http.StatusUnauthorized, "token已经失效")
+			c.Abort()
+			return
+		}
 		// 将用户信息存储到上下文
 		c.Set("claims", tokenClaims)
 		c.Set("userId", tokenClaims.ID)
@@ -87,7 +83,6 @@ type JWT struct {
 }
 
 func NewJWT(signingKey string) *JWT {
-
 	return &JWT{
 		[]byte(signingKey), // 可以设置过期时间
 	}
@@ -97,7 +92,11 @@ func NewJWT(signingKey string) *JWT {
 // CreateToken 创建一个token
 func (j *JWT) CreateToken(claims claims.CustomClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(j.SigningKey)
+	tokenString, err := token.SignedString(j.SigningKey)
+	if err == nil {
+		_ = commonGlobal.TokenManager.SaveToken(claims.ID, tokenString)
+	}
+	return tokenString, err
 }
 
 func (j *JWT) ParseToken(tokenString string) (*claims.CustomClaims, error) {
@@ -112,43 +111,9 @@ func (j *JWT) ParseToken(tokenString string) (*claims.CustomClaims, error) {
 		if clams, ok := token.Claims.(*claims.CustomClaims); ok && token.Valid {
 			return clams, nil
 		}
-		return nil, global.ErrTokenInvalid
+		return nil, commonGlobal.ErrTokenInvalid
 	} else {
-		return nil, global.ErrTokenInvalid
+		return nil, commonGlobal.ErrTokenInvalid
 	}
 
-}
-
-// BlacklistToken 将 Token 加入黑名单
-func BlacklistToken(token string, expiry time.Time) error {
-	ctx := context.Background()
-	key := fmt.Sprintf("blacklist:%s", token)
-
-	// 计算剩余过期时间
-	remaining := time.Until(expiry)
-	if remaining <= 0 {
-		return nil // Token 已过期，无需加入黑名单
-	}
-	// 尝试使用 Redis
-	err := global.RedisClient.Set(ctx, key, "1", remaining).Err()
-	if err != nil {
-		// Redis 失败，使用内存存储
-		fmt.Printf("Redis 黑名单存储失败，使用内存: %v\n", err)
-	}
-	return nil
-
-	return nil
-}
-
-// isTokenBlacklisted 检查 Token 是否在黑名单中
-func isTokenBlacklisted(token string) bool {
-	ctx := context.Background()
-	key := fmt.Sprintf("blacklist:%s", token)
-
-	// 检查 Redis 中是否存在
-	_, err := global.RedisClient.Get(ctx, key).Result()
-	if err == nil {
-		return true // 在黑名单中
-	}
-	return false
 }

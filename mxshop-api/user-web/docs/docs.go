@@ -9,7 +9,10 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "zhengpanone",
+            "url": "http://127.0.0.1:18022/swagger/index.html"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -102,9 +105,7 @@ const docTemplate = `{
                                 {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
-                                            "type": "object"
-                                        }
+                                        "data": {}
                                     }
                                 }
                             ]
@@ -148,9 +149,7 @@ const docTemplate = `{
                                 {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
-                                            "type": "object"
-                                        }
+                                        "data": {}
                                     }
                                 }
                             ]
@@ -169,9 +168,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "captcha": {
-                    "type": "string",
-                    "maxLength": 5,
-                    "minLength": 5
+                    "type": "string"
                 },
                 "captcha_id": {
                     "type": "string"
@@ -235,17 +232,6 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.ErrorItem": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "key": {
-                    "type": "string"
-                }
-            }
-        },
         "utils.Meta": {
             "type": "object",
             "properties": {
@@ -264,13 +250,6 @@ const docTemplate = `{
                 "data": {
                     "description": "响应数据"
                 },
-                "errors": {
-                    "description": "Errors 错误提示，如 xx字段不能为空等",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/utils.ErrorItem"
-                    }
-                },
                 "meta": {
                     "description": "Meta 源数据,存储如请求ID,分页等信息",
                     "allOf": [
@@ -285,17 +264,30 @@ const docTemplate = `{
                 }
             }
         }
-    }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "提供oss的增删改查功能",
+            "name": "oss管理"
+        }
+    ]
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "127.0.0.1:18022",
+	BasePath:         "/v1/user",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "用户管理",
+	Description:      "慕学商城项目，提供用户的查询、创建、更新等功能。",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

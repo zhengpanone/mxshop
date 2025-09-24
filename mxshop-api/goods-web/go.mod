@@ -10,6 +10,7 @@ require (
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.27.0
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/mbobakov/grpc-consul-resolver v1.5.3
 	github.com/nacos-group/nacos-sdk-go/v2 v2.3.2
 	github.com/opentracing/opentracing-go v1.2.0
@@ -57,6 +58,7 @@ require (
 	github.com/clbanning/mxj/v2 v2.5.5 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
 	github.com/deckarep/golang-set v1.7.1 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect

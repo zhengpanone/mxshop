@@ -68,8 +68,10 @@ func runFunction(cmd *cobra.Command, args []string) {
 
 	// 3. 初始化连接redis
 	if global.ServerConfig.System.UseRedis {
-		commonInitialize.InitRedis(global.ServerConfig.RedisConfig)
+		global.RedisClient = commonInitialize.InitRedis(global.ServerConfig.RedisConfig)
 	}
+	commonInitialize.InitTokenManager(global.ServerConfig.JWTInfo, global.RedisClient)
+
 	// 4.初始化routers
 	Router := initialize.Routers()
 	// 5.初始化翻译
@@ -152,14 +154,14 @@ func shutdown(server *http.Server, serviceId string, registerClient consul.Regis
 
 	// 在注册中心注销服务
 	if err := registerClient.DeRegister(serviceId); err != nil {
-		zap.S().Info("用户服务goods-web 在注册中心注销失败：", err.Error())
+		zap.S().Info("用户服务user-web 在注册中心注销失败：", err.Error())
 	}
-	zap.S().Info("用户服务goods-web 在注册中心注销成功")
+	zap.S().Info("用户服务user-web 在注册中心注销成功")
 
 	// 调用Http实例的Shutdown方法 关闭服务器
 	if err := server.Shutdown(ctx); err != nil {
-		global.Logger.Fatal("用户服务goods-web 关闭错误", zap.Error(err))
+		global.Logger.Fatal("用户服务user-web 关闭错误", zap.Error(err))
 	}
 
-	global.Logger.Info("商品服务goods-web 关闭")
+	global.Logger.Info("商品服务user-web 关闭")
 }

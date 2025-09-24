@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	customClaims "github.com/zhengpanone/mxshop/mxshop-api/common/claims"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
-	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
 	"go.uber.org/zap"
@@ -56,7 +56,7 @@ func GetMessageList(ctx *gin.Context) {
 		result = append(result, reMap)
 	}
 	reMap["data"] = result
-	commonUtils.OkWithData(ctx, reMap)
+	commonResponse.OkWithData(ctx, reMap)
 
 }
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
@@ -44,7 +45,7 @@ func (*BrandController) NewBrand(ctx *gin.Context) {
 	response["id"] = rsp.Id
 	response["name"] = rsp.Name
 	response["logo"] = rsp.Logo
-	commonUtils.OkWithData(ctx, response)
+	commonResponse.OkWithData(ctx, response)
 }
 
 // DeleteBrand 删除指定的品牌
@@ -73,7 +74,7 @@ func (*BrandController) DeleteBrand(ctx *gin.Context) {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }
 
 // UpdateBrand 更新品牌信息
@@ -112,7 +113,7 @@ func (*BrandController) UpdateBrand(ctx *gin.Context) {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }
 
 // GetBrandList 获取品牌列表
@@ -154,7 +155,7 @@ func (*BrandController) GetBrandList(ctx *gin.Context) {
 		result = append(result, responseMap)
 	}
 	response["list"] = result
-	commonUtils.OkWithData(ctx, response)
+	commonResponse.OkWithData(ctx, response)
 }
 
 // GetCategoryBrandList 获取指定分类下的品牌列表
@@ -194,7 +195,7 @@ func (*BrandController) GetCategoryBrandList(ctx *gin.Context) {
 
 		result = append(result, reMap)
 	}
-	commonUtils.OkWithData(ctx, result)
+	commonResponse.OkWithData(ctx, result)
 }
 
 // UpdateCategoryBrand 更新分类品牌信息
@@ -265,7 +266,7 @@ func (*BrandController) CategoryBrandList(ctx *gin.Context) {
 	}
 
 	reMap["data"] = result
-	commonUtils.OkWithData(ctx, reMap)
+	commonResponse.OkWithData(ctx, reMap)
 }
 
 // NewCategoryBrand 为分类添加品牌

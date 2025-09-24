@@ -5,6 +5,7 @@ swag init -g ./goods-web/cmd/main.go -d .
 swag fmt
 cd userop-web && swag init -g cmd/main.go -d . --parseDependency=true --parseInternal=true
 
+swag init -g cmd/main.go -d ./api/controller --parseDependency --parseDepth=6 -o ./docs
 ```
 
 # 构建镜像

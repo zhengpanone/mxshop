@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
-	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
 	"net/http"
 )
@@ -54,13 +54,13 @@ func (*PayApi) AliPayNotify(ctx *gin.Context) {
 
 	if err != nil {
 		global.Logger.Error(err.Error())
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	notification, err := client.DecodeNotification(ctx.Request.Form)
 	if err != nil {
 		global.Logger.Error(err.Error())
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	global.Logger.Info(fmt.Sprintf("交易状态%s", notification.TradeStatus))
@@ -71,8 +71,8 @@ func (*PayApi) AliPayNotify(ctx *gin.Context) {
 	})
 	if err != nil {
 		global.Logger.Error("新建订单详情失败")
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
-	commonUtils.OkWithMsg(ctx, "success")
+	commonResponse.OkWithMsg(ctx, "success")
 }

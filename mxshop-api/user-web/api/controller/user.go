@@ -10,6 +10,7 @@ import (
 	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
 	commonMiddleware "github.com/zhengpanone/mxshop/mxshop-api/common/middleware"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
@@ -53,7 +54,7 @@ func GetUserList(ctx *gin.Context) {
 	})
 	if err != nil {
 		zap.S().Errorw("[GetUserList]查询【用户列表】失败")
-		HandleGrpcErrorToHttp(err, ctx, "用户服务srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "用户服务srv")
 		return
 	}
 	/*claims, _ := ctx.Get("claims")
@@ -75,7 +76,7 @@ func GetUserList(ctx *gin.Context) {
 		"total": rsp.Total,
 		"data":  result,
 	}
-	commonUtils.OkWithData(ctx, reMap)
+	commonResponse.OkWithData(ctx, reMap)
 }
 
 // PasswordLogin
@@ -96,7 +97,7 @@ func PasswordLogin(ctx *gin.Context) {
 	}
 	if global.ServerConfig.EnableCaptcha {
 		if !utils.VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.Captcha) {
-			commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
+			commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
 			return
 		}
 	}
@@ -106,7 +107,7 @@ func PasswordLogin(ctx *gin.Context) {
 		Mobile: passwordLogin.Mobile,
 	}); err != nil {
 		zap.S().Errorw("用户登录失败失败" + err.Error())
-		HandleGrpcErrorToHttp(err, ctx, "用户srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "用户srv")
 		return
 	} else {
 		// 只是查询到用户，没有检查密码
@@ -114,15 +115,15 @@ func PasswordLogin(ctx *gin.Context) {
 			EncryptedPassword: rsp.Password,
 			Password:          passwordLogin.Password,
 		}); passErr != nil {
-			commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "登录失败")
+			commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "登录失败")
 			return
 		} else {
 			if passRsp.Success {
 				// 生成Token
 				j := commonMiddleware.NewJWT(global.ServerConfig.JWTInfo.SigningKey)
 				roleId, _ := strconv.Atoi(rsp.Role)
-				claims := claims.CustomClaims{
-					ID:          uint(rsp.Id),
+				customClaims := claims.CustomClaims{
+					ID:          strconv.Itoa(int(rsp.Id)),
 					NickName:    rsp.Nickname,
 					AuthorityId: uint(roleId),
 					RegisteredClaims: jwt.RegisteredClaims{
@@ -134,12 +135,12 @@ func PasswordLogin(ctx *gin.Context) {
 						Audience:  jwt.ClaimStrings{"your-audience"},
 					},
 				}
-				token, err := j.CreateToken(claims)
+				token, err := j.CreateToken(customClaims)
 				if err != nil {
-					commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
+					commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
 					return
 				}
-				commonUtils.OkWithData(ctx, gin.H{
+				commonResponse.OkWithData(ctx, gin.H{
 					"id":         rsp.Id,
 					"nick_name":  rsp.Nickname,
 					"token":      token,
@@ -147,7 +148,7 @@ func PasswordLogin(ctx *gin.Context) {
 				})
 				return
 			} else {
-				commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "登录失败")
+				commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "登录失败")
 				return
 			}
 		}
@@ -159,18 +160,18 @@ func PasswordLogin(ctx *gin.Context) {
 func LogOut(ctx *gin.Context) {
 	token := commonMiddleware.ExtractToken(ctx)
 	if token == "" {
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "退出失败")
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "退出失败")
 		return
 	}
 	j := commonMiddleware.NewJWT(global.ServerConfig.JWTInfo.SigningKey)
 	tokenClaims, err := j.ParseToken(token)
 	if err != nil {
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "token不合法")
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "token不合法")
 		return
 	}
 	// 将 Token 加入黑名单
-	_ = commonMiddleware.BlacklistToken(token, tokenClaims.ExpiresAt.Time)
-	commonUtils.OkWithMsg(ctx, "登出成功")
+	_ = commonGlobal.TokenManager.BlacklistToken(token, tokenClaims.ExpiresAt.Time)
+	commonResponse.OkWithMsg(ctx, "登出成功")
 }
 
 // Register 用户注册
@@ -192,11 +193,11 @@ func Register(ctx *gin.Context) {
 	// 验证码校验
 	code, err := commonGlobal.RedisClient.Get(context.Background(), registerForm.Mobile).Result()
 	if err != nil {
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
 		return
 	}
 	if code != registerForm.Code {
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
 		return
 	}
 	user, err := global.UserSrvClient.CreateUser(context.Background(), &commonpb.CreateUserInfo{
@@ -206,7 +207,7 @@ func Register(ctx *gin.Context) {
 	})
 	if err != nil {
 		zap.S().Errorf("[Register]新建用户失败：%s", err.Error())
-		HandleGrpcErrorToHttp(err, ctx, "用户服务srv")
+		commonUtils.HandleGrpcErrorToHttp(err, ctx, "用户服务srv")
 		return
 	}
 
@@ -214,7 +215,7 @@ func Register(ctx *gin.Context) {
 	j := commonMiddleware.NewJWT(global.ServerConfig.JWTInfo.SigningKey)
 	roleId, _ := strconv.Atoi(user.Role)
 	claims := claims.CustomClaims{
-		ID:          uint(user.Id),
+		ID:          string(user.Id),
 		NickName:    user.Nickname,
 		AuthorityId: uint(roleId),
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -228,7 +229,7 @@ func Register(ctx *gin.Context) {
 	}
 	token, err := j.CreateToken(claims)
 	if err != nil {
-		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
 		return
 	}
 	data := gin.H{
@@ -237,11 +238,11 @@ func Register(ctx *gin.Context) {
 		"token":      token,
 		"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
 	}
-	commonUtils.OkWithData(ctx, data)
+	commonResponse.OkWithData(ctx, data)
 }
 
 func Ping(ctx *gin.Context) {
-	commonUtils.Ok(ctx)
+	commonResponse.Ok(ctx)
 }
 
 func HandleValidatorError(ctx *gin.Context, err error) {

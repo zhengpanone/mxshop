@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
@@ -119,7 +120,7 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 		})
 	}
 	reMap["list"] = goodsList
-	commonUtils.OkWithData(ctx, reMap)
+	commonResponse.OkWithData(ctx, reMap)
 
 }
 
@@ -163,7 +164,7 @@ func (*GoodsController) NewGoods(ctx *gin.Context) {
 		return
 	}
 	// 如何设置库存
-	commonUtils.OkWithData(ctx, rsp)
+	commonResponse.OkWithData(ctx, rsp)
 }
 
 // UpdateStatus 更新商品的状态
@@ -197,5 +198,5 @@ func (*GoodsController) UpdateStatus(ctx *gin.Context) {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-	commonUtils.OkWithMsg(ctx, "修改成功")
+	commonResponse.OkWithMsg(ctx, "修改成功")
 }

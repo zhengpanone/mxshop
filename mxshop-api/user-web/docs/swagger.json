@@ -1,8 +1,16 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "慕学商城项目，提供用户的查询、创建、更新等功能。",
+        "title": "用户管理",
+        "contact": {
+            "name": "zhengpanone",
+            "url": "http://127.0.0.1:18022/swagger/index.html"
+        },
+        "version": "1.0"
     },
+    "host": "127.0.0.1:18022",
+    "basePath": "/v1/user",
     "paths": {
         "/v1/user/list": {
             "get": {
@@ -91,9 +99,7 @@
                                 {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
-                                            "type": "object"
-                                        }
+                                        "data": {}
                                     }
                                 }
                             ]
@@ -137,9 +143,7 @@
                                 {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
-                                            "type": "object"
-                                        }
+                                        "data": {}
                                     }
                                 }
                             ]
@@ -158,9 +162,7 @@
             ],
             "properties": {
                 "captcha": {
-                    "type": "string",
-                    "maxLength": 5,
-                    "minLength": 5
+                    "type": "string"
                 },
                 "captcha_id": {
                     "type": "string"
@@ -224,17 +226,6 @@
                 }
             }
         },
-        "utils.ErrorItem": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "key": {
-                    "type": "string"
-                }
-            }
-        },
         "utils.Meta": {
             "type": "object",
             "properties": {
@@ -253,13 +244,6 @@
                 "data": {
                     "description": "响应数据"
                 },
-                "errors": {
-                    "description": "Errors 错误提示，如 xx字段不能为空等",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/utils.ErrorItem"
-                    }
-                },
                 "meta": {
                     "description": "Meta 源数据,存储如请求ID,分页等信息",
                     "allOf": [
@@ -274,5 +258,18 @@
                 }
             }
         }
-    }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "提供oss的增删改查功能",
+            "name": "oss管理"
+        }
+    ]
 }

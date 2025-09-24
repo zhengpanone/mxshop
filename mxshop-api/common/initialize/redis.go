@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	commonConfig "github.com/zhengpanone/mxshop/mxshop-api/common/config"
-	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
+	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
 )
 
-func InitRedis(redisConfig commonConfig.RedisConfig) {
+func InitRedis(redisConfig commonConfig.RedisConfig) *redis.Client {
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", redisConfig.Host, redisConfig.Port),
 		DB:       redisConfig.Database,
@@ -21,5 +21,6 @@ func InitRedis(redisConfig commonConfig.RedisConfig) {
 	if err != nil {
 		panic("redis初始化失败" + err.Error())
 	}
-	global.RedisClient = redisClient
+	commonGlobal.RedisClient = redisClient
+	return redisClient
 }

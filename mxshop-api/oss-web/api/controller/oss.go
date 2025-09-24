@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/global"
 	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/utils/storage"
 	"go.uber.org/zap"
@@ -90,9 +90,9 @@ func HandlerRequest(ctx *gin.Context) {
 		result := gin.H{
 			"url": fileUrl,
 		}
-		utils.OkWithData(ctx, result) // response OK : 200
+		commonResponse.OkWithData(ctx, result) // response OK : 200
 	} else {
-		utils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "上传文件失败")
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "上传文件失败")
 	}
 }
 

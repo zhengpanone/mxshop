@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/cmd/run"
+	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/cmd"
 	"os"
 	"time"
 )
 
-//	@title			用户操作服务
+//go:generate swag init --parseDependency --parseDepth=6  -o ./docs
+
+//	@title			商品服务
 //	@description	慕学商城项目，提供商品的查询、创建、更新等功能。
 //	@version		1.0
 //	@contact.name	zhengpanone
@@ -20,8 +21,8 @@ import (
 //	@in							header
 //	@name						Authorization
 
-//	@tag.name			用户操作管理
-//	@tag.description	提供用户操作的增删改查功能
+//	@tag.name			商品管理
+//	@tag.description	提供商品的增删改查功能
 
 // https://github.com/gphper/ginadmin
 func main() {
@@ -34,7 +35,5 @@ func main() {
 	}
 	time.Local = local
 
-	rootCmd := &cobra.Command{Use: "userop-web"}
-	rootCmd.AddCommand(run.CmdRun)
-	_ = rootCmd.Execute()
+	cmd.Execute()
 }

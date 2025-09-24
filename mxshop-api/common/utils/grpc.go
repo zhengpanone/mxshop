@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"net/http"
@@ -41,19 +42,19 @@ func HandleGrpcErrorToHttp(err error, c *gin.Context, srvName string) {
 		if e, ok := status.FromError(err); ok {
 			switch e.Code() {
 			case codes.NotFound:
-				ErrorWithCodeAndMsg(c, http.StatusNotFound, srvName+":"+e.Message())
+				response.ErrorWithCodeAndMsg(c, http.StatusNotFound, srvName+":"+e.Message())
 				return
 			case codes.Internal:
-				ErrorWithCodeAndMsg(c, http.StatusInternalServerError, srvName+":"+"内部错误"+e.Message())
+				response.ErrorWithCodeAndMsg(c, http.StatusInternalServerError, srvName+":"+"内部错误"+e.Message())
 				return
 			case codes.InvalidArgument:
-				ErrorWithCodeAndMsg(c, http.StatusBadRequest, srvName+":"+"参数错误"+e.Message())
+				response.ErrorWithCodeAndMsg(c, http.StatusBadRequest, srvName+":"+"参数错误"+e.Message())
 				return
 			case codes.Unavailable:
-				ErrorWithCodeAndMsg(c, http.StatusInternalServerError, srvName+":"+"不可用")
+				response.ErrorWithCodeAndMsg(c, http.StatusInternalServerError, srvName+":"+"不可用")
 				return
 			default:
-				ErrorWithCodeAndMsg(c, http.StatusInternalServerError, srvName+":"+"其他错误"+e.Message())
+				response.ErrorWithCodeAndMsg(c, http.StatusInternalServerError, srvName+":"+"其他错误"+e.Message())
 				return
 			}
 		}
