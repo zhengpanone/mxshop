@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
 	_ "github.com/mbobakov/grpc-consul-resolver"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/user-web/proto"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -33,7 +33,7 @@ func InitSrvConn() {
 	}
 	global.UserConn = userConn
 	// 注册客户端
-	userSrvClient := proto.NewUserClient(userConn)
+	userSrvClient := commonpb.NewUserClient(userConn)
 	global.UserSrvClient = userSrvClient
 
 }
@@ -70,6 +70,6 @@ func InitSrvConnBack() {
 		zap.S().Errorw("[GetUserList]连接【用户服务失败】", "msg", err.Error())
 	}
 	// 生成grpc的client并调用接口
-	userSrvClient := proto.NewUserClient(userConn)
+	userSrvClient := commonpb.NewUserClient(userConn)
 	global.UserSrvClient = userSrvClient
 }

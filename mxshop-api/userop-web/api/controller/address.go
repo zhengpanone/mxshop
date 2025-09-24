@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	customClaims "github.com/zhengpanone/mxshop/mxshop-api/common/claims"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/proto"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
@@ -27,7 +27,7 @@ import (
 //	@Failure		500			{object}	utils.Response	"服务器错误"
 //	@Router			/v1/userop/address/list [get]
 func GetAddressList(ctx *gin.Context) {
-	request := proto.AddressRequest{}
+	request := commonpb.AddressRequest{}
 	userId, _ := ctx.Get("userId")
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
@@ -82,7 +82,7 @@ func CreateAddress(ctx *gin.Context) {
 		HandleValidatorError(ctx, err)
 		return
 	}
-	rsp, err := global.AddressSrvClient.CreateAddress(context.Background(), &proto.AddressRequest{
+	rsp, err := global.AddressSrvClient.CreateAddress(context.Background(), &commonpb.AddressRequest{
 		Province:     addressForm.Province,
 		City:         addressForm.City,
 		District:     addressForm.District,
@@ -121,7 +121,7 @@ func DeleteAddress(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.AddressSrvClient.DeleteAddress(context.Background(), &proto.AddressRequest{Id: int32(i)})
+	_, err = global.AddressSrvClient.DeleteAddress(context.Background(), &commonpb.AddressRequest{Id: int32(i)})
 	if err != nil {
 		zap.S().Errorw("删除地址失败")
 		HandleGrpcErrorToHttp(err, ctx, "用户操作srv")
@@ -158,7 +158,7 @@ func UpdateAddress(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.AddressSrvClient.UpdateAddress(context.Background(), &proto.AddressRequest{
+	_, err = global.AddressSrvClient.UpdateAddress(context.Background(), &commonpb.AddressRequest{
 		Id:           int32(i),
 		Province:     addressForm.Province,
 		City:         addressForm.City,

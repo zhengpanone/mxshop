@@ -60,9 +60,9 @@ func GetConfigFromNacos() {
 	}
 
 	/*config := global.ServerConfig
-	err = yaml.Unmarshal([]byte(content), &config)
-	if err != nil {
-		zap.S().Fatalf("读取nacos配置文件，转换yaml失败:%s", err)
+	errs = yaml.Unmarshal([]byte(content), &config)
+	if errs != nil {
+		zap.S().Fatalf("读取nacos配置文件，转换yaml失败:%s", errs)
 	}
 	fmt.Printf("Decoded YAML: %+v\\n", config)*/
 
@@ -74,9 +74,9 @@ func GetConfigFromNacos() {
 			fmt.Println("配置文件变化-------")
 			//fmt.Println("config changed group:" + group + ", dataId:" + dataId + ", content:" + data)
 
-			/*err = yaml.Unmarshal([]byte(content), &global.ServerConfig)
-			if err != nil {
-				zap.S().Fatalf("读取nacos配置文件，转换yaml失败:%s", err)
+			/*errs = yaml.Unmarshal([]byte(content), &global.ServerConfig)
+			if errs != nil {
+				zap.S().Fatalf("读取nacos配置文件，转换yaml失败:%s", errs)
 			}*/
 			// 当配置变化时，更新 Viper 中的配置。
 			if err := viper.ReadConfig(strings.NewReader(data)); err != nil {

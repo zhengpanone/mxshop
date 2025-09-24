@@ -23,7 +23,7 @@ func InitOSS(ossConfigs map[config.StorageType]config.OssConfig) {
 			zap.S().Info("初始化Minio客户端成功")
 		case config.StorageTypeOSS:
 			// TODO
-			//ossClient, err := storage.NewS3Storage()
+			//ossClient, errs := storage.NewS3Storage()
 		case config.StorageTypeS3:
 		// TODO
 		default:

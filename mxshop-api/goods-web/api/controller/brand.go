@@ -3,10 +3,10 @@ package controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/proto"
 	"net/http"
 	"strconv"
 )
@@ -32,7 +32,7 @@ func (*BrandController) NewBrand(ctx *gin.Context) {
 		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
-	rsp, err := global.GoodsSrvClient.CreateBrand(context.Background(), &proto.BrandRequest{
+	rsp, err := global.GoodsSrvClient.CreateBrand(context.Background(), &commonpb.BrandRequest{
 		Name: brandForm.Name,
 		Logo: brandForm.Logo,
 	})
@@ -68,7 +68,7 @@ func (*BrandController) DeleteBrand(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &proto.BrandRequest{Id: int32(idInt)})
+	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &commonpb.BrandRequest{Id: int32(idInt)})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
@@ -103,7 +103,7 @@ func (*BrandController) UpdateBrand(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &proto.BrandRequest{
+	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &commonpb.BrandRequest{
 		Id:   int32(idInt),
 		Name: brandForm.Name,
 		Logo: brandForm.Logo,
@@ -135,7 +135,7 @@ func (*BrandController) GetBrandList(ctx *gin.Context) {
 	size := ctx.DefaultQuery("size", "10")
 	sizeInt, _ := strconv.Atoi(size)
 
-	rsp, err := global.GoodsSrvClient.BrandList(context.Background(), &proto.BrandFilterRequest{
+	rsp, err := global.GoodsSrvClient.BrandList(context.Background(), &commonpb.BrandFilterRequest{
 		Page: int32(pageInt),
 		Size: int32(sizeInt),
 	})
@@ -178,7 +178,7 @@ func (*BrandController) GetCategoryBrandList(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	resp, err := global.GoodsSrvClient.GetCategoryBrandList(context.Background(), &proto.CategoryBrandInfoRequest{
+	resp, err := global.GoodsSrvClient.GetCategoryBrandList(context.Background(), &commonpb.CategoryBrandInfoRequest{
 		Id: int32(categoryId),
 	})
 	if err != nil {
@@ -238,7 +238,7 @@ func (*BrandController) CategoryBrandList(ctx *gin.Context) {
 			"data":[{},{}]
 		}
 	*/
-	rsp, err := global.GoodsSrvClient.CategoryBrandList(context.Background(), &proto.CategoryBrandFilterRequest{})
+	rsp, err := global.GoodsSrvClient.CategoryBrandList(context.Background(), &commonpb.CategoryBrandFilterRequest{})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return

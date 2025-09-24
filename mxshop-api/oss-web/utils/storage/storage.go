@@ -77,7 +77,7 @@ func GetPolicyToken() string {
 	callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
 	callbackStr, err := json.Marshal(callbackParam)
 	if err != nil {
-		fmt.Println("callback json err:", err)
+		fmt.Println("callback json errs:", err)
 	}
 
 	callbackBase64 := base64.StdEncoding.EncodeToString(callbackStr)
@@ -92,7 +92,7 @@ func GetPolicyToken() string {
 	policyToken.Callback = callbackBase64
 	response, err := json.Marshal(policyToken)
 	if err != nil {
-		fmt.Println("json err:", err)
+		fmt.Println("json errs:", err)
 	}
 	return string(response)
 }

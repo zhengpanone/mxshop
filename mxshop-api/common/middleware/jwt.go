@@ -8,6 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
 	"github.com/zhengpanone/mxshop/mxshop-api/common/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"time"
 
 	"net/http"
@@ -19,9 +20,7 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 		// 这里jwt鉴权取头部信息x-token，登录时返回token信息
 		token := ExtractToken(c)
 		if token == "" {
-			c.JSON(http.StatusUnauthorized, map[string]string{
-				"msg": "请登录",
-			})
+			utils.ErrorWithAppErr(c, global.ErrUnauthorized)
 			c.Abort()
 			return
 		}
@@ -37,7 +36,7 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 		// parseToken解析token包含的信息
 		tokenClaims, err := j.ParseToken(token)
 		if err != nil {
-			if err == TokenExpired {
+			if errors.Is(err, global.ErrTokenExpired) {
 				c.JSON(http.StatusUnauthorized, map[string]string{
 					"msg": "授权已过期",
 				})
@@ -87,11 +86,6 @@ type JWT struct {
 	SigningKey []byte
 }
 
-var (
-	TokenExpired = errors.New("token is expired")
-	TokenInvalid = errors.New("couldn't handle this token")
-)
-
 func NewJWT(signingKey string) *JWT {
 
 	return &JWT{
@@ -118,9 +112,9 @@ func (j *JWT) ParseToken(tokenString string) (*claims.CustomClaims, error) {
 		if clams, ok := token.Claims.(*claims.CustomClaims); ok && token.Valid {
 			return clams, nil
 		}
-		return nil, TokenInvalid
+		return nil, global.ErrTokenInvalid
 	} else {
-		return nil, TokenInvalid
+		return nil, global.ErrTokenInvalid
 	}
 
 }

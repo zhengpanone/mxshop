@@ -9,11 +9,11 @@ import (
 	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
 	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
 	commonMiddleware "github.com/zhengpanone/mxshop/mxshop-api/common/middleware"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global/response"
-	"github.com/zhengpanone/mxshop/mxshop-api/user-web/proto"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/utils"
 	"go.uber.org/zap"
 	"net/http"
@@ -47,7 +47,7 @@ func GetUserList(ctx *gin.Context) {
 
 	page, _ := strconv.Atoi(ctx.DefaultQuery("pageNum", "1"))
 	size, _ := strconv.Atoi(ctx.DefaultQuery("pageSize", "10"))
-	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &proto.PageInfo{
+	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &commonpb.PageInfo{
 		PageNum:  uint32(page),
 		PageSize: uint32(size),
 	})
@@ -102,7 +102,7 @@ func PasswordLogin(ctx *gin.Context) {
 	}
 
 	// 登录的逻辑
-	if rsp, err := global.UserSrvClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
+	if rsp, err := global.UserSrvClient.GetUserByMobile(context.Background(), &commonpb.MobileRequest{
 		Mobile: passwordLogin.Mobile,
 	}); err != nil {
 		zap.S().Errorw("用户登录失败失败" + err.Error())
@@ -110,7 +110,7 @@ func PasswordLogin(ctx *gin.Context) {
 		return
 	} else {
 		// 只是查询到用户，没有检查密码
-		if passRsp, passErr := global.UserSrvClient.CheckPassword(context.Background(), &proto.PasswordCheckInfo{
+		if passRsp, passErr := global.UserSrvClient.CheckPassword(context.Background(), &commonpb.PasswordCheckInfo{
 			EncryptedPassword: rsp.Password,
 			Password:          passwordLogin.Password,
 		}); passErr != nil {
@@ -199,7 +199,7 @@ func Register(ctx *gin.Context) {
 		commonUtils.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
 		return
 	}
-	user, err := global.UserSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+	user, err := global.UserSrvClient.CreateUser(context.Background(), &commonpb.CreateUserInfo{
 		Mobile:   registerForm.Mobile,
 		Nickname: registerForm.Mobile,
 		Password: registerForm.Password,

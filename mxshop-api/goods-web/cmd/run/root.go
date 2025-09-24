@@ -42,7 +42,7 @@ func init() {
 }
 
 func runFunction(cmd *cobra.Command, args []string) {
-	//var err error
+	//var errs error
 	// 判断是否编译线上版本
 	if mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
@@ -63,7 +63,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 
 	// 3. 初始化连接redis
 	if global.ServerConfig.System.UseRedis {
-		commonInitialize.InitRedis()
+		commonInitialize.InitRedis(global.ServerConfig.RedisConfig)
 	}
 
 	// 4.初始化routers

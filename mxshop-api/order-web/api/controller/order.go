@@ -5,10 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
 	commonClaims "github.com/zhengpanone/mxshop/mxshop-api/common/claims"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/order-web/proto"
 	"net/http"
 	"strconv"
 )
@@ -20,7 +20,7 @@ func (*OrderApi) GetOrderList(ctx *gin.Context) {
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
 	model := claims.(*commonClaims.CustomClaims)
-	request := proto.OrderFilterRequest{}
+	request := commonpb.OrderFilterRequest{}
 	if model.AuthorityId == 1 {
 		request.UserId = int32(userId.(uint))
 	}
@@ -69,7 +69,7 @@ func (*OrderApi) NewOrder(ctx *gin.Context) {
 		return
 	}
 	userId, _ := ctx.Get("userId")
-	request := proto.OrderRequest{
+	request := commonpb.OrderRequest{
 		UserId:  int32(userId.(uint)),
 		Name:    orderForm.Name,
 		Address: orderForm.Address,
@@ -143,7 +143,7 @@ func (*OrderApi) GetOrderDetail(ctx *gin.Context) {
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
 	model := claims.(*commonClaims.CustomClaims)
-	request := proto.OrderRequest{
+	request := commonpb.OrderRequest{
 		Id: int32(i),
 	}
 	if model.AuthorityId == 1 {

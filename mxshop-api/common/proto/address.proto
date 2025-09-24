@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 
-option go_package = ".;proto";
+option go_package = ".pb;proto";
 
 service Address {
     rpc GetAddressList (AddressRequest) returns (AddressListResponse); // 查看地址

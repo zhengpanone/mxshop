@@ -36,8 +36,8 @@ func GenerateCaptcha(height, width int, length int) (string, string, error) {
 	id, base64, _, err := cp.Generate()
 
 	return id, base64, err
-	/*if err != nil {
-		zap.S().Errorf("生成验证码错误:,", err.Error())
+	/*if errs != nil {
+		zap.S().Errorf("生成验证码错误:,", errs.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"msg": "生成验证码错误",
 		})

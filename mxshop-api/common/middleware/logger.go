@@ -87,7 +87,7 @@ func GinRecovery(logger *zap.Logger, stack bool) gin.HandlerFunc {
 			if err := recover(); err != nil {
 				//检查是否有断开的连接，因为这并不是一个真正需要进行紧急堆栈跟踪的条件。
 				var brokenPipe bool
-				// 如果异常时net.OpError类型 ==> 转为 对应类型 err.() 类型断言的写法, 判断类型, 转换类型
+				// 如果异常时net.OpError类型 ==> 转为 对应类型 errs.() 类型断言的写法, 判断类型, 转换类型
 				if ne, ok := err.(*net.OpError); ok {
 					if se, ok := ne.Err.(*os.SyscallError); ok {
 						if strings.Contains(strings.ToLower(se.Error()), "broken pipe") || strings.Contains(strings.ToLower(se.Error()), "connection reset by peer") {

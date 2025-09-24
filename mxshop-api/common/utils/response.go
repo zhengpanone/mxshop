@@ -3,13 +3,10 @@ package utils
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
-	"net/http"
-)
+	"github.com/zhengpanone/mxshop/mxshop-api/common/errs"
+	"github.com/zhengpanone/mxshop/mxshop-api/common/global"
 
-const (
-	SUCCESS      = http.StatusOK
-	ERROR        = -1
-	TOKEN_EXPIRE = -2
+	"net/http"
 )
 
 type Response struct {
@@ -21,8 +18,6 @@ type Response struct {
 	Data interface{} `json:"data"`
 	// Meta 源数据,存储如请求ID,分页等信息
 	Meta Meta `json:"meta"`
-	// Errors 错误提示，如 xx字段不能为空等
-	Errors []ErrorItem `json:"errors"`
 }
 
 // Meta 元数据
@@ -46,55 +41,59 @@ func New() *Response {
 		Meta: Meta{
 			RequestId: requestId.String(),
 		},
-		Errors: []ErrorItem{},
 	}
 }
 
-func ResultJson(ctx *gin.Context, code int, msg string, errors []ErrorItem, data interface{}) {
+func ResultJson(ctx *gin.Context, code int, msg string, data interface{}) {
 	response := New()
 	response.Code = code
 	response.Msg = msg
-	response.Errors = errors
+	response.Data = data
+	ctx.JSON(http.StatusOK, response)
+	return
+}
+
+func ResultErrJson(ctx *gin.Context, appErr *errs.AppError, data interface{}) {
+	response := New()
+	response.Code = appErr.Code
+	response.Msg = appErr.Message
 	response.Data = data
 	ctx.JSON(http.StatusOK, response)
 	return
 }
 
 func Ok(ctx *gin.Context) {
-	ResultJson(ctx, SUCCESS, "请求成功", nil, map[string]interface{}{})
+	ResultErrJson(ctx, global.OK, nil)
 }
 
 func OkWithMsg(ctx *gin.Context, msg string) {
-	ResultJson(ctx, SUCCESS, msg, nil, nil)
+	ResultJson(ctx, global.CodeSuccess, msg, nil)
 }
 
 func OkWithData(ctx *gin.Context, data interface{}) {
-	ResultJson(ctx, SUCCESS, "请求成功", nil, data)
+	ResultJson(ctx, global.CodeSuccess, "请求成功", data)
 }
 
 func OkWithDataAndMsg(ctx *gin.Context, data interface{}, msg string) {
-	ResultJson(ctx, SUCCESS, msg, nil, data)
+	ResultJson(ctx, global.CodeSuccess, msg, data)
 }
 
 // ErrorWithMsg 错误信息
 func ErrorWithMsg(ctx *gin.Context, msg string) {
-	ResultJson(ctx, ERROR, msg, nil, map[string]interface{}{})
+	ResultJson(ctx, global.CodeSuccess, msg, nil)
 }
 
 // ErrorWithCodeAndMsg 错误码和信息
 func ErrorWithCodeAndMsg(ctx *gin.Context, code int, msg string) {
-	ResultJson(ctx, code, msg, nil, map[string]interface{}{})
+	ResultJson(ctx, code, msg, nil)
 }
 
-// ErrorWithMsgAndErrors 错误信息
-func ErrorWithMsgAndErrors(ctx *gin.Context, msg string, errors []ErrorItem) {
-	ResultJson(ctx, ERROR, msg, errors, map[string]interface{}{})
+// ErrorWithAppErr 错误码和信息
+func ErrorWithAppErr(ctx *gin.Context, appErr *errs.AppError) {
+	ResultErrJson(ctx, appErr, nil)
 }
 
-func ErrorWithToken(ctx *gin.Context, msg string) {
-	ResultJson(ctx, TOKEN_EXPIRE, msg, nil, map[string]interface{}{})
-}
-
-func NoAuth(ctx *gin.Context, message string) {
-	ResultJson(ctx, http.StatusUnauthorized, message, nil, nil)
+// ErrorWithCodeAndError 错误信息
+func ErrorWithCodeAndError(ctx *gin.Context, code int, error error) {
+	ResultJson(ctx, code, error.Error(), nil)
 }

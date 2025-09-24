@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dysmsapi"
-	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 	"time"
 )
@@ -32,6 +31,6 @@ func SendSms(mobile, smsCode string) (err error) {
 		return err
 	}
 	fmt.Println(client.DoAction(request, response))
-	err = commonGlobal.RedisClient.Set(context.Background(), mobile, smsCode, 3*time.Minute).Err()
+	err = global.RedisClient.Set(context.Background(), mobile, smsCode, 3*time.Minute).Err()
 	return err
 }

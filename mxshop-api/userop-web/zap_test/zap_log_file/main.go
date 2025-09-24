@@ -10,8 +10,8 @@ func NewLogger() (*zap.Logger, error) {
 		"stdout",
 	}
 	cfg.ErrorOutputPaths = []string{
-		"./myprojectlog.err", // 输出到文件
-		"stderr",             // 标准输出
+		"./myprojectlog.errs", // 输出到文件
+		"stderr",              // 标准输出
 	}
 	return cfg.Build()
 }

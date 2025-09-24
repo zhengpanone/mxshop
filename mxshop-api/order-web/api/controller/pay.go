@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/order-web/proto"
 	"net/http"
 )
 
@@ -64,7 +64,7 @@ func (*PayApi) AliPayNotify(ctx *gin.Context) {
 		return
 	}
 	global.Logger.Info(fmt.Sprintf("交易状态%s", notification.TradeStatus))
-	_, err = global.OrderSrvClient.UpdateOrderStatus(context.Background(), &proto.OrderStatus{
+	_, err = global.OrderSrvClient.UpdateOrderStatus(context.Background(), &commonpb.OrderStatus{
 		OrderSn: notification.OutTradeNo,
 		Status:  string(notification.TradeStatus),
 		// TODO payTime

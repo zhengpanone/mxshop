@@ -55,9 +55,9 @@ func InitJaeger(serviceName string) (opentracing.Tracer, io.Closer) {
 		},
 	}
 
-	tracer, closer, err := cfg.NewTracer(config.Logger(jaeger.StdLogger))
-	if err != nil {
-		log.Fatalf("Could not initialize jaeger tracer: %s", err.Error())
+	tracer, closer, errs := cfg.NewTracer(config.Logger(jaeger.StdLogger))
+	if errs != nil {
+		log.Fatalf("Could not initialize jaeger tracer: %s", errs.Error())
 	}
 
 	opentracing.SetGlobalTracer(tracer)

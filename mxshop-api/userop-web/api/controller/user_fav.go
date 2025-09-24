@@ -3,9 +3,9 @@ package controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/proto"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
@@ -27,7 +27,7 @@ import (
 //	@Router			/v1/userop/userfavs/list [get]
 func GetFavList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
-	userFavRsp, err := global.UserFavSrvClient.GetFavList(context.Background(), &proto.UserFavRequest{UserId: int32(userId.(uint))})
+	userFavRsp, err := global.UserFavSrvClient.GetFavList(context.Background(), &commonpb.UserFavRequest{UserId: int32(userId.(uint))})
 	if err != nil {
 		zap.S().Errorw("获取收藏列表失败")
 		HandleGrpcErrorToHttp(err, ctx, "用户操作srv")
@@ -43,7 +43,7 @@ func GetFavList(ctx *gin.Context) {
 		})
 		return
 	}
-	goods, err := global.GoodsSrvClient.BatchGetGoods(context.Background(), &proto.BatchGoodsIdInfo{
+	goods, err := global.GoodsSrvClient.BatchGetGoods(context.Background(), &commonpb.BatchGoodsIdInfo{
 		Id: goodsIds,
 	})
 	if err != nil {
@@ -92,7 +92,7 @@ func AddUserFav(ctx *gin.Context) {
 		return
 	}
 	userId, _ := ctx.Get("userId")
-	_, err := global.UserFavSrvClient.AddUserFav(context.Background(), &proto.UserFavRequest{
+	_, err := global.UserFavSrvClient.AddUserFav(context.Background(), &commonpb.UserFavRequest{
 		UserId:  int32(userId.(uint)),
 		GoodsId: userFavForm.GoodsId,
 	})
@@ -130,7 +130,7 @@ func DeleteUserFav(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.UserFavSrvClient.DeleteUserFav(context.Background(), &proto.UserFavRequest{
+	_, err = global.UserFavSrvClient.DeleteUserFav(context.Background(), &commonpb.UserFavRequest{
 		UserId:  int32(userId.(uint)),
 		GoodsId: int32(i),
 	})
@@ -167,7 +167,7 @@ func GetUserFavDetail(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.UserFavSrvClient.GetUserFavDetail(context.Background(), &proto.UserFavRequest{
+	_, err = global.UserFavSrvClient.GetUserFavDetail(context.Background(), &commonpb.UserFavRequest{
 		UserId:  int32(userId.(uint)),
 		GoodsId: int32(goodsIdInt),
 	})

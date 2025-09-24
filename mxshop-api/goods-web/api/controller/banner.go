@@ -3,10 +3,10 @@ package controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net/http"
 	"strconv"
@@ -67,7 +67,7 @@ func (*BannerController) NewBanner(ctx *gin.Context) {
 	}
 
 	rsp, err := global.GoodsSrvClient.CreateBanner(context.Background(),
-		&proto.BannerRequest{
+		&commonpb.BannerRequest{
 			Index: int32(bannerForm.Index),
 			Url:   bannerForm.Url,
 			Image: bannerForm.Image,
@@ -113,7 +113,7 @@ func (*BannerController) UpdateBanner(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.UpdateBanner(context.Background(), &proto.BannerRequest{
+	_, err = global.GoodsSrvClient.UpdateBanner(context.Background(), &commonpb.BannerRequest{
 		Id:    int32(idInt),
 		Index: int32(bannerForm.Index),
 		Url:   bannerForm.Url,
@@ -146,7 +146,7 @@ func (*BannerController) DeleteBanner(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBanner(context.Background(), &proto.BannerRequest{Id: int32(idInt)})
+	_, err = global.GoodsSrvClient.DeleteBanner(context.Background(), &commonpb.BannerRequest{Id: int32(idInt)})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return

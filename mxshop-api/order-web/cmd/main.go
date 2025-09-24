@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/cmd/run"
-	"time"
-
 	"os"
+	"time"
 )
 
 //	@title			订单服务
@@ -34,7 +33,7 @@ func main() {
 	}
 	time.Local = local
 
-	rootCmd := &cobra.Command{Use: "goods-web"}
+	rootCmd := &cobra.Command{Use: "order-web"}
 	rootCmd.AddCommand(run.CmdRun)
 	_ = rootCmd.Execute()
 

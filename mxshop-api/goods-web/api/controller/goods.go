@@ -3,10 +3,10 @@ package controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/proto"
 	"go.uber.org/zap"
 	"math"
 	"strconv"
@@ -36,7 +36,7 @@ type GoodsController struct{}
 //	@Failure		500		{object}	utils.Response	"服务器错误"
 //	@Router			/v1/goods/list [get]
 func (*GoodsController) GetGoodsList(ctx *gin.Context) {
-	request := &proto.GoodsFilterRequest{}
+	request := &commonpb.GoodsFilterRequest{}
 	priceMin := ctx.DefaultQuery("pMin", "0")
 	priceMinInt, _ := strconv.Atoi(priceMin)
 	request.PriceMin = int32(priceMinInt)
@@ -143,7 +143,7 @@ func (*GoodsController) NewGoods(ctx *gin.Context) {
 		return
 	}
 	goodsClient := global.GoodsSrvClient
-	rsp, err := goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsInfo{
+	rsp, err := goodsClient.CreateGoods(context.Background(), &commonpb.CreateGoodsInfo{
 		Name:            goodsForm.Name,
 		GoodsSn:         goodsForm.GoodsSn,
 		Stocks:          goodsForm.Stocks,
@@ -188,7 +188,7 @@ func (*GoodsController) UpdateStatus(ctx *gin.Context) {
 	}
 	id := ctx.Param("id")
 	i, err := strconv.ParseInt(id, 10, 32)
-	if _, err = global.GoodsSrvClient.UpdateGoods(context.Background(), &proto.CreateGoodsInfo{
+	if _, err = global.GoodsSrvClient.UpdateGoods(context.Background(), &commonpb.CreateGoodsInfo{
 		Id:     int32(i),
 		IsHot:  *goodsStatusForm.IsHot,
 		IsNew:  *goodsStatusForm.IsNew,

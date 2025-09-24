@@ -3,8 +3,8 @@ package initialize
 import (
 	"fmt"
 	_ "github.com/mbobakov/grpc-consul-resolver"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/order-web/proto"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -30,7 +30,7 @@ func InitSrvConn() {
 	}
 	global.GoodsConn = goodsConn
 	// 注册客户端
-	goodsSrvClient := proto.NewGoodsClient(goodsConn)
+	goodsSrvClient := commonpb.NewGoodsClient(goodsConn)
 	global.GoodsSrvClient = goodsSrvClient
 
 	// 如果已有连接先关闭
@@ -49,7 +49,7 @@ func InitSrvConn() {
 	}
 	global.OrderConn = orderConn
 	// 注册客户端
-	orderSrvConn := proto.NewOrderClient(orderConn)
+	orderSrvConn := commonpb.NewOrderClient(orderConn)
 	global.OrderSrvClient = orderSrvConn
 
 	// 如果已有连接先关闭
@@ -69,6 +69,6 @@ func InitSrvConn() {
 	global.InventoryConn = inventoryConn
 
 	// 注册客户端
-	inventorySrvClient := proto.NewInventoryClient(inventoryConn)
+	inventorySrvClient := commonpb.NewInventoryClient(inventoryConn)
 	global.InventorySrvClient = inventorySrvClient
 }

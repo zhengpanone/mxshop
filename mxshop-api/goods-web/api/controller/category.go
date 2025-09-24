@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/proto"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net/http"
@@ -78,7 +78,7 @@ func (c *CategoryController) Detail(ctx *gin.Context) {
 	}
 	reMap := make(map[string]interface{})
 	subCategorys := make([]interface{}, 0)
-	if r, err := global.GoodsSrvClient.GetSubCategory(context.Background(), &proto.CategoryListRequest{
+	if r, err := global.GoodsSrvClient.GetSubCategory(context.Background(), &commonpb.CategoryListRequest{
 		Id: int32(i),
 	}); err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
@@ -127,7 +127,7 @@ func (c *CategoryController) CreateCategory(ctx *gin.Context) {
 		return
 	}
 	goodsClient := global.GoodsSrvClient
-	rsp, err := goodsClient.CreateCategory(context.Background(), &proto.CategoryInfoRequest{
+	rsp, err := goodsClient.CreateCategory(context.Background(), &commonpb.CategoryInfoRequest{
 		Name:           categoryForm.Name,
 		IsTab:          *categoryForm.IsTab,
 		Level:          categoryForm.Level,
@@ -176,7 +176,7 @@ func (c *CategoryController) UpdateCategory(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	request := &proto.CategoryInfoRequest{
+	request := &commonpb.CategoryInfoRequest{
 		Id:   int32(idInt),
 		Name: categoryForm.Name,
 	}

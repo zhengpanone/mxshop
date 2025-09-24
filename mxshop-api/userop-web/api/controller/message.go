@@ -4,10 +4,10 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	customClaims "github.com/zhengpanone/mxshop/mxshop-api/common/claims"
+	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/proto"
 	"go.uber.org/zap"
 	"net/http"
 )
@@ -31,7 +31,7 @@ func GetMessageList(ctx *gin.Context) {
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
 	model := claims.(*customClaims.CustomClaims)
-	request := proto.MessageRequest{}
+	request := commonpb.MessageRequest{}
 	if model.AuthorityId == 1 {
 		request.UserId = int32(userId.(uint))
 	}
@@ -81,7 +81,7 @@ func CreateMessage(ctx *gin.Context) {
 		HandleValidatorError(ctx, err)
 		return
 	}
-	rsp, err := global.MessageSrvClient.CreateMessage(context.Background(), &proto.MessageRequest{
+	rsp, err := global.MessageSrvClient.CreateMessage(context.Background(), &commonpb.MessageRequest{
 		MessageType: messageForm.MessageType,
 		Message:     messageForm.Message,
 		Subject:     messageForm.Subject,
