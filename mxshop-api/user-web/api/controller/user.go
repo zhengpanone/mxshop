@@ -160,7 +160,7 @@ func PasswordLogin(ctx *gin.Context) {
 func LogOut(ctx *gin.Context) {
 	token := commonMiddleware.ExtractToken(ctx)
 	if token == "" {
-		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "退出失败")
+		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "token不合法")
 		return
 	}
 	j := commonMiddleware.NewJWT(global.ServerConfig.JWTInfo.SigningKey)
@@ -170,7 +170,7 @@ func LogOut(ctx *gin.Context) {
 		return
 	}
 	// 将 Token 加入黑名单
-	_ = commonGlobal.TokenManager.BlacklistToken(token, tokenClaims.ExpiresAt.Time)
+	_ = commonGlobal.TokenManager.RevokeToken(tokenClaims.ID, token)
 	commonResponse.OkWithMsg(ctx, "登出成功")
 }
 

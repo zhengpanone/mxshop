@@ -497,13 +497,13 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return rsp
 
     @logger.catch
-    def GetCategoryBrandList(self, request: goods_pb2.CategoryListRequest, context):
+    def GetCategoryBrandList(self, request: goods_pb2.CategoryBrandInfoRequest, context):
         # 获取某一个分类的所有品牌
-        rsp = goods_pb2.CategoryBrandInfoRequest()
+        rsp = goods_pb2.BrandListResponse()
         try:
             category = Category.get(Category.id == request.id)
             category_brands = GoodsCategoryBrand.select().where(GoodsCategoryBrand.category == category)
-            # rsp.total = category_brands.count()
+            rsp.total = category_brands.count()
             for category_brand in category_brands:
                 brand_rsp = goods_pb2.BrandInfoResponse()
                 brand_rsp.id = category_brand.brand.id

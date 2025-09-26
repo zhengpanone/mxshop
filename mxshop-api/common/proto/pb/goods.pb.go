@@ -24,17 +24,17 @@ const (
 
 type GoodsFilterRequest struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
-	PriceMin    int32                  `protobuf:"varint,1,opt,name=price_min,json=priceMin,proto3" json:"price_min,omitempty"`
-	PriceMax    int32                  `protobuf:"varint,2,opt,name=price_max,json=priceMax,proto3" json:"price_max,omitempty"`
-	IsHot       bool                   `protobuf:"varint,3,opt,name=is_hot,json=isHot,proto3" json:"is_hot,omitempty"`
-	IsNew       bool                   `protobuf:"varint,4,opt,name=is_new,json=isNew,proto3" json:"is_new,omitempty"`
-	IsTab       bool                   `protobuf:"varint,5,opt,name=is_tab,json=isTab,proto3" json:"is_tab,omitempty"`
-	TopCategory int32                  `protobuf:"varint,6,opt,name=top_category,json=topCategory,proto3" json:"top_category,omitempty"`
+	PriceMin    int32                  `protobuf:"varint,1,opt,name=priceMin,proto3" json:"priceMin,omitempty"`
+	PriceMax    int32                  `protobuf:"varint,2,opt,name=priceMax,proto3" json:"priceMax,omitempty"`
+	IsHot       bool                   `protobuf:"varint,3,opt,name=isHot,proto3" json:"isHot,omitempty"`
+	IsNew       bool                   `protobuf:"varint,4,opt,name=isNew,proto3" json:"isNew,omitempty"`
+	IsTab       bool                   `protobuf:"varint,5,opt,name=isTab,proto3" json:"isTab,omitempty"`
+	TopCategory int32                  `protobuf:"varint,6,opt,name=topCategory,proto3" json:"topCategory,omitempty"`
 	// 页码
 	Page uint32 `protobuf:"varint,7,opt,name=page,proto3" json:"page,omitempty"`
 	// 每页大小
 	Size          uint32 `protobuf:"varint,8,opt,name=size,proto3" json:"size,omitempty"`
-	KeyWords      string `protobuf:"bytes,9,opt,name=key_words,json=keyWords,proto3" json:"key_words,omitempty"`
+	KeyWords      string `protobuf:"bytes,9,opt,name=keyWords,proto3" json:"keyWords,omitempty"`
 	Brand         int32  `protobuf:"varint,10,opt,name=brand,proto3" json:"brand,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -240,21 +240,21 @@ type CreateGoodsInfo struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	GoodsSn         string                 `protobuf:"bytes,3,opt,name=goods_sn,json=goodsSn,proto3" json:"goods_sn,omitempty"`
+	GoodsSn         string                 `protobuf:"bytes,3,opt,name=goodsSn,proto3" json:"goodsSn,omitempty"`
 	Stocks          int32                  `protobuf:"varint,7,opt,name=stocks,proto3" json:"stocks,omitempty"` // 库存
-	MarketPrice     float32                `protobuf:"fixed32,8,opt,name=market_price,json=marketPrice,proto3" json:"market_price,omitempty"`
-	ShopPrice       float32                `protobuf:"fixed32,9,opt,name=shop_price,json=shopPrice,proto3" json:"shop_price,omitempty"`
-	GoodsBrief      string                 `protobuf:"bytes,10,opt,name=goods_brief,json=goodsBrief,proto3" json:"goods_brief,omitempty"`
-	GoodsDesc       string                 `protobuf:"bytes,11,opt,name=goods_desc,json=goodsDesc,proto3" json:"goods_desc,omitempty"`
-	ShipFree        bool                   `protobuf:"varint,12,opt,name=ship_free,json=shipFree,proto3" json:"ship_free,omitempty"`
+	MarketPrice     float32                `protobuf:"fixed32,8,opt,name=marketPrice,proto3" json:"marketPrice,omitempty"`
+	ShopPrice       float32                `protobuf:"fixed32,9,opt,name=shopPrice,proto3" json:"shopPrice,omitempty"`
+	GoodsBrief      string                 `protobuf:"bytes,10,opt,name=goodsBrief,proto3" json:"goodsBrief,omitempty"`
+	GoodsDesc       string                 `protobuf:"bytes,11,opt,name=goodsDesc,proto3" json:"goodsDesc,omitempty"`
+	ShipFree        bool                   `protobuf:"varint,12,opt,name=shipFree,proto3" json:"shipFree,omitempty"`
 	Images          []string               `protobuf:"bytes,13,rep,name=images,proto3" json:"images,omitempty"`
-	DescImages      []string               `protobuf:"bytes,14,rep,name=desc_images,json=descImages,proto3" json:"desc_images,omitempty"`
-	GoodsFrontImage string                 `protobuf:"bytes,15,opt,name=goods_front_image,json=goodsFrontImage,proto3" json:"goods_front_image,omitempty"`
-	IsNew           bool                   `protobuf:"varint,16,opt,name=is_new,json=isNew,proto3" json:"is_new,omitempty"`
-	IsHot           bool                   `protobuf:"varint,17,opt,name=is_hot,json=isHot,proto3" json:"is_hot,omitempty"`
-	OnSale          bool                   `protobuf:"varint,18,opt,name=on_sale,json=onSale,proto3" json:"on_sale,omitempty"`
-	CategoryId      int32                  `protobuf:"varint,19,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	BrandId         int32                  `protobuf:"varint,20,opt,name=brand_id,json=brandId,proto3" json:"brand_id,omitempty"`
+	DescImages      []string               `protobuf:"bytes,14,rep,name=descImages,proto3" json:"descImages,omitempty"`
+	GoodsFrontImage string                 `protobuf:"bytes,15,opt,name=goodsFrontImage,proto3" json:"goodsFrontImage,omitempty"`
+	IsNew           bool                   `protobuf:"varint,16,opt,name=isNew,proto3" json:"isNew,omitempty"`
+	IsHot           bool                   `protobuf:"varint,17,opt,name=isHot,proto3" json:"isHot,omitempty"`
+	OnSale          bool                   `protobuf:"varint,18,opt,name=onSale,proto3" json:"onSale,omitempty"`
+	CategoryId      int32                  `protobuf:"varint,19,opt,name=categoryId,proto3" json:"categoryId,omitempty"`
+	BrandId         int32                  `protobuf:"varint,20,opt,name=brandId,proto3" json:"brandId,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -463,24 +463,24 @@ func (x *CategoryBriefInfoResponse) GetName() string {
 type GoodsInfoResponse struct {
 	state           protoimpl.MessageState     `protogen:"open.v1"`
 	Id              int32                      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	CategoryId      int32                      `protobuf:"varint,2,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	CategoryId      int32                      `protobuf:"varint,2,opt,name=categoryId,proto3" json:"categoryId,omitempty"`
 	Name            string                     `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	GoodsSn         string                     `protobuf:"bytes,4,opt,name=goods_sn,json=goodsSn,proto3" json:"goods_sn,omitempty"`
-	ClickNum        int32                      `protobuf:"varint,5,opt,name=click_num,json=clickNum,proto3" json:"click_num,omitempty"`
-	SoldNum         int32                      `protobuf:"varint,6,opt,name=sold_num,json=soldNum,proto3" json:"sold_num,omitempty"`
-	FavNum          int32                      `protobuf:"varint,7,opt,name=fav_num,json=favNum,proto3" json:"fav_num,omitempty"`
-	MarketPrice     float32                    `protobuf:"fixed32,9,opt,name=market_price,json=marketPrice,proto3" json:"market_price,omitempty"`
-	ShopPrice       float32                    `protobuf:"fixed32,10,opt,name=shop_price,json=shopPrice,proto3" json:"shop_price,omitempty"`
-	GoodsBrief      string                     `protobuf:"bytes,11,opt,name=goods_brief,json=goodsBrief,proto3" json:"goods_brief,omitempty"`
-	GoodsDesc       string                     `protobuf:"bytes,12,opt,name=goods_desc,json=goodsDesc,proto3" json:"goods_desc,omitempty"`
-	ShipFree        bool                       `protobuf:"varint,13,opt,name=ship_free,json=shipFree,proto3" json:"ship_free,omitempty"`
+	GoodsSn         string                     `protobuf:"bytes,4,opt,name=goodsSn,proto3" json:"goodsSn,omitempty"`
+	ClickNum        int32                      `protobuf:"varint,5,opt,name=clickNum,proto3" json:"clickNum,omitempty"`
+	SoldNum         int32                      `protobuf:"varint,6,opt,name=soldNum,proto3" json:"soldNum,omitempty"`
+	FavNum          int32                      `protobuf:"varint,7,opt,name=favNum,proto3" json:"favNum,omitempty"`
+	MarketPrice     float32                    `protobuf:"fixed32,9,opt,name=marketPrice,proto3" json:"marketPrice,omitempty"`
+	ShopPrice       float32                    `protobuf:"fixed32,10,opt,name=shopPrice,proto3" json:"shopPrice,omitempty"`
+	GoodsBrief      string                     `protobuf:"bytes,11,opt,name=goodsBrief,proto3" json:"goodsBrief,omitempty"`
+	GoodsDesc       string                     `protobuf:"bytes,12,opt,name=goodsDesc,proto3" json:"goodsDesc,omitempty"`
+	ShipFree        bool                       `protobuf:"varint,13,opt,name=shipFree,proto3" json:"shipFree,omitempty"`
 	Images          []string                   `protobuf:"bytes,14,rep,name=images,proto3" json:"images,omitempty"`
-	DescImages      []string                   `protobuf:"bytes,15,rep,name=desc_images,json=descImages,proto3" json:"desc_images,omitempty"`
-	GoodsFrontImage string                     `protobuf:"bytes,16,opt,name=goods_front_image,json=goodsFrontImage,proto3" json:"goods_front_image,omitempty"`
-	IsNew           bool                       `protobuf:"varint,17,opt,name=is_new,json=isNew,proto3" json:"is_new,omitempty"`
-	IsHot           bool                       `protobuf:"varint,18,opt,name=is_hot,json=isHot,proto3" json:"is_hot,omitempty"`
-	OnSale          bool                       `protobuf:"varint,19,opt,name=on_sale,json=onSale,proto3" json:"on_sale,omitempty"`
-	AddTime         int64                      `protobuf:"varint,20,opt,name=add_time,json=addTime,proto3" json:"add_time,omitempty"`
+	DescImages      []string                   `protobuf:"bytes,15,rep,name=descImages,proto3" json:"descImages,omitempty"`
+	GoodsFrontImage string                     `protobuf:"bytes,16,opt,name=goodsFrontImage,proto3" json:"goodsFrontImage,omitempty"`
+	IsNew           bool                       `protobuf:"varint,17,opt,name=isNew,proto3" json:"isNew,omitempty"`
+	IsHot           bool                       `protobuf:"varint,18,opt,name=isHot,proto3" json:"isHot,omitempty"`
+	OnSale          bool                       `protobuf:"varint,19,opt,name=onSale,proto3" json:"onSale,omitempty"`
+	AddTime         int64                      `protobuf:"varint,20,opt,name=addTime,proto3" json:"addTime,omitempty"`
 	Category        *CategoryBriefInfoResponse `protobuf:"bytes,21,opt,name=category,proto3" json:"category,omitempty"`
 	Brand           *BrandInfoResponse         `protobuf:"bytes,22,opt,name=brand,proto3" json:"brand,omitempty"`
 	unknownFields   protoimpl.UnknownFields
@@ -756,9 +756,9 @@ type CategoryBrandInfoRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Id             int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	ParentCategory int32                  `protobuf:"varint,3,opt,name=parent_category,json=parentCategory,proto3" json:"parent_category,omitempty"`
+	ParentCategory int32                  `protobuf:"varint,3,opt,name=parentCategory,proto3" json:"parentCategory,omitempty"`
 	Level          int32                  `protobuf:"varint,4,opt,name=level,proto3" json:"level,omitempty"`
-	IsTab          bool                   `protobuf:"varint,5,opt,name=is_tab,json=isTab,proto3" json:"is_tab,omitempty"`
+	IsTab          bool                   `protobuf:"varint,5,opt,name=isTab,proto3" json:"isTab,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -935,8 +935,8 @@ func (x *CategoryBrandListResponse) GetData() []*CategoryBrandResponse {
 type CategoryBrandRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	CategoryId    int32                  `protobuf:"varint,2,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	BrandId       int32                  `protobuf:"varint,3,opt,name=brand_id,json=brandId,proto3" json:"brand_id,omitempty"`
+	CategoryId    int32                  `protobuf:"varint,2,opt,name=categoryId,proto3" json:"categoryId,omitempty"`
+	BrandId       int32                  `protobuf:"varint,3,opt,name=brandId,proto3" json:"brandId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1055,7 +1055,7 @@ func (x *CategoryBrandResponse) GetCategory() *CategoryInfoResponse {
 type CategoryFilterFilterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	IsTab         bool                   `protobuf:"varint,2,opt,name=is_tab,json=isTab,proto3" json:"is_tab,omitempty"`
+	IsTab         bool                   `protobuf:"varint,2,opt,name=isTab,proto3" json:"isTab,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1108,7 +1108,7 @@ type CategoryListResponse struct {
 	state         protoimpl.MessageState  `protogen:"open.v1"`
 	Total         int32                   `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
 	Data          []*CategoryInfoResponse `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
-	JsonData      string                  `protobuf:"bytes,3,opt,name=json_data,json=jsonData,proto3" json:"json_data,omitempty"`
+	JsonData      string                  `protobuf:"bytes,3,opt,name=jsonData,proto3" json:"jsonData,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1220,7 +1220,7 @@ type SubCategoryListResponse struct {
 	state           protoimpl.MessageState  `protogen:"open.v1"`
 	Total           int32                   `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
 	Info            *CategoryInfoResponse   `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
-	SubCategoryList []*CategoryInfoResponse `protobuf:"bytes,3,rep,name=sub_category_list,json=subCategoryList,proto3" json:"sub_category_list,omitempty"`
+	SubCategoryList []*CategoryInfoResponse `protobuf:"bytes,3,rep,name=subCategoryList,proto3" json:"subCategoryList,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -1280,9 +1280,9 @@ type CategoryInfoResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Id             int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	ParentCategory int32                  `protobuf:"varint,3,opt,name=parent_category,json=parentCategory,proto3" json:"parent_category,omitempty"`
+	ParentCategory int32                  `protobuf:"varint,3,opt,name=parentCategory,proto3" json:"parentCategory,omitempty"`
 	Level          int32                  `protobuf:"varint,4,opt,name=level,proto3" json:"level,omitempty"`
-	IsTab          bool                   `protobuf:"varint,5,opt,name=is_tab,json=isTab,proto3" json:"is_tab,omitempty"`
+	IsTab          bool                   `protobuf:"varint,5,opt,name=isTab,proto3" json:"isTab,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1451,8 +1451,8 @@ func (x *QueryCategoryRequest) GetName() string {
 type BatchCategoryInfoRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            []int32                `protobuf:"varint,1,rep,packed,name=id,proto3" json:"id,omitempty"`
-	GoodsNums     int32                  `protobuf:"varint,2,opt,name=goods_nums,json=goodsNums,proto3" json:"goods_nums,omitempty"`
-	BrandNums     int32                  `protobuf:"varint,3,opt,name=brand_nums,json=brandNums,proto3" json:"brand_nums,omitempty"`
+	GoodsNums     int32                  `protobuf:"varint,2,opt,name=goodsNums,proto3" json:"goodsNums,omitempty"`
+	BrandNums     int32                  `protobuf:"varint,3,opt,name=brandNums,proto3" json:"brandNums,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1512,9 +1512,9 @@ type CategoryInfoRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Id             int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	ParentCategory int32                  `protobuf:"varint,3,opt,name=parent_category,json=parentCategory,proto3" json:"parent_category,omitempty"`
+	ParentCategory int32                  `protobuf:"varint,3,opt,name=parentCategory,proto3" json:"parentCategory,omitempty"`
 	Level          int32                  `protobuf:"varint,4,opt,name=level,proto3" json:"level,omitempty"`
-	IsTab          bool                   `protobuf:"varint,5,opt,name=is_tab,json=isTab,proto3" json:"is_tab,omitempty"`
+	IsTab          bool                   `protobuf:"varint,5,opt,name=isTab,proto3" json:"isTab,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2000,141 +2000,142 @@ var File_goods_proto protoreflect.FileDescriptor
 
 const file_goods_proto_rawDesc = "" +
 	"\n" +
-	"\vgoods.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x91\x02\n" +
-	"\x12GoodsFilterRequest\x12\x1b\n" +
-	"\tprice_min\x18\x01 \x01(\x05R\bpriceMin\x12\x1b\n" +
-	"\tprice_max\x18\x02 \x01(\x05R\bpriceMax\x12\x15\n" +
-	"\x06is_hot\x18\x03 \x01(\bR\x05isHot\x12\x15\n" +
-	"\x06is_new\x18\x04 \x01(\bR\x05isNew\x12\x15\n" +
-	"\x06is_tab\x18\x05 \x01(\bR\x05isTab\x12!\n" +
-	"\ftop_category\x18\x06 \x01(\x05R\vtopCategory\x12\x12\n" +
+	"\vgoods.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x8a\x02\n" +
+	"\x12GoodsFilterRequest\x12\x1a\n" +
+	"\bpriceMin\x18\x01 \x01(\x05R\bpriceMin\x12\x1a\n" +
+	"\bpriceMax\x18\x02 \x01(\x05R\bpriceMax\x12\x14\n" +
+	"\x05isHot\x18\x03 \x01(\bR\x05isHot\x12\x14\n" +
+	"\x05isNew\x18\x04 \x01(\bR\x05isNew\x12\x14\n" +
+	"\x05isTab\x18\x05 \x01(\bR\x05isTab\x12 \n" +
+	"\vtopCategory\x18\x06 \x01(\x05R\vtopCategory\x12\x12\n" +
 	"\x04page\x18\a \x01(\rR\x04page\x12\x12\n" +
-	"\x04size\x18\b \x01(\rR\x04size\x12\x1b\n" +
-	"\tkey_words\x18\t \x01(\tR\bkeyWords\x12\x14\n" +
+	"\x04size\x18\b \x01(\rR\x04size\x12\x1a\n" +
+	"\bkeyWords\x18\t \x01(\tR\bkeyWords\x12\x14\n" +
 	"\x05brand\x18\n" +
 	" \x01(\x05R\x05brand\"Q\n" +
 	"\x11GoodsListResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x05R\x05total\x12&\n" +
 	"\x04data\x18\x02 \x03(\v2\x12.GoodsInfoResponseR\x04data\"\"\n" +
 	"\x10BatchGoodsIdInfo\x12\x0e\n" +
-	"\x02id\x18\x01 \x03(\x05R\x02id\"\xef\x03\n" +
+	"\x02id\x18\x01 \x03(\x05R\x02id\"\xe1\x03\n" +
 	"\x0fCreateGoodsInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x19\n" +
-	"\bgoods_sn\x18\x03 \x01(\tR\agoodsSn\x12\x16\n" +
-	"\x06stocks\x18\a \x01(\x05R\x06stocks\x12!\n" +
-	"\fmarket_price\x18\b \x01(\x02R\vmarketPrice\x12\x1d\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
+	"\agoodsSn\x18\x03 \x01(\tR\agoodsSn\x12\x16\n" +
+	"\x06stocks\x18\a \x01(\x05R\x06stocks\x12 \n" +
+	"\vmarketPrice\x18\b \x01(\x02R\vmarketPrice\x12\x1c\n" +
+	"\tshopPrice\x18\t \x01(\x02R\tshopPrice\x12\x1e\n" +
 	"\n" +
-	"shop_price\x18\t \x01(\x02R\tshopPrice\x12\x1f\n" +
-	"\vgoods_brief\x18\n" +
+	"goodsBrief\x18\n" +
 	" \x01(\tR\n" +
-	"goodsBrief\x12\x1d\n" +
+	"goodsBrief\x12\x1c\n" +
+	"\tgoodsDesc\x18\v \x01(\tR\tgoodsDesc\x12\x1a\n" +
+	"\bshipFree\x18\f \x01(\bR\bshipFree\x12\x16\n" +
+	"\x06images\x18\r \x03(\tR\x06images\x12\x1e\n" +
 	"\n" +
-	"goods_desc\x18\v \x01(\tR\tgoodsDesc\x12\x1b\n" +
-	"\tship_free\x18\f \x01(\bR\bshipFree\x12\x16\n" +
-	"\x06images\x18\r \x03(\tR\x06images\x12\x1f\n" +
-	"\vdesc_images\x18\x0e \x03(\tR\n" +
-	"descImages\x12*\n" +
-	"\x11goods_front_image\x18\x0f \x01(\tR\x0fgoodsFrontImage\x12\x15\n" +
-	"\x06is_new\x18\x10 \x01(\bR\x05isNew\x12\x15\n" +
-	"\x06is_hot\x18\x11 \x01(\bR\x05isHot\x12\x17\n" +
-	"\aon_sale\x18\x12 \x01(\bR\x06onSale\x12\x1f\n" +
-	"\vcategory_id\x18\x13 \x01(\x05R\n" +
-	"categoryId\x12\x19\n" +
-	"\bbrand_id\x18\x14 \x01(\x05R\abrandId\"?\n" +
+	"descImages\x18\x0e \x03(\tR\n" +
+	"descImages\x12(\n" +
+	"\x0fgoodsFrontImage\x18\x0f \x01(\tR\x0fgoodsFrontImage\x12\x14\n" +
+	"\x05isNew\x18\x10 \x01(\bR\x05isNew\x12\x14\n" +
+	"\x05isHot\x18\x11 \x01(\bR\x05isHot\x12\x16\n" +
+	"\x06onSale\x18\x12 \x01(\bR\x06onSale\x12\x1e\n" +
+	"\n" +
+	"categoryId\x18\x13 \x01(\x05R\n" +
+	"categoryId\x12\x18\n" +
+	"\abrandId\x18\x14 \x01(\x05R\abrandId\"?\n" +
 	"\x19CategoryBriefInfoResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\x8c\x05\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xfb\x04\n" +
 	"\x11GoodsInfoResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1f\n" +
-	"\vcategory_id\x18\x02 \x01(\x05R\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1e\n" +
+	"\n" +
+	"categoryId\x18\x02 \x01(\x05R\n" +
 	"categoryId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12\x19\n" +
-	"\bgoods_sn\x18\x04 \x01(\tR\agoodsSn\x12\x1b\n" +
-	"\tclick_num\x18\x05 \x01(\x05R\bclickNum\x12\x19\n" +
-	"\bsold_num\x18\x06 \x01(\x05R\asoldNum\x12\x17\n" +
-	"\afav_num\x18\a \x01(\x05R\x06favNum\x12!\n" +
-	"\fmarket_price\x18\t \x01(\x02R\vmarketPrice\x12\x1d\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x18\n" +
+	"\agoodsSn\x18\x04 \x01(\tR\agoodsSn\x12\x1a\n" +
+	"\bclickNum\x18\x05 \x01(\x05R\bclickNum\x12\x18\n" +
+	"\asoldNum\x18\x06 \x01(\x05R\asoldNum\x12\x16\n" +
+	"\x06favNum\x18\a \x01(\x05R\x06favNum\x12 \n" +
+	"\vmarketPrice\x18\t \x01(\x02R\vmarketPrice\x12\x1c\n" +
+	"\tshopPrice\x18\n" +
+	" \x01(\x02R\tshopPrice\x12\x1e\n" +
 	"\n" +
-	"shop_price\x18\n" +
-	" \x01(\x02R\tshopPrice\x12\x1f\n" +
-	"\vgoods_brief\x18\v \x01(\tR\n" +
-	"goodsBrief\x12\x1d\n" +
+	"goodsBrief\x18\v \x01(\tR\n" +
+	"goodsBrief\x12\x1c\n" +
+	"\tgoodsDesc\x18\f \x01(\tR\tgoodsDesc\x12\x1a\n" +
+	"\bshipFree\x18\r \x01(\bR\bshipFree\x12\x16\n" +
+	"\x06images\x18\x0e \x03(\tR\x06images\x12\x1e\n" +
 	"\n" +
-	"goods_desc\x18\f \x01(\tR\tgoodsDesc\x12\x1b\n" +
-	"\tship_free\x18\r \x01(\bR\bshipFree\x12\x16\n" +
-	"\x06images\x18\x0e \x03(\tR\x06images\x12\x1f\n" +
-	"\vdesc_images\x18\x0f \x03(\tR\n" +
-	"descImages\x12*\n" +
-	"\x11goods_front_image\x18\x10 \x01(\tR\x0fgoodsFrontImage\x12\x15\n" +
-	"\x06is_new\x18\x11 \x01(\bR\x05isNew\x12\x15\n" +
-	"\x06is_hot\x18\x12 \x01(\bR\x05isHot\x12\x17\n" +
-	"\aon_sale\x18\x13 \x01(\bR\x06onSale\x12\x19\n" +
-	"\badd_time\x18\x14 \x01(\x03R\aaddTime\x126\n" +
+	"descImages\x18\x0f \x03(\tR\n" +
+	"descImages\x12(\n" +
+	"\x0fgoodsFrontImage\x18\x10 \x01(\tR\x0fgoodsFrontImage\x12\x14\n" +
+	"\x05isNew\x18\x11 \x01(\bR\x05isNew\x12\x14\n" +
+	"\x05isHot\x18\x12 \x01(\bR\x05isHot\x12\x16\n" +
+	"\x06onSale\x18\x13 \x01(\bR\x06onSale\x12\x18\n" +
+	"\aaddTime\x18\x14 \x01(\x03R\aaddTime\x126\n" +
 	"\bcategory\x18\x15 \x01(\v2\x1a.CategoryBriefInfoResponseR\bcategory\x12(\n" +
 	"\x05brand\x18\x16 \x01(\v2\x12.BrandInfoResponseR\x05brand\"!\n" +
 	"\x0fDeleteGoodsInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"!\n" +
 	"\x0fGoodInfoRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\x94\x01\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x92\x01\n" +
 	"\x18CategoryBrandInfoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12'\n" +
-	"\x0fparent_category\x18\x03 \x01(\x05R\x0eparentCategory\x12\x14\n" +
-	"\x05level\x18\x04 \x01(\x05R\x05level\x12\x15\n" +
-	"\x06is_tab\x18\x05 \x01(\bR\x05isTab\"D\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12&\n" +
+	"\x0eparentCategory\x18\x03 \x01(\x05R\x0eparentCategory\x12\x14\n" +
+	"\x05level\x18\x04 \x01(\x05R\x05level\x12\x14\n" +
+	"\x05isTab\x18\x05 \x01(\bR\x05isTab\"D\n" +
 	"\x1aCategoryBrandFilterRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x12\n" +
 	"\x04size\x18\x02 \x01(\x05R\x04size\"]\n" +
 	"\x19CategoryBrandListResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x05R\x05total\x12*\n" +
-	"\x04data\x18\x02 \x03(\v2\x16.CategoryBrandResponseR\x04data\"b\n" +
+	"\x04data\x18\x02 \x03(\v2\x16.CategoryBrandResponseR\x04data\"`\n" +
 	"\x14CategoryBrandRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1f\n" +
-	"\vcategory_id\x18\x02 \x01(\x05R\n" +
-	"categoryId\x12\x19\n" +
-	"\bbrand_id\x18\x03 \x01(\x05R\abrandId\"\x84\x01\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1e\n" +
+	"\n" +
+	"categoryId\x18\x02 \x01(\x05R\n" +
+	"categoryId\x12\x18\n" +
+	"\abrandId\x18\x03 \x01(\x05R\abrandId\"\x84\x01\n" +
 	"\x15CategoryBrandResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12(\n" +
 	"\x05brand\x18\x02 \x01(\v2\x12.BrandInfoResponseR\x05brand\x121\n" +
-	"\bcategory\x18\x03 \x01(\v2\x15.CategoryInfoResponseR\bcategory\"D\n" +
+	"\bcategory\x18\x03 \x01(\v2\x15.CategoryInfoResponseR\bcategory\"C\n" +
 	"\x1bCategoryFilterFilterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x15\n" +
-	"\x06is_tab\x18\x02 \x01(\bR\x05isTab\"t\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
+	"\x05isTab\x18\x02 \x01(\bR\x05isTab\"s\n" +
 	"\x14CategoryListResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x05R\x05total\x12)\n" +
-	"\x04data\x18\x02 \x03(\v2\x15.CategoryInfoResponseR\x04data\x12\x1b\n" +
-	"\tjson_data\x18\x03 \x01(\tR\bjsonData\";\n" +
+	"\x04data\x18\x02 \x03(\v2\x15.CategoryInfoResponseR\x04data\x12\x1a\n" +
+	"\bjsonData\x18\x03 \x01(\tR\bjsonData\";\n" +
 	"\x13CategoryListRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
-	"\x05level\x18\x02 \x01(\x05R\x05level\"\x9d\x01\n" +
+	"\x05level\x18\x02 \x01(\x05R\x05level\"\x9b\x01\n" +
 	"\x17SubCategoryListResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x05R\x05total\x12)\n" +
-	"\x04info\x18\x02 \x01(\v2\x15.CategoryInfoResponseR\x04info\x12A\n" +
-	"\x11sub_category_list\x18\x03 \x03(\v2\x15.CategoryInfoResponseR\x0fsubCategoryList\"\x90\x01\n" +
+	"\x04info\x18\x02 \x01(\v2\x15.CategoryInfoResponseR\x04info\x12?\n" +
+	"\x0fsubCategoryList\x18\x03 \x03(\v2\x15.CategoryInfoResponseR\x0fsubCategoryList\"\x8e\x01\n" +
 	"\x14CategoryInfoResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12'\n" +
-	"\x0fparent_category\x18\x03 \x01(\x05R\x0eparentCategory\x12\x14\n" +
-	"\x05level\x18\x04 \x01(\x05R\x05level\x12\x15\n" +
-	"\x06is_tab\x18\x05 \x01(\bR\x05isTab\"$\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12&\n" +
+	"\x0eparentCategory\x18\x03 \x01(\x05R\x0eparentCategory\x12\x14\n" +
+	"\x05level\x18\x04 \x01(\x05R\x05level\x12\x14\n" +
+	"\x05isTab\x18\x05 \x01(\bR\x05isTab\"$\n" +
 	"\x12DeleteCategoryInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\":\n" +
 	"\x14QueryCategoryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"h\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"f\n" +
 	"\x18BatchCategoryInfoRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x03(\x05R\x02id\x12\x1d\n" +
-	"\n" +
-	"goods_nums\x18\x02 \x01(\x05R\tgoodsNums\x12\x1d\n" +
-	"\n" +
-	"brand_nums\x18\x03 \x01(\x05R\tbrandNums\"\x8f\x01\n" +
+	"\x02id\x18\x01 \x03(\x05R\x02id\x12\x1c\n" +
+	"\tgoodsNums\x18\x02 \x01(\x05R\tgoodsNums\x12\x1c\n" +
+	"\tbrandNums\x18\x03 \x01(\x05R\tbrandNums\"\x8d\x01\n" +
 	"\x13CategoryInfoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12'\n" +
-	"\x0fparent_category\x18\x03 \x01(\x05R\x0eparentCategory\x12\x14\n" +
-	"\x05level\x18\x04 \x01(\x05R\x05level\x12\x15\n" +
-	"\x06is_tab\x18\x05 \x01(\bR\x05isTab\"<\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12&\n" +
+	"\x0eparentCategory\x18\x03 \x01(\x05R\x0eparentCategory\x12\x14\n" +
+	"\x05level\x18\x04 \x01(\x05R\x05level\x12\x14\n" +
+	"\x05isTab\x18\x05 \x01(\bR\x05isTab\"<\n" +
 	"\x12BrandFilterRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x12\n" +
 	"\x04size\x18\x02 \x01(\x05R\x04size\"Q\n" +
@@ -2243,7 +2244,7 @@ var file_goods_proto_depIdxs = []int32{
 	17, // 5: CategoryBrandResponse.category:type_name -> CategoryInfoResponse
 	17, // 6: CategoryListResponse.data:type_name -> CategoryInfoResponse
 	17, // 7: SubCategoryListResponse.info:type_name -> CategoryInfoResponse
-	17, // 8: SubCategoryListResponse.sub_category_list:type_name -> CategoryInfoResponse
+	17, // 8: SubCategoryListResponse.subCategoryList:type_name -> CategoryInfoResponse
 	25, // 9: BrandListResponse.data:type_name -> BrandInfoResponse
 	28, // 10: BannerListResponse.data:type_name -> BannerResponse
 	0,  // 11: Goods.GoodsList:input_type -> GoodsFilterRequest

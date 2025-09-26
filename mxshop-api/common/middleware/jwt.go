@@ -26,13 +26,11 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 		tokenClaims, err := j.ParseToken(token)
 		if err != nil {
 			if errors.Is(err, commonGlobal.ErrTokenExpired) {
-				c.JSON(http.StatusUnauthorized, map[string]string{
-					"msg": "授权已过期",
-				})
+				commonResponse.ErrorWithCodeAndMsg(c, http.StatusUnauthorized, "授权已过期")
 				c.Abort()
 				return
 			}
-			c.JSON(http.StatusUnauthorized, "未登录")
+			commonResponse.ErrorWithCodeAndMsg(c, http.StatusUnauthorized, "未登录")
 			c.Abort()
 			return
 		}
@@ -40,7 +38,7 @@ func JWTAuth(signingKey string) gin.HandlerFunc {
 		// 检查 Token 是否在黑名单中
 		result, err := commonGlobal.TokenManager.ValidateToken(tokenClaims.ID, token)
 		if !result {
-			c.JSON(http.StatusUnauthorized, "token已经失效")
+			commonResponse.ErrorWithCodeAndMsg(c, http.StatusUnauthorized, "token已经失效")
 			c.Abort()
 			return
 		}

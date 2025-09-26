@@ -63,8 +63,9 @@ func runFunction(cmd *cobra.Command, args []string) {
 
 	// 3. 初始化连接redis
 	if global.ServerConfig.System.UseRedis {
-		commonInitialize.InitRedis(global.ServerConfig.RedisConfig)
+		global.RedisClient = commonInitialize.InitRedis(global.ServerConfig.RedisConfig)
 	}
+	commonInitialize.InitTokenManager(global.ServerConfig.JWTInfo, global.RedisClient)
 
 	// 4.初始化routers
 	Router := initialize.Routers()

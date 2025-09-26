@@ -53,17 +53,17 @@ service Goods {
 
 
 message GoodsFilterRequest {
-    int32 price_min = 1;
-    int32 price_max = 2;
-    bool is_hot = 3;
-    bool is_new = 4;
-    bool is_tab = 5;
-    int32 top_category = 6;
+    int32 priceMin = 1;
+    int32 priceMax = 2;
+    bool isHot = 3;
+    bool isNew = 4;
+    bool isTab = 5;
+    int32 topCategory = 6;
     // 页码
     uint32 page = 7;
     // 每页大小
     uint32 size = 8;
-    string key_words = 9;
+    string keyWords = 9;
     int32 brand = 10;
 
 }
@@ -79,21 +79,21 @@ message BatchGoodsIdInfo {
 message CreateGoodsInfo {
     int32 id = 1;
     string name = 2;
-    string goods_sn = 3;
+    string goodsSn = 3;
     int32 stocks = 7; // 库存
-    float market_price = 8;
-    float shop_price = 9;
-    string goods_brief = 10;
-    string goods_desc = 11;
-    bool ship_free = 12;
+    float marketPrice = 8;
+    float shopPrice = 9;
+    string goodsBrief = 10;
+    string goodsDesc = 11;
+    bool shipFree = 12;
     repeated string images = 13;
-    repeated string desc_images = 14;
-    string goods_front_image = 15;
-    bool is_new = 16;
-    bool is_hot = 17;
-    bool on_sale = 18;
-    int32 category_id = 19;
-    int32 brand_id = 20;
+    repeated string descImages = 14;
+    string goodsFrontImage = 15;
+    bool isNew = 16;
+    bool isHot = 17;
+    bool onSale = 18;
+    int32 categoryId = 19;
+    int32 brandId = 20;
 }
 
 message CategoryBriefInfoResponse {
@@ -103,24 +103,24 @@ message CategoryBriefInfoResponse {
 
 message GoodsInfoResponse {
     int32 id = 1;
-    int32 category_id = 2;
+    int32 categoryId = 2;
     string name = 3;
-    string goods_sn = 4;
-    int32 click_num = 5;
-    int32 sold_num = 6;
-    int32 fav_num = 7;
-    float market_price = 9;
-    float shop_price = 10;
-    string goods_brief = 11;
-    string goods_desc = 12;
-    bool ship_free = 13;
+    string goodsSn = 4;
+    int32 clickNum = 5;
+    int32 soldNum = 6;
+    int32 favNum = 7;
+    float marketPrice = 9;
+    float shopPrice = 10;
+    string goodsBrief = 11;
+    string goodsDesc = 12;
+    bool shipFree = 13;
     repeated string images = 14;
-    repeated string desc_images = 15;
-    string goods_front_image = 16;
-    bool is_new = 17;
-    bool is_hot = 18;
-    bool on_sale = 19;
-    int64 add_time = 20;
+    repeated string descImages = 15;
+    string goodsFrontImage = 16;
+    bool isNew = 17;
+    bool isHot = 18;
+    bool onSale = 19;
+    int64 addTime = 20;
     CategoryBriefInfoResponse category = 21;
     BrandInfoResponse brand = 22;
 }
@@ -139,9 +139,9 @@ message GoodInfoRequest {
 message CategoryBrandInfoRequest {
     int32 id = 1;
     string name = 2;
-    int32 parent_category = 3;
+    int32 parentCategory = 3;
     int32 level = 4;
-    bool is_tab = 5;
+    bool isTab = 5;
 }
 
 message CategoryBrandFilterRequest {
@@ -155,8 +155,8 @@ message CategoryBrandListResponse {
 
 message CategoryBrandRequest {
     int32 id = 1;
-    int32 category_id = 2;
-    int32 brand_id = 3;
+    int32 categoryId = 2;
+    int32 brandId = 3;
 }
 
 message CategoryBrandResponse {
@@ -168,12 +168,12 @@ message CategoryBrandResponse {
 
 message CategoryFilterFilterRequest {
     int32 id = 1;
-    bool is_tab = 2;
+    bool isTab = 2;
 }
 message CategoryListResponse {
     int32 total = 1;
     repeated CategoryInfoResponse data = 2;
-    string json_data = 3;
+    string jsonData = 3;
 }
 message CategoryListRequest {
     int32 id = 1;
@@ -182,16 +182,16 @@ message CategoryListRequest {
 message SubCategoryListResponse {
     int32 total = 1;
     CategoryInfoResponse info = 2;
-    repeated CategoryInfoResponse sub_category_list = 3;
+    repeated CategoryInfoResponse subCategoryList = 3;
 }
 
 
 message CategoryInfoResponse {
     int32 id = 1;
     string name = 2;
-    int32 parent_category = 3;
+    int32 parentCategory = 3;
     int32 level = 4;
-    bool is_tab = 5;
+    bool isTab = 5;
 }
 
 message DeleteCategoryInfo {
@@ -205,17 +205,17 @@ message QueryCategoryRequest {
 
 message BatchCategoryInfoRequest {
     repeated int32 id = 1;
-    int32 goods_nums = 2;
-    int32 brand_nums = 3;
+    int32 goodsNums = 2;
+    int32 brandNums = 3;
 }
 
 
 message CategoryInfoRequest {
     int32 id = 1;
     string name = 2;
-    int32 parent_category = 3;
+    int32 parentCategory = 3;
     int32 level = 4;
-    bool is_tab = 5;
+    bool isTab = 5;
 }
 
 
