@@ -1,6 +1,6 @@
 import grpc
 
-from userop_srv.proto import address_pb2,address_pb2_grpc
+from common.proto.pb import address_pb2,address_pb2_grpc
 
 
 class AddressTest:

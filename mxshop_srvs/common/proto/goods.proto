@@ -12,7 +12,7 @@ service Goods {
   rpc BatchGetGoods (BatchGoodsIdRequest) returns (GoodsListResponse);
   rpc CreateGoods (CreateGoodsRequest) returns (GoodsInfoResponse);
   rpc DeleteGoods (common.IdsRequest) returns (google.protobuf.Empty);
-  rpc UpdateGoods (CreateGoodsRequest) returns (google.protobuf.Empty);
+  rpc UpdateGoods (UpdateGoodsRequest) returns (google.protobuf.Empty);
   rpc GetGoodsDetail (GoodsDetailRequest) returns (GoodsInfoResponse);
 
 
@@ -22,33 +22,33 @@ service Goods {
   // 获取子分类
   rpc GetSubCategory (CategoryListRequest) returns (SubCategoryListResponse);
   //新建分类
-  rpc CreateCategory (CategoryInfoRequest) returns (CategoryInfoResponse);
+  rpc CreateCategory (CreateCategoryRequest) returns (CategoryResponse);
   // 删除分类
-  rpc DeleteCategory (DeleteCategoryInfo) returns (google.protobuf.Empty);
+  rpc DeleteCategory (DeleteCategoryRequest) returns (google.protobuf.Empty);
   // 修改分类
-  rpc UpdateCategory (CategoryInfoRequest) returns (google.protobuf.Empty);
+  rpc UpdateCategory (UpdateCategoryRequest) returns (google.protobuf.Empty);
 
 
 
   // 品牌分类
-  rpc CategoryBrandList (CategoryBrandFilterRequest) returns (CategoryBrandListResponse); //获取轮播图
+  rpc CategoryBrandPageList (CategoryBrandFilterRequest) returns (CategoryBrandListResponse); //获取轮播图
   rpc GetCategoryBrandList (common.IdsRequest) returns (BrandListResponse); //通过category获取brands
   rpc CreateCategoryBrand (CreateCategoryBrandRequest) returns (CategoryBrandResponse); //添加banner图片
   rpc DeleteCategoryBrand (common.IdRequest) returns (google.protobuf.Empty);//删除轮播图
   rpc UpdateCategoryBrand (UpdateCategoryBrandRequest) returns (google.protobuf.Empty); //修改轮播图
 
   // 品牌和轮播图
-  rpc BrandList (BrandFilterPageRequest) returns (BrandListResponse);//批量获取品牌信息
+  rpc BrandPageList (BrandFilterPageRequest) returns (BrandListResponse);//批量获取品牌信息
   rpc CreateBrand (CreateBrandRequest) returns (BrandInfoResponse); //新建品牌信息
   rpc DeleteBrand (common.IdsRequest) returns (google.protobuf.Empty); //删除品牌
   rpc UpdateBrand (UpdateBrandRequest) returns (google.protobuf.Empty); //修改品牌信息
 
 
   // 轮播图
-  rpc BannerList (google.protobuf.Empty) returns (BannerListResponse); //获取轮播列表信息
-  rpc CreateBanner (BannerRequest) returns (BannerResponse); //添加banner图
-  rpc DeleteBanner (BannerRequest) returns (google.protobuf.Empty); //删除轮播图
-  rpc UpdateBanner (BannerRequest) returns (google.protobuf.Empty);//修改轮播图
+  rpc BannerPageList (google.protobuf.Empty) returns (BannerListResponse); //获取轮播列表信息
+  rpc CreateBanner (CreateBannerRequest) returns (BannerResponse); //添加banner图
+  rpc DeleteBanner (common.IdsRequest) returns (google.protobuf.Empty); //删除轮播图
+  rpc UpdateBanner (UpdateBannerRequest) returns (google.protobuf.Empty);//修改轮播图
 }
 
 
@@ -70,11 +70,10 @@ message GoodsListResponse {
 }
 
 message BatchGoodsIdRequest {
-  repeated int32 id = 1;
+  repeated uint64 id = 1;
 }
 
 message CreateGoodsRequest {
-  int32 id = 1;
   string name = 2;
   string goodsSn = 3;
   int32 stocks = 7; // 库存
@@ -89,17 +88,37 @@ message CreateGoodsRequest {
   bool isNew = 16;
   bool isHot = 17;
   bool onSale = 18;
-  int32 categoryId = 19;
-  int32 brandId = 20;
+  uint64 categoryId = 19;
+  uint64 brandId = 20;
+}
+
+message UpdateGoodsRequest {
+  uint64 id = 1;
+  string name = 2;
+  string goodsSn = 3;
+  int32 stocks = 7; // 库存
+  float marketPrice = 8;
+  float shopPrice = 9;
+  string goodsBrief = 10;
+  string goodsDesc = 11;
+  bool shipFree = 12;
+  repeated string images = 13;
+  repeated string descImages = 14;
+  string goodsFrontImage = 15;
+  bool isNew = 16;
+  bool isHot = 17;
+  bool onSale = 18;
+  uint64 categoryId = 19;
+  uint64 brandId = 20;
 }
 
 message CategoryBriefInfoResponse {
-  int32 id = 1;
+  uint64 id = 1;
   string name = 2;
 }
 
 message GoodsInfoResponse {
-  int32 id = 1;
+  uint64 id = 1;
   int32 categoryId = 2;
   string name = 3;
   string goodsSn = 4;
@@ -126,12 +145,12 @@ message GoodsInfoResponse {
 
 
 message GoodsDetailRequest {
-  int32 id = 1;
+  uint64 id = 1;
 }
 
 
 message CreateCategoryBrandRequest {
-  int32 id = 1;
+  uint64 id = 1;
   string name = 2;
   int32 parentCategory = 3;
   int32 level = 4;
@@ -148,64 +167,72 @@ message CategoryBrandListResponse {
 }
 
 message UpdateCategoryBrandRequest {
-  int32 id = 1;
+  uint64 id = 1;
   int32 categoryId = 2;
   int32 brandId = 3;
 }
 
 message CategoryBrandResponse {
-  int32 id = 1;
+  uint64 id = 1;
   BrandInfoResponse brand = 2;
-  CategoryInfoResponse category = 3;
+  CategoryResponse category = 3;
 }
 
 
 message CategoryFilterPageRequest {
-  int32 id = 1;
+  uint64 id = 1;
   bool isTab = 2;
 }
 message CategoryListResponse {
   int32 total = 1;
-  repeated CategoryInfoResponse data = 2;
+  repeated CategoryResponse data = 2;
   string jsonData = 3;
 }
 message CategoryListRequest {
-  int32 id = 1;
+  uint64 id = 1;
   int32 level = 2;
 }
 message SubCategoryListResponse {
   int32 total = 1;
-  CategoryInfoResponse info = 2;
-  repeated CategoryInfoResponse subCategoryList = 3;
+  CategoryResponse info = 2;
+  repeated CategoryResponse subCategoryList = 3;
 }
 
 
-message CategoryInfoResponse {
-  int32 id = 1;
+message CategoryResponse {
+  uint64 id = 1;
   string name = 2;
   int32 parentCategory = 3;
   int32 level = 4;
   bool isTab = 5;
 }
 
-message DeleteCategoryInfo {
-  int32 id = 1;
+message DeleteCategoryRequest {
+  uint64 id = 1;
 }
 
 message QueryCategoryRequest {
-  int32 id = 1;
+  uint64 id = 1;
   string name = 2;
 };
 
-message BatchCategoryInfoRequest {
-  repeated int32 id = 1;
+message BatchCategoryRequest {
+  repeated uint64 id = 1;
   int32 goodsNums = 2;
   int32 brandNums = 3;
 }
 
 
-message CategoryInfoRequest {
-  int32 id = 1;
+message CreateCategoryRequest {
+
+  string name = 2;
+  int32 parentCategory = 3;
+  int32 level = 4;
+  bool isTab = 5;
+}
+
+message UpdateCategoryRequest {
+  uint64 id = 1;
   string name = 2;
   int32 parentCategory = 3;
   int32 level = 4;
@@ -224,37 +251,43 @@ message BrandListResponse {
 }
 
 message UpdateBrandRequest {
-  int32 id = 1;
+  uint64 id = 1;
   string name = 2;
   string logo = 3;
 }
 
 message CreateBrandRequest {
-  int32 id = 1;
+  uint64 id = 1;
   string name = 2;
   string logo = 3;
 }
 
 message BrandInfoResponse {
-  int32 id = 1;
+  uint64 id = 1;
   string name = 2;
   string logo = 3;
 }
 
 message BannerListResponse {
-  int32 total = 1;
+  common.PageResponse page = 1;
   repeated BannerResponse data = 2;
 }
-message BannerRequest {
-  int32 id = 1;
-  int32 index = 2;
+message CreateBannerRequest {
+  uint64 index = 2;
   string image = 3;
   string url = 4;
 }
-message BannerResponse {
 
-  int32 id = 1;
-  int32 index = 2;
+message UpdateBannerRequest {
+  uint64 id = 1;
+  uint64 index = 2;
+  string image = 3;
+  string url = 4;
+}
+
+message BannerResponse {
+  uint64 id = 1;
+  uint64 index = 2;
   string image = 3;
   string url = 4;
 }

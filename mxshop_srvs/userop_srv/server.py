@@ -11,7 +11,7 @@ sys.path.insert(0, BASE_DIR)
 
 import grpc
 from concurrent import futures
-from userop_srv.proto import userfav_pb2_grpc, message_pb2_grpc, address_pb2_grpc
+from common.proto.pb import userfav_pb2_grpc, message_pb2_grpc, address_pb2_grpc
 from userop_srv.handler.message import MessageServicer
 from userop_srv.handler.address import AddressServicer
 from userop_srv.handler.user_fav import UserFavServicer

@@ -3,7 +3,6 @@
 import grpc
 import warnings
 
-from common.proto.pb import common_pb2 as common__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from common.proto.pb import userfav_pb2 as userfav__pb2
 
@@ -48,12 +47,12 @@ class UserFavStub(object):
                 _registered_method=True)
         self.DeleteUserFav = channel.unary_unary(
                 '/UserFav/DeleteUserFav',
-                request_serializer=common__pb2.IdsRequest.SerializeToString,
+                request_serializer=userfav__pb2.DeleteUserFavRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.GetUserFavDetail = channel.unary_unary(
                 '/UserFav/GetUserFavDetail',
-                request_serializer=common__pb2.IdRequest.SerializeToString,
+                request_serializer=userfav__pb2.DetailUserFavRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
 
@@ -104,12 +103,12 @@ def add_UserFavServicer_to_server(servicer, server):
             ),
             'DeleteUserFav': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteUserFav,
-                    request_deserializer=common__pb2.IdsRequest.FromString,
+                    request_deserializer=userfav__pb2.DeleteUserFavRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'GetUserFavDetail': grpc.unary_unary_rpc_method_handler(
                     servicer.GetUserFavDetail,
-                    request_deserializer=common__pb2.IdRequest.FromString,
+                    request_deserializer=userfav__pb2.DetailUserFavRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
     }
@@ -192,7 +191,7 @@ class UserFav(object):
             request,
             target,
             '/UserFav/DeleteUserFav',
-            common__pb2.IdsRequest.SerializeToString,
+            userfav__pb2.DeleteUserFavRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -219,7 +218,7 @@ class UserFav(object):
             request,
             target,
             '/UserFav/GetUserFavDetail',
-            common__pb2.IdRequest.SerializeToString,
+            userfav__pb2.DetailUserFavRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,

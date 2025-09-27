@@ -10,7 +10,7 @@ message PageRequest {
 }
 
 message IdRequest{
-  int32 id = 1;
+  uint64 id = 1;
 }
 
 message IdsRequest{

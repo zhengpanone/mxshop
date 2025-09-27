@@ -328,8 +328,8 @@ func (x *DictTypeFilterPageRequest) GetStatus() bool {
 
 type DictTypeListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Total         int32                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
-	Data          []*DictTypeResponse    `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
+	Page          *PageResponse          `protobuf:"bytes,1,opt,name=page,proto3" json:"page,omitempty"`
+	List          []*DictTypeResponse    `protobuf:"bytes,2,rep,name=list,proto3" json:"list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -364,16 +364,16 @@ func (*DictTypeListResponse) Descriptor() ([]byte, []int) {
 	return file_dict_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *DictTypeListResponse) GetTotal() int32 {
+func (x *DictTypeListResponse) GetPage() *PageResponse {
 	if x != nil {
-		return x.Total
+		return x.Page
 	}
-	return 0
+	return nil
 }
 
-func (x *DictTypeListResponse) GetData() []*DictTypeResponse {
+func (x *DictTypeListResponse) GetList() []*DictTypeResponse {
 	if x != nil {
-		return x.Data
+		return x.List
 	}
 	return nil
 }
@@ -644,7 +644,7 @@ func (x *DictItemFilterPageRequest) GetStatus() bool {
 
 type DictItemPageListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Total         int32                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	Page          *PageResponse          `protobuf:"bytes,1,opt,name=page,proto3" json:"page,omitempty"`
 	Data          []*DictItemResponse    `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -680,11 +680,11 @@ func (*DictItemPageListResponse) Descriptor() ([]byte, []int) {
 	return file_dict_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *DictItemPageListResponse) GetTotal() int32 {
+func (x *DictItemPageListResponse) GetPage() *PageResponse {
 	if x != nil {
-		return x.Total
+		return x.Page
 	}
-	return 0
+	return nil
 }
 
 func (x *DictItemPageListResponse) GetData() []*DictItemResponse {
@@ -727,10 +727,10 @@ const file_dict_proto_rawDesc = "" +
 	"\vpageRequest\x18\x01 \x01(\v2\x13.common.PageRequestR\vpageRequest\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
 	"\x06remark\x18\x03 \x01(\tR\x06remark\x12\x16\n" +
-	"\x06status\x18\x04 \x01(\bR\x06status\"S\n" +
-	"\x14DictTypeListResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x05R\x05total\x12%\n" +
-	"\x04data\x18\x02 \x03(\v2\x11.DictTypeResponseR\x04data\"[\n" +
+	"\x06status\x18\x04 \x01(\bR\x06status\"g\n" +
+	"\x14DictTypeListResponse\x12(\n" +
+	"\x04page\x18\x01 \x01(\v2\x14.common.PageResponseR\x04page\x12%\n" +
+	"\x04list\x18\x02 \x03(\v2\x11.DictTypeResponseR\x04list\"[\n" +
 	"\x15CreateDictItemRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
 	"\x06remark\x18\x02 \x01(\tR\x06remark\x12\x16\n" +
@@ -749,9 +749,9 @@ const file_dict_proto_rawDesc = "" +
 	"\vpageRequest\x18\x01 \x01(\v2\x13.common.PageRequestR\vpageRequest\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
 	"\x06remark\x18\x03 \x01(\tR\x06remark\x12\x16\n" +
-	"\x06status\x18\x04 \x01(\bR\x06status\"W\n" +
-	"\x18DictItemPageListResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x05R\x05total\x12%\n" +
+	"\x06status\x18\x04 \x01(\bR\x06status\"k\n" +
+	"\x18DictItemPageListResponse\x12(\n" +
+	"\x04page\x18\x01 \x01(\v2\x14.common.PageResponseR\x04page\x12%\n" +
 	"\x04data\x18\x02 \x03(\v2\x11.DictItemResponseR\x04data2\xa2\x04\n" +
 	"\x04Dict\x12;\n" +
 	"\x0eCreateDictType\x12\x16.CreateDictTypeRequest\x1a\x11.DictTypeResponse\x12@\n" +
@@ -789,36 +789,39 @@ var file_dict_proto_goTypes = []any{
 	(*DictItemPageListResponse)(nil),  // 9: DictItemPageListResponse
 	(*TimestampResponse)(nil),         // 10: common.TimestampResponse
 	(*PageRequest)(nil),               // 11: common.PageRequest
-	(*IdsRequest)(nil),                // 12: common.IdsRequest
-	(*emptypb.Empty)(nil),             // 13: google.protobuf.Empty
+	(*PageResponse)(nil),              // 12: common.PageResponse
+	(*IdsRequest)(nil),                // 13: common.IdsRequest
+	(*emptypb.Empty)(nil),             // 14: google.protobuf.Empty
 }
 var file_dict_proto_depIdxs = []int32{
 	10, // 0: DictTypeResponse.timestampResponse:type_name -> common.TimestampResponse
 	11, // 1: DictTypeFilterPageRequest.pageRequest:type_name -> common.PageRequest
-	1,  // 2: DictTypeListResponse.data:type_name -> DictTypeResponse
-	11, // 3: DictItemFilterPageRequest.pageRequest:type_name -> common.PageRequest
-	6,  // 4: DictItemPageListResponse.data:type_name -> DictItemResponse
-	0,  // 5: Dict.CreateDictType:input_type -> CreateDictTypeRequest
-	2,  // 6: Dict.UpdateDictType:input_type -> UpdateDictTypeRequest
-	3,  // 7: Dict.GetDictTypePageList:input_type -> DictTypeFilterPageRequest
-	12, // 8: Dict.DeleteDictTypeByIds:input_type -> common.IdsRequest
-	5,  // 9: Dict.CreateDictItem:input_type -> CreateDictItemRequest
-	7,  // 10: Dict.UpdateDictItem:input_type -> UpdateDictItemRequest
-	8,  // 11: Dict.GetDictItemPageList:input_type -> DictItemFilterPageRequest
-	12, // 12: Dict.DeleteDictItemByIds:input_type -> common.IdsRequest
-	1,  // 13: Dict.CreateDictType:output_type -> DictTypeResponse
-	13, // 14: Dict.UpdateDictType:output_type -> google.protobuf.Empty
-	4,  // 15: Dict.GetDictTypePageList:output_type -> DictTypeListResponse
-	13, // 16: Dict.DeleteDictTypeByIds:output_type -> google.protobuf.Empty
-	6,  // 17: Dict.CreateDictItem:output_type -> DictItemResponse
-	13, // 18: Dict.UpdateDictItem:output_type -> google.protobuf.Empty
-	9,  // 19: Dict.GetDictItemPageList:output_type -> DictItemPageListResponse
-	13, // 20: Dict.DeleteDictItemByIds:output_type -> google.protobuf.Empty
-	13, // [13:21] is the sub-list for method output_type
-	5,  // [5:13] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	12, // 2: DictTypeListResponse.page:type_name -> common.PageResponse
+	1,  // 3: DictTypeListResponse.list:type_name -> DictTypeResponse
+	11, // 4: DictItemFilterPageRequest.pageRequest:type_name -> common.PageRequest
+	12, // 5: DictItemPageListResponse.page:type_name -> common.PageResponse
+	6,  // 6: DictItemPageListResponse.data:type_name -> DictItemResponse
+	0,  // 7: Dict.CreateDictType:input_type -> CreateDictTypeRequest
+	2,  // 8: Dict.UpdateDictType:input_type -> UpdateDictTypeRequest
+	3,  // 9: Dict.GetDictTypePageList:input_type -> DictTypeFilterPageRequest
+	13, // 10: Dict.DeleteDictTypeByIds:input_type -> common.IdsRequest
+	5,  // 11: Dict.CreateDictItem:input_type -> CreateDictItemRequest
+	7,  // 12: Dict.UpdateDictItem:input_type -> UpdateDictItemRequest
+	8,  // 13: Dict.GetDictItemPageList:input_type -> DictItemFilterPageRequest
+	13, // 14: Dict.DeleteDictItemByIds:input_type -> common.IdsRequest
+	1,  // 15: Dict.CreateDictType:output_type -> DictTypeResponse
+	14, // 16: Dict.UpdateDictType:output_type -> google.protobuf.Empty
+	4,  // 17: Dict.GetDictTypePageList:output_type -> DictTypeListResponse
+	14, // 18: Dict.DeleteDictTypeByIds:output_type -> google.protobuf.Empty
+	6,  // 19: Dict.CreateDictItem:output_type -> DictItemResponse
+	14, // 20: Dict.UpdateDictItem:output_type -> google.protobuf.Empty
+	9,  // 21: Dict.GetDictItemPageList:output_type -> DictItemPageListResponse
+	14, // 22: Dict.DeleteDictItemByIds:output_type -> google.protobuf.Empty
+	15, // [15:23] is the sub-list for method output_type
+	7,  // [7:15] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_dict_proto_init() }

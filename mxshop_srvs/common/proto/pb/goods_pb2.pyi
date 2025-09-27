@@ -93,6 +93,69 @@ global___BatchGoodsIdRequest = BatchGoodsIdRequest
 class CreateGoodsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    NAME_FIELD_NUMBER: builtins.int
+    GOODSSN_FIELD_NUMBER: builtins.int
+    STOCKS_FIELD_NUMBER: builtins.int
+    MARKETPRICE_FIELD_NUMBER: builtins.int
+    SHOPPRICE_FIELD_NUMBER: builtins.int
+    GOODSBRIEF_FIELD_NUMBER: builtins.int
+    GOODSDESC_FIELD_NUMBER: builtins.int
+    SHIPFREE_FIELD_NUMBER: builtins.int
+    IMAGES_FIELD_NUMBER: builtins.int
+    DESCIMAGES_FIELD_NUMBER: builtins.int
+    GOODSFRONTIMAGE_FIELD_NUMBER: builtins.int
+    ISNEW_FIELD_NUMBER: builtins.int
+    ISHOT_FIELD_NUMBER: builtins.int
+    ONSALE_FIELD_NUMBER: builtins.int
+    CATEGORYID_FIELD_NUMBER: builtins.int
+    BRANDID_FIELD_NUMBER: builtins.int
+    name: builtins.str
+    goodsSn: builtins.str
+    stocks: builtins.int
+    """库存"""
+    marketPrice: builtins.float
+    shopPrice: builtins.float
+    goodsBrief: builtins.str
+    goodsDesc: builtins.str
+    shipFree: builtins.bool
+    goodsFrontImage: builtins.str
+    isNew: builtins.bool
+    isHot: builtins.bool
+    onSale: builtins.bool
+    categoryId: builtins.int
+    brandId: builtins.int
+    @property
+    def images(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    @property
+    def descImages(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    def __init__(
+        self,
+        *,
+        name: builtins.str = ...,
+        goodsSn: builtins.str = ...,
+        stocks: builtins.int = ...,
+        marketPrice: builtins.float = ...,
+        shopPrice: builtins.float = ...,
+        goodsBrief: builtins.str = ...,
+        goodsDesc: builtins.str = ...,
+        shipFree: builtins.bool = ...,
+        images: collections.abc.Iterable[builtins.str] | None = ...,
+        descImages: collections.abc.Iterable[builtins.str] | None = ...,
+        goodsFrontImage: builtins.str = ...,
+        isNew: builtins.bool = ...,
+        isHot: builtins.bool = ...,
+        onSale: builtins.bool = ...,
+        categoryId: builtins.int = ...,
+        brandId: builtins.int = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["brandId", b"brandId", "categoryId", b"categoryId", "descImages", b"descImages", "goodsBrief", b"goodsBrief", "goodsDesc", b"goodsDesc", "goodsFrontImage", b"goodsFrontImage", "goodsSn", b"goodsSn", "images", b"images", "isHot", b"isHot", "isNew", b"isNew", "marketPrice", b"marketPrice", "name", b"name", "onSale", b"onSale", "shipFree", b"shipFree", "shopPrice", b"shopPrice", "stocks", b"stocks"]) -> None: ...
+
+global___CreateGoodsRequest = CreateGoodsRequest
+
+@typing.final
+class UpdateGoodsRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
     ID_FIELD_NUMBER: builtins.int
     NAME_FIELD_NUMBER: builtins.int
     GOODSSN_FIELD_NUMBER: builtins.int
@@ -153,7 +216,7 @@ class CreateGoodsRequest(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["brandId", b"brandId", "categoryId", b"categoryId", "descImages", b"descImages", "goodsBrief", b"goodsBrief", "goodsDesc", b"goodsDesc", "goodsFrontImage", b"goodsFrontImage", "goodsSn", b"goodsSn", "id", b"id", "images", b"images", "isHot", b"isHot", "isNew", b"isNew", "marketPrice", b"marketPrice", "name", b"name", "onSale", b"onSale", "shipFree", b"shipFree", "shopPrice", b"shopPrice", "stocks", b"stocks"]) -> None: ...
 
-global___CreateGoodsRequest = CreateGoodsRequest
+global___UpdateGoodsRequest = UpdateGoodsRequest
 
 @typing.final
 class CategoryBriefInfoResponse(google.protobuf.message.Message):
@@ -364,13 +427,13 @@ class CategoryBrandResponse(google.protobuf.message.Message):
     @property
     def brand(self) -> global___BrandInfoResponse: ...
     @property
-    def category(self) -> global___CategoryInfoResponse: ...
+    def category(self) -> global___CategoryResponse: ...
     def __init__(
         self,
         *,
         id: builtins.int = ...,
         brand: global___BrandInfoResponse | None = ...,
-        category: global___CategoryInfoResponse | None = ...,
+        category: global___CategoryResponse | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["brand", b"brand", "category", b"category"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["brand", b"brand", "category", b"category", "id", b"id"]) -> None: ...
@@ -405,12 +468,12 @@ class CategoryListResponse(google.protobuf.message.Message):
     total: builtins.int
     jsonData: builtins.str
     @property
-    def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___CategoryInfoResponse]: ...
+    def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___CategoryResponse]: ...
     def __init__(
         self,
         *,
         total: builtins.int = ...,
-        data: collections.abc.Iterable[global___CategoryInfoResponse] | None = ...,
+        data: collections.abc.Iterable[global___CategoryResponse] | None = ...,
         jsonData: builtins.str = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["data", b"data", "jsonData", b"jsonData", "total", b"total"]) -> None: ...
@@ -444,15 +507,15 @@ class SubCategoryListResponse(google.protobuf.message.Message):
     SUBCATEGORYLIST_FIELD_NUMBER: builtins.int
     total: builtins.int
     @property
-    def info(self) -> global___CategoryInfoResponse: ...
+    def info(self) -> global___CategoryResponse: ...
     @property
-    def subCategoryList(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___CategoryInfoResponse]: ...
+    def subCategoryList(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___CategoryResponse]: ...
     def __init__(
         self,
         *,
         total: builtins.int = ...,
-        info: global___CategoryInfoResponse | None = ...,
-        subCategoryList: collections.abc.Iterable[global___CategoryInfoResponse] | None = ...,
+        info: global___CategoryResponse | None = ...,
+        subCategoryList: collections.abc.Iterable[global___CategoryResponse] | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["info", b"info"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["info", b"info", "subCategoryList", b"subCategoryList", "total", b"total"]) -> None: ...
@@ -460,7 +523,7 @@ class SubCategoryListResponse(google.protobuf.message.Message):
 global___SubCategoryListResponse = SubCategoryListResponse
 
 @typing.final
-class CategoryInfoResponse(google.protobuf.message.Message):
+class CategoryResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -484,10 +547,10 @@ class CategoryInfoResponse(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["id", b"id", "isTab", b"isTab", "level", b"level", "name", b"name", "parentCategory", b"parentCategory"]) -> None: ...
 
-global___CategoryInfoResponse = CategoryInfoResponse
+global___CategoryResponse = CategoryResponse
 
 @typing.final
-class DeleteCategoryInfo(google.protobuf.message.Message):
+class DeleteCategoryRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -499,7 +562,7 @@ class DeleteCategoryInfo(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["id", b"id"]) -> None: ...
 
-global___DeleteCategoryInfo = DeleteCategoryInfo
+global___DeleteCategoryRequest = DeleteCategoryRequest
 
 @typing.final
 class QueryCategoryRequest(google.protobuf.message.Message):
@@ -520,7 +583,7 @@ class QueryCategoryRequest(google.protobuf.message.Message):
 global___QueryCategoryRequest = QueryCategoryRequest
 
 @typing.final
-class BatchCategoryInfoRequest(google.protobuf.message.Message):
+class BatchCategoryRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -539,10 +602,34 @@ class BatchCategoryInfoRequest(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["brandNums", b"brandNums", "goodsNums", b"goodsNums", "id", b"id"]) -> None: ...
 
-global___BatchCategoryInfoRequest = BatchCategoryInfoRequest
+global___BatchCategoryRequest = BatchCategoryRequest
 
 @typing.final
-class CategoryInfoRequest(google.protobuf.message.Message):
+class CreateCategoryRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    NAME_FIELD_NUMBER: builtins.int
+    PARENTCATEGORY_FIELD_NUMBER: builtins.int
+    LEVEL_FIELD_NUMBER: builtins.int
+    ISTAB_FIELD_NUMBER: builtins.int
+    name: builtins.str
+    parentCategory: builtins.int
+    level: builtins.int
+    isTab: builtins.bool
+    def __init__(
+        self,
+        *,
+        name: builtins.str = ...,
+        parentCategory: builtins.int = ...,
+        level: builtins.int = ...,
+        isTab: builtins.bool = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["isTab", b"isTab", "level", b"level", "name", b"name", "parentCategory", b"parentCategory"]) -> None: ...
+
+global___CreateCategoryRequest = CreateCategoryRequest
+
+@typing.final
+class UpdateCategoryRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -566,7 +653,7 @@ class CategoryInfoRequest(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["id", b"id", "isTab", b"isTab", "level", b"level", "name", b"name", "parentCategory", b"parentCategory"]) -> None: ...
 
-global___CategoryInfoRequest = CategoryInfoRequest
+global___UpdateCategoryRequest = UpdateCategoryRequest
 
 @typing.final
 class BrandFilterPageRequest(google.protobuf.message.Message):
@@ -672,23 +759,46 @@ global___BrandInfoResponse = BrandInfoResponse
 class BannerListResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    TOTAL_FIELD_NUMBER: builtins.int
+    PAGE_FIELD_NUMBER: builtins.int
     DATA_FIELD_NUMBER: builtins.int
-    total: builtins.int
+    @property
+    def page(self) -> common_pb2.PageResponse: ...
     @property
     def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___BannerResponse]: ...
     def __init__(
         self,
         *,
-        total: builtins.int = ...,
+        page: common_pb2.PageResponse | None = ...,
         data: collections.abc.Iterable[global___BannerResponse] | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["data", b"data", "total", b"total"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["page", b"page"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["data", b"data", "page", b"page"]) -> None: ...
 
 global___BannerListResponse = BannerListResponse
 
 @typing.final
-class BannerRequest(google.protobuf.message.Message):
+class CreateBannerRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    INDEX_FIELD_NUMBER: builtins.int
+    IMAGE_FIELD_NUMBER: builtins.int
+    URL_FIELD_NUMBER: builtins.int
+    index: builtins.int
+    image: builtins.str
+    url: builtins.str
+    def __init__(
+        self,
+        *,
+        index: builtins.int = ...,
+        image: builtins.str = ...,
+        url: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["image", b"image", "index", b"index", "url", b"url"]) -> None: ...
+
+global___CreateBannerRequest = CreateBannerRequest
+
+@typing.final
+class UpdateBannerRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -709,7 +819,7 @@ class BannerRequest(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["id", b"id", "image", b"image", "index", b"index", "url", b"url"]) -> None: ...
 
-global___BannerRequest = BannerRequest
+global___UpdateBannerRequest = UpdateBannerRequest
 
 @typing.final
 class BannerResponse(google.protobuf.message.Message):

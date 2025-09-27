@@ -102,3 +102,39 @@ class UserFavListResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["data", b"data", "total", b"total"]) -> None: ...
 
 global___UserFavListResponse = UserFavListResponse
+
+@typing.final
+class DeleteUserFavRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    USERID_FIELD_NUMBER: builtins.int
+    GOODSID_FIELD_NUMBER: builtins.int
+    userId: builtins.int
+    goodsId: builtins.int
+    def __init__(
+        self,
+        *,
+        userId: builtins.int = ...,
+        goodsId: builtins.int = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["goodsId", b"goodsId", "userId", b"userId"]) -> None: ...
+
+global___DeleteUserFavRequest = DeleteUserFavRequest
+
+@typing.final
+class DetailUserFavRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    USERID_FIELD_NUMBER: builtins.int
+    GOODSID_FIELD_NUMBER: builtins.int
+    userId: builtins.int
+    goodsId: builtins.int
+    def __init__(
+        self,
+        *,
+        userId: builtins.int = ...,
+        goodsId: builtins.int = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["goodsId", b"goodsId", "userId", b"userId"]) -> None: ...
+
+global___DetailUserFavRequest = DetailUserFavRequest

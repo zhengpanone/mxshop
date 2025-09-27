@@ -22,7 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type UserFavRequest struct {
+type UserFavFilterPageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
@@ -30,20 +30,20 @@ type UserFavRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UserFavRequest) Reset() {
-	*x = UserFavRequest{}
+func (x *UserFavFilterPageRequest) Reset() {
+	*x = UserFavFilterPageRequest{}
 	mi := &file_userfav_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UserFavRequest) String() string {
+func (x *UserFavFilterPageRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UserFavRequest) ProtoMessage() {}
+func (*UserFavFilterPageRequest) ProtoMessage() {}
 
-func (x *UserFavRequest) ProtoReflect() protoreflect.Message {
+func (x *UserFavFilterPageRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_userfav_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,19 +55,71 @@ func (x *UserFavRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserFavRequest.ProtoReflect.Descriptor instead.
-func (*UserFavRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UserFavFilterPageRequest.ProtoReflect.Descriptor instead.
+func (*UserFavFilterPageRequest) Descriptor() ([]byte, []int) {
 	return file_userfav_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UserFavRequest) GetUserId() int32 {
+func (x *UserFavFilterPageRequest) GetUserId() int32 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *UserFavRequest) GetGoodsId() int32 {
+func (x *UserFavFilterPageRequest) GetGoodsId() int32 {
+	if x != nil {
+		return x.GoodsId
+	}
+	return 0
+}
+
+type CreateUserFavRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserFavRequest) Reset() {
+	*x = CreateUserFavRequest{}
+	mi := &file_userfav_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserFavRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserFavRequest) ProtoMessage() {}
+
+func (x *CreateUserFavRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_userfav_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserFavRequest.ProtoReflect.Descriptor instead.
+func (*CreateUserFavRequest) Descriptor() ([]byte, []int) {
+	return file_userfav_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateUserFavRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *CreateUserFavRequest) GetGoodsId() int32 {
 	if x != nil {
 		return x.GoodsId
 	}
@@ -84,7 +136,7 @@ type UserFavResponse struct {
 
 func (x *UserFavResponse) Reset() {
 	*x = UserFavResponse{}
-	mi := &file_userfav_proto_msgTypes[1]
+	mi := &file_userfav_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -96,7 +148,7 @@ func (x *UserFavResponse) String() string {
 func (*UserFavResponse) ProtoMessage() {}
 
 func (x *UserFavResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_userfav_proto_msgTypes[1]
+	mi := &file_userfav_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +161,7 @@ func (x *UserFavResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserFavResponse.ProtoReflect.Descriptor instead.
 func (*UserFavResponse) Descriptor() ([]byte, []int) {
-	return file_userfav_proto_rawDescGZIP(), []int{1}
+	return file_userfav_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserFavResponse) GetUserId() int32 {
@@ -126,6 +178,58 @@ func (x *UserFavResponse) GetGoodsId() int32 {
 	return 0
 }
 
+type UserFavDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFavDetailResponse) Reset() {
+	*x = UserFavDetailResponse{}
+	mi := &file_userfav_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFavDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFavDetailResponse) ProtoMessage() {}
+
+func (x *UserFavDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_userfav_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFavDetailResponse.ProtoReflect.Descriptor instead.
+func (*UserFavDetailResponse) Descriptor() ([]byte, []int) {
+	return file_userfav_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UserFavDetailResponse) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *UserFavDetailResponse) GetGoodsId() int32 {
+	if x != nil {
+		return x.GoodsId
+	}
+	return 0
+}
+
 type UserFavListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Total         int32                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
@@ -136,7 +240,7 @@ type UserFavListResponse struct {
 
 func (x *UserFavListResponse) Reset() {
 	*x = UserFavListResponse{}
-	mi := &file_userfav_proto_msgTypes[2]
+	mi := &file_userfav_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -148,7 +252,7 @@ func (x *UserFavListResponse) String() string {
 func (*UserFavListResponse) ProtoMessage() {}
 
 func (x *UserFavListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_userfav_proto_msgTypes[2]
+	mi := &file_userfav_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -161,7 +265,7 @@ func (x *UserFavListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserFavListResponse.ProtoReflect.Descriptor instead.
 func (*UserFavListResponse) Descriptor() ([]byte, []int) {
-	return file_userfav_proto_rawDescGZIP(), []int{2}
+	return file_userfav_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UserFavListResponse) GetTotal() int32 {
@@ -178,27 +282,141 @@ func (x *UserFavListResponse) GetData() []*UserFavResponse {
 	return nil
 }
 
+type DeleteUserFavRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteUserFavRequest) Reset() {
+	*x = DeleteUserFavRequest{}
+	mi := &file_userfav_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteUserFavRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteUserFavRequest) ProtoMessage() {}
+
+func (x *DeleteUserFavRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_userfav_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteUserFavRequest.ProtoReflect.Descriptor instead.
+func (*DeleteUserFavRequest) Descriptor() ([]byte, []int) {
+	return file_userfav_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DeleteUserFavRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *DeleteUserFavRequest) GetGoodsId() uint64 {
+	if x != nil {
+		return x.GoodsId
+	}
+	return 0
+}
+
+type DetailUserFavRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DetailUserFavRequest) Reset() {
+	*x = DetailUserFavRequest{}
+	mi := &file_userfav_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DetailUserFavRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DetailUserFavRequest) ProtoMessage() {}
+
+func (x *DetailUserFavRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_userfav_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DetailUserFavRequest.ProtoReflect.Descriptor instead.
+func (*DetailUserFavRequest) Descriptor() ([]byte, []int) {
+	return file_userfav_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *DetailUserFavRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *DetailUserFavRequest) GetGoodsId() uint64 {
+	if x != nil {
+		return x.GoodsId
+	}
+	return 0
+}
+
 var File_userfav_proto protoreflect.FileDescriptor
 
 const file_userfav_proto_rawDesc = "" +
 	"\n" +
-	"\ruserfav.proto\x1a\x1bgoogle/protobuf/empty.proto\"B\n" +
-	"\x0eUserFavRequest\x12\x16\n" +
+	"\ruserfav.proto\x1a\x1bgoogle/protobuf/empty.proto\"L\n" +
+	"\x18UserFavFilterPageRequest\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"H\n" +
+	"\x14CreateUserFavRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
 	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"C\n" +
 	"\x0fUserFavResponse\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"I\n" +
+	"\x15UserFavDetailResponse\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
 	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"Q\n" +
 	"\x13UserFavListResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x05R\x05total\x12$\n" +
-	"\x04data\x18\x02 \x03(\v2\x10.UserFavResponseR\x04data2\xec\x01\n" +
-	"\aUserFav\x123\n" +
-	"\n" +
-	"GetFavList\x12\x0f.UserFavRequest\x1a\x14.UserFavListResponse\x125\n" +
-	"\n" +
-	"AddUserFav\x12\x0f.UserFavRequest\x1a\x16.google.protobuf.Empty\x128\n" +
-	"\rDeleteUserFav\x12\x0f.UserFavRequest\x1a\x16.google.protobuf.Empty\x12;\n" +
-	"\x10GetUserFavDetail\x12\x0f.UserFavRequest\x1a\x16.google.protobuf.EmptyB\tZ\a.;protob\x06proto3"
+	"\x04data\x18\x02 \x03(\v2\x10.UserFavResponseR\x04data\"H\n" +
+	"\x14DeleteUserFavRequest\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x04R\agoodsId\"H\n" +
+	"\x14DetailUserFavRequest\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x04R\agoodsId2\x8f\x02\n" +
+	"\aUserFav\x12A\n" +
+	"\x0eGetFavPageList\x12\x19.UserFavFilterPageRequest\x1a\x14.UserFavListResponse\x12>\n" +
+	"\rCreateUserFav\x12\x15.CreateUserFavRequest\x1a\x16.google.protobuf.Empty\x12>\n" +
+	"\rDeleteUserFav\x12\x15.DeleteUserFavRequest\x1a\x16.google.protobuf.Empty\x12A\n" +
+	"\x10GetUserFavDetail\x12\x15.DetailUserFavRequest\x1a\x16.google.protobuf.EmptyB\tZ\a.;protob\x06proto3"
 
 var (
 	file_userfav_proto_rawDescOnce sync.Once
@@ -212,23 +430,27 @@ func file_userfav_proto_rawDescGZIP() []byte {
 	return file_userfav_proto_rawDescData
 }
 
-var file_userfav_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_userfav_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_userfav_proto_goTypes = []any{
-	(*UserFavRequest)(nil),      // 0: UserFavRequest
-	(*UserFavResponse)(nil),     // 1: UserFavResponse
-	(*UserFavListResponse)(nil), // 2: UserFavListResponse
-	(*emptypb.Empty)(nil),       // 3: google.protobuf.Empty
+	(*UserFavFilterPageRequest)(nil), // 0: UserFavFilterPageRequest
+	(*CreateUserFavRequest)(nil),     // 1: CreateUserFavRequest
+	(*UserFavResponse)(nil),          // 2: UserFavResponse
+	(*UserFavDetailResponse)(nil),    // 3: UserFavDetailResponse
+	(*UserFavListResponse)(nil),      // 4: UserFavListResponse
+	(*DeleteUserFavRequest)(nil),     // 5: DeleteUserFavRequest
+	(*DetailUserFavRequest)(nil),     // 6: DetailUserFavRequest
+	(*emptypb.Empty)(nil),            // 7: google.protobuf.Empty
 }
 var file_userfav_proto_depIdxs = []int32{
-	1, // 0: UserFavListResponse.data:type_name -> UserFavResponse
-	0, // 1: UserFav.GetFavList:input_type -> UserFavRequest
-	0, // 2: UserFav.AddUserFav:input_type -> UserFavRequest
-	0, // 3: UserFav.DeleteUserFav:input_type -> UserFavRequest
-	0, // 4: UserFav.GetUserFavDetail:input_type -> UserFavRequest
-	2, // 5: UserFav.GetFavList:output_type -> UserFavListResponse
-	3, // 6: UserFav.AddUserFav:output_type -> google.protobuf.Empty
-	3, // 7: UserFav.DeleteUserFav:output_type -> google.protobuf.Empty
-	3, // 8: UserFav.GetUserFavDetail:output_type -> google.protobuf.Empty
+	2, // 0: UserFavListResponse.data:type_name -> UserFavResponse
+	0, // 1: UserFav.GetFavPageList:input_type -> UserFavFilterPageRequest
+	1, // 2: UserFav.CreateUserFav:input_type -> CreateUserFavRequest
+	5, // 3: UserFav.DeleteUserFav:input_type -> DeleteUserFavRequest
+	6, // 4: UserFav.GetUserFavDetail:input_type -> DetailUserFavRequest
+	4, // 5: UserFav.GetFavPageList:output_type -> UserFavListResponse
+	7, // 6: UserFav.CreateUserFav:output_type -> google.protobuf.Empty
+	7, // 7: UserFav.DeleteUserFav:output_type -> google.protobuf.Empty
+	7, // 8: UserFav.GetUserFavDetail:output_type -> google.protobuf.Empty
 	5, // [5:9] is the sub-list for method output_type
 	1, // [1:5] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -247,7 +469,7 @@ func file_userfav_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_userfav_proto_rawDesc), len(file_userfav_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

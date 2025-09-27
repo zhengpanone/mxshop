@@ -4,7 +4,7 @@ from loguru import logger
 from peewee import DoesNotExist
 import json
 from goods_srv.model.models import Goods, Category, Brands, GoodsCategoryBrand, Banner
-from goods_srv.proto import goods_pb2, goods_pb2_grpc
+from common.proto.pb import goods_pb2, goods_pb2_grpc,common_pb2
 
 
 class GoodsServicer(goods_pb2_grpc.GoodsServicer):
@@ -36,7 +36,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return info_rsp
 
     @logger.catch
-    def GoodsList(self, request: goods_pb2.GoodsFilterRequest, context):
+    def GoodsPageList(self, request: goods_pb2.GoodsFilterPageRequest, context):
         """商品列表页"""
         rsp = goods_pb2.GoodsListResponse()
         goods = Goods.select()
@@ -113,7 +113,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def GetGoodsDetail(self, request: goods_pb2.GoodInfoRequest, context):
+    def GetGoodsDetail(self, request: goods_pb2.GoodsDetailRequest, context):
         """获取商品详情"""
         try:
             goods = Goods.get(Goods.id == request.id)
@@ -127,7 +127,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return goods_pb2.GoodsInfoResponse()
 
     @logger.catch
-    def CreateGoods(self, request: goods_pb2.CreateGoodsInfo, context):
+    def CreateGoods(self, request: goods_pb2.CreateGoodsRequest, context):
         """新建商品"""
         try:
             category = Category.get(Category.id == request.categoryId)
@@ -166,7 +166,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return self.convert_model_to_message(goods)
 
     @logger.catch
-    def UpdateGoods(self, request: goods_pb2.CreateGoodsInfo, context):
+    def UpdateGoods(self, request: goods_pb2.UpdateGoodsRequest, context):
         """更新商品"""
         try:
             goods = Goods.get(Goods.id == request.id)
@@ -234,7 +234,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         category_list_rsp = goods_pb2.CategoryListResponse()
         category_list_rsp.total = Category.select().count()
         for category in Category.select():
-            category_rsp = goods_pb2.CategoryInfoResponse()
+            category_rsp = goods_pb2.CategoryResponse()
             category_rsp.id = category.id
             category_rsp.name = category.name
             category_rsp.parentCategory = category.parent_category_id
@@ -286,7 +286,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
 
         categorys = Category.select().where(Category.parent_category == request.id)
         for category in categorys:
-            category_rsp = goods_pb2.CategoryInfoResponse()
+            category_rsp = goods_pb2.CategoryResponse()
             category_rsp.id = category.id
             category_rsp.name = category.name
             if category_info.parent_category:
@@ -298,7 +298,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return category_list_rsp
 
     @logger.catch
-    def CreateCategory(self, request, context):
+    def CreateCategory(self, request:goods_pb2.CreateCategoryRequest, context):
         try:
             category = Category()
             category.name = request.name
@@ -307,7 +307,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             category.level = request.level
             category.is_tab = request.is_tab
             category.save()
-            category_rsp = goods_pb2.CategoryInfoResponse()
+            category_rsp = goods_pb2.CategoryResponse()
             category_rsp.id = category.id
             category_rsp.name = category.name
             if category_rsp.parent_category:
@@ -318,11 +318,11 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details("商品分类新增数据失败:" + str(e))
-            return goods_pb2.CategoryInfoResponse()
+            return goods_pb2.CategoryResponse()
         return category_rsp
 
     @logger.catch
-    def DeleteCategory(self, request, context):
+    def DeleteCategory(self, request:common_pb2.IdsRequest, context):
         try:
             category = Category.get(request.id)
             category.delete_instance()
@@ -355,7 +355,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def BrandList(self, request: goods_pb2.BrandFilterRequest, context):
+    def BrandList(self, request: goods_pb2.BrandFilterPageRequest, context):
         rsp = goods_pb2.BrandListResponse()
         brands = Brands.select()
         rsp.total = brands.count()
@@ -369,7 +369,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return rsp
 
     @logger.catch
-    def CreateBrand(self, request: goods_pb2.BrandRequest, context):
+    def CreateBrand(self, request: goods_pb2.CreateBrandRequest, context):
         brands = Brands.select().where(Brands.name == request.name)
         if brands:
             context.set_code(grpc.StatusCode.ALREADY_EXISTS)
@@ -387,7 +387,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return brand_rsp
 
     @logger.catch
-    def DeleteBrand(self, request: goods_pb2.BrandRequest, context):
+    def DeleteBrand(self, request: common_pb2.IdsRequest, context):
         try:
             banner = Brands.get(request.id)
             banner.delete_innstance()
@@ -398,7 +398,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def UpdateBrand(self, request: goods_pb2.BrandRequest, context):
+    def UpdateBrand(self, request: goods_pb2.UpdateBrandRequest, context):
         try:
             brand = Brands.get(request.id)
             if request.name:
@@ -413,7 +413,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def BannerList(self, request, context):
+    def BannerPageList(self, request, context):
         rsp = goods_pb2.BannerListResponse()
         banners = Banner.select()
         rsp.total = banners.count()
@@ -427,7 +427,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return rsp
 
     @logger.catch
-    def CreateBanner(self, request: goods_pb2.BannerRequest, context):
+    def CreateBanner(self, request: goods_pb2.CreateBannerRequest, context):
         banner = Banner()
         banner.image = request.image
         banner.index = request.index
@@ -443,7 +443,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return banner_rsp
 
     @logger.catch
-    def DeleteBanner(self, request: goods_pb2.BannerRequest, context):
+    def DeleteBanner(self, request: common_pb2.IdsRequest, context):
         try:
             banner = Banner.get(request.id)
             banner.delete_innstance()
@@ -454,7 +454,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def UpdateBanner(self, request: goods_pb2.BannerRequest, context):
+    def UpdateBanner(self, request: goods_pb2.UpdateBannerRequest, context):
         try:
             banner = Banner.get(request.id)
             if request.image:
@@ -471,7 +471,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def CategoryBrandList(self, request: goods_pb2.CategoryBrandFilterRequest, context):
+    def CategoryBrandPageList(self, request: goods_pb2.CategoryBrandFilterRequest, context):
         rsp = goods_pb2.CategoryBrandListResponse()
         category_brands = GoodsCategoryBrand.select()
         page = 1
@@ -497,7 +497,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return rsp
 
     @logger.catch
-    def GetCategoryBrandList(self, request: goods_pb2.CategoryBrandInfoRequest, context):
+    def GetCategoryBrandList(self, request: goods_pb2.CategoryBrandFilterRequest, context):
         # 获取某一个分类的所有品牌
         rsp = goods_pb2.BrandListResponse()
         try:
@@ -517,7 +517,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         return rsp
 
     @logger.catch
-    def CreateCategoryBrand(self, request: goods_pb2.CategoryBrandRequest, context):
+    def CreateCategoryBrand(self, request: goods_pb2.CreateCategoryRequest, context):
         category_brand = GoodsCategoryBrand()
         try:
             brand = Brands.get(request.brand_id)
@@ -539,7 +539,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return goods_pb2.CategoryBrandResponse()
 
     @logger.catch
-    def DeleteCategoryBrand(self, request: goods_pb2.CategoryBrandRequest, context):
+    def DeleteCategoryBrand(self, request: common_pb2.IdsRequest, context):
         try:
             category_brand = GoodsCategoryBrand.get(request.id)
             category_brand.delete_instance()
@@ -550,7 +550,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def UpdateCategoryBrand(self, request: goods_pb2.CategoryBrandRequest, context):
+    def UpdateCategoryBrand(self, request: goods_pb2.UpdateCategoryBrandRequest, context):
         try:
             category_brand = GoodsCategoryBrand.get(request.id)
             brand = Brands.get(request.brand_id)

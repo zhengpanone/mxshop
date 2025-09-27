@@ -3,9 +3,9 @@ from google.protobuf import empty_pb2
 from loguru import logger
 from peewee import DoesNotExist
 from order_srv.model.models import OrderGoods, ShoppingCart, OrderInfo
-from order_srv.proto import order_pb2, order_pb2_grpc
-from order_srv.proto import goods_pb2, goods_pb2_grpc
-from order_srv.proto import inventory_pb2, inventory_pb2_grpc
+from common.proto.pb import order_pb2, order_pb2_grpc
+from common.proto.pb import goods_pb2, goods_pb2_grpc
+from common.proto.pb import inventory_pb2, inventory_pb2_grpc
 from common.register import consul
 from order_srv.settings import settings
 

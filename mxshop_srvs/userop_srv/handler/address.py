@@ -1,7 +1,7 @@
 import grpc
 from peewee import DoesNotExist
 
-from userop_srv.proto import address_pb2, address_pb2_grpc
+from common.proto.pb import address_pb2, address_pb2_grpc, common_pb2
 from userop_srv.model.models import Address
 from google.protobuf import empty_pb2
 from loguru import logger
@@ -9,7 +9,7 @@ from loguru import logger
 
 class AddressServicer(address_pb2_grpc.AddressServicer):
     @logger.catch
-    def GetAddressList(self, request: address_pb2.AddressRequest, context):
+    def GetAddressPageList(self, request: address_pb2.AddressFilterPageRequest, context):
         rsp = address_pb2.AddressListResponse()
         address = Address.select()
         if request.userId:
@@ -31,7 +31,7 @@ class AddressServicer(address_pb2_grpc.AddressServicer):
         return rsp
 
     @logger.catch
-    def CreateAddress(self, request: address_pb2.AddressRequest, context):
+    def CreateAddress(self, request: address_pb2.CreateAddressRequest, context):
         addr = Address()
         addr.user = request.userId
         addr.province = request.province
@@ -46,7 +46,7 @@ class AddressServicer(address_pb2_grpc.AddressServicer):
         return rsp
 
     @logger.catch
-    def DeleteAddress(self, request: address_pb2.AddressRequest, context):
+    def DeleteAddress(self, request: common_pb2.IdsRequest, context):
         try:
             address = Address.get(request.id)
             address.delete_instance()
@@ -57,7 +57,7 @@ class AddressServicer(address_pb2_grpc.AddressServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def UpdateAddress(self, request, context):
+    def UpdateAddress(self, request: address_pb2.UpdateAddressRequest, context):
         try:
             address = Address.get(request.id)
             if request.province:
@@ -76,5 +76,3 @@ class AddressServicer(address_pb2_grpc.AddressServicer):
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details('记录不存在')
             return empty_pb2.Empty()
-
-

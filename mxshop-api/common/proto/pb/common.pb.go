@@ -76,7 +76,7 @@ func (x *PageRequest) GetPageSize() uint64 {
 
 type IdRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -111,7 +111,7 @@ func (*IdRequest) Descriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *IdRequest) GetId() int32 {
+func (x *IdRequest) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -299,7 +299,7 @@ const file_common_proto_rawDesc = "" +
 	"\apageNum\x18\x01 \x01(\x04R\apageNum\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x04R\bpageSize\"\x1b\n" +
 	"\tIdRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"1\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\"1\n" +
 	"\n" +
 	"IdsRequest\x12#\n" +
 	"\x03ids\x18\x01 \x03(\v2\x11.common.IdRequestR\x03ids\"q\n" +

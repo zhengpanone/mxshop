@@ -30,7 +30,7 @@ message DictTypeResponse{
   string dictName = 4;
   string remark = 5;
   bool status = 6;
-  common.TimestampResponse timestampResponse =7;
+  common.TimestampResponse timestampResponse = 7;
 }
 
 message UpdateDictTypeRequest{
@@ -48,8 +48,8 @@ message DictTypeFilterPageRequest{
 }
 
 message DictTypeListResponse{
-  int32 total = 1;
-  repeated DictTypeResponse data = 2;
+  common.PageResponse page = 1;
+  repeated DictTypeResponse list = 2;
 }
 
 message CreateDictItemRequest{
@@ -80,6 +80,6 @@ message DictItemFilterPageRequest{
 }
 
 message DictItemPageListResponse{
-  int32 total = 1;
+  common.PageResponse page = 1;
   repeated DictItemResponse data = 2;
 }

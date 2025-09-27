@@ -38,7 +38,7 @@ class RoleStub(object):
         self.CreateRole = channel.unary_unary(
                 '/Role/CreateRole',
                 request_serializer=role__pb2.CreateRoleRequest.SerializeToString,
-                response_deserializer=role__pb2.RoleInfoResponse.FromString,
+                response_deserializer=role__pb2.RoleResponse.FromString,
                 _registered_method=True)
         self.UpdateRole = channel.unary_unary(
                 '/Role/UpdateRole',
@@ -82,7 +82,7 @@ def add_RoleServicer_to_server(servicer, server):
             'CreateRole': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateRole,
                     request_deserializer=role__pb2.CreateRoleRequest.FromString,
-                    response_serializer=role__pb2.RoleInfoResponse.SerializeToString,
+                    response_serializer=role__pb2.RoleResponse.SerializeToString,
             ),
             'UpdateRole': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateRole,
@@ -121,7 +121,7 @@ class Role(object):
             target,
             '/Role/CreateRole',
             role__pb2.CreateRoleRequest.SerializeToString,
-            role__pb2.RoleInfoResponse.FromString,
+            role__pb2.RoleResponse.FromString,
             options,
             channel_credentials,
             insecure,

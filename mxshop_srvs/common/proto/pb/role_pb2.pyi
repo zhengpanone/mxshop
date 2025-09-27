@@ -35,7 +35,7 @@ class CreateRoleRequest(google.protobuf.message.Message):
 global___CreateRoleRequest = CreateRoleRequest
 
 @typing.final
-class RoleInfoResponse(google.protobuf.message.Message):
+class RoleResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -56,7 +56,7 @@ class RoleInfoResponse(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["id", b"id", "name", b"name", "remark", b"remark", "status", b"status"]) -> None: ...
 
-global___RoleInfoResponse = RoleInfoResponse
+global___RoleResponse = RoleResponse
 
 @typing.final
 class UpdateRoleRequest(google.protobuf.message.Message):
@@ -118,12 +118,12 @@ class RoleListResponse(google.protobuf.message.Message):
     DATA_FIELD_NUMBER: builtins.int
     total: builtins.int
     @property
-    def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___RoleInfoResponse]: ...
+    def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___RoleResponse]: ...
     def __init__(
         self,
         *,
         total: builtins.int = ...,
-        data: collections.abc.Iterable[global___RoleInfoResponse] | None = ...,
+        data: collections.abc.Iterable[global___RoleResponse] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["data", b"data", "total", b"total"]) -> None: ...
 

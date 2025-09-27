@@ -1,7 +1,7 @@
 import grpc
 import consul
 from google.protobuf import empty_pb2
-from goods_srv.proto import category_pb2_grpc, category_pb2
+from common.proto.pb import category_pb2_grpc, category_pb2
 from goods_srv.settings import settings
 
 

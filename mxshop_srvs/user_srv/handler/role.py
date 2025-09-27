@@ -18,7 +18,7 @@ class RoleServicer(role_pb2_grpc.RoleServicer):
 
 
     @logger.catch
-    def CreateRole(self, request:role_pb2.CreateRoleInfo, context):
+    def CreateRole(self, request:role_pb2.CreateRoleRequest, context):
         try:
             Role.get(Role.name == request.name)
             context.set_code(grpc.StatusCode.ALREADY_EXISTS)

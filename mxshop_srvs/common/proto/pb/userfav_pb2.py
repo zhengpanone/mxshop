@@ -23,10 +23,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from common.proto.pb import common_pb2 as common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ruserfav.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0c\x63ommon.proto\";\n\x18UserFavFilterPageRequest\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"7\n\x14\x43reateUserFavRequest\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"2\n\x0fUserFavResponse\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"8\n\x15UserFavDetailResponse\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"D\n\x13UserFavListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12\x1e\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x10.UserFavResponse2\x88\x02\n\x07UserFav\x12\x41\n\x0eGetFavPageList\x12\x19.UserFavFilterPageRequest\x1a\x14.UserFavListResponse\x12>\n\rCreateUserFav\x12\x15.CreateUserFavRequest\x1a\x16.google.protobuf.Empty\x12;\n\rDeleteUserFav\x12\x12.common.IdsRequest\x1a\x16.google.protobuf.Empty\x12=\n\x10GetUserFavDetail\x12\x11.common.IdRequest\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ruserfav.proto\x1a\x1bgoogle/protobuf/empty.proto\";\n\x18UserFavFilterPageRequest\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"7\n\x14\x43reateUserFavRequest\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"2\n\x0fUserFavResponse\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"8\n\x15UserFavDetailResponse\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07goodsId\x18\x02 \x01(\x05\"D\n\x13UserFavListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12\x1e\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x10.UserFavResponse\"7\n\x14\x44\x65leteUserFavRequest\x12\x0e\n\x06userId\x18\x01 \x01(\x04\x12\x0f\n\x07goodsId\x18\x02 \x01(\x04\"7\n\x14\x44\x65tailUserFavRequest\x12\x0e\n\x06userId\x18\x01 \x01(\x04\x12\x0f\n\x07goodsId\x18\x02 \x01(\x04\x32\x8f\x02\n\x07UserFav\x12\x41\n\x0eGetFavPageList\x12\x19.UserFavFilterPageRequest\x1a\x14.UserFavListResponse\x12>\n\rCreateUserFav\x12\x15.CreateUserFavRequest\x1a\x16.google.protobuf.Empty\x12>\n\rDeleteUserFav\x12\x15.DeleteUserFavRequest\x1a\x16.google.protobuf.Empty\x12\x41\n\x10GetUserFavDetail\x12\x15.DetailUserFavRequest\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,16 +33,20 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'userfav_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z\007.;proto'
-  _globals['_USERFAVFILTERPAGEREQUEST']._serialized_start=60
-  _globals['_USERFAVFILTERPAGEREQUEST']._serialized_end=119
-  _globals['_CREATEUSERFAVREQUEST']._serialized_start=121
-  _globals['_CREATEUSERFAVREQUEST']._serialized_end=176
-  _globals['_USERFAVRESPONSE']._serialized_start=178
-  _globals['_USERFAVRESPONSE']._serialized_end=228
-  _globals['_USERFAVDETAILRESPONSE']._serialized_start=230
-  _globals['_USERFAVDETAILRESPONSE']._serialized_end=286
-  _globals['_USERFAVLISTRESPONSE']._serialized_start=288
-  _globals['_USERFAVLISTRESPONSE']._serialized_end=356
-  _globals['_USERFAV']._serialized_start=359
-  _globals['_USERFAV']._serialized_end=623
+  _globals['_USERFAVFILTERPAGEREQUEST']._serialized_start=46
+  _globals['_USERFAVFILTERPAGEREQUEST']._serialized_end=105
+  _globals['_CREATEUSERFAVREQUEST']._serialized_start=107
+  _globals['_CREATEUSERFAVREQUEST']._serialized_end=162
+  _globals['_USERFAVRESPONSE']._serialized_start=164
+  _globals['_USERFAVRESPONSE']._serialized_end=214
+  _globals['_USERFAVDETAILRESPONSE']._serialized_start=216
+  _globals['_USERFAVDETAILRESPONSE']._serialized_end=272
+  _globals['_USERFAVLISTRESPONSE']._serialized_start=274
+  _globals['_USERFAVLISTRESPONSE']._serialized_end=342
+  _globals['_DELETEUSERFAVREQUEST']._serialized_start=344
+  _globals['_DELETEUSERFAVREQUEST']._serialized_end=399
+  _globals['_DETAILUSERFAVREQUEST']._serialized_start=401
+  _globals['_DETAILUSERFAVREQUEST']._serialized_end=456
+  _globals['_USERFAV']._serialized_start=459
+  _globals['_USERFAV']._serialized_end=730
 # @@protoc_insertion_point(module_scope)

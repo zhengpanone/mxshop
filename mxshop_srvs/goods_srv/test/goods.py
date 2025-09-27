@@ -1,6 +1,6 @@
 import grpc
 import consul
-from goods_srv.proto import goods_pb2_grpc, goods_pb2
+from common.proto.pb import goods_pb2_grpc, goods_pb2
 from goods_srv.settings import settings
 
 

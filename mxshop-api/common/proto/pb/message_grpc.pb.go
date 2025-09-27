@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,16 +20,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Message_MessageList_FullMethodName   = "/Message/MessageList"
-	Message_CreateMessage_FullMethodName = "/Message/CreateMessage"
+	Message_GetMessagePageList_FullMethodName = "/Message/GetMessagePageList"
+	Message_CreateMessage_FullMethodName      = "/Message/CreateMessage"
+	Message_DeleteMessageByIds_FullMethodName = "/Message/DeleteMessageByIds"
 )
 
 // MessageClient is the client API for Message service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageClient interface {
-	MessageList(ctx context.Context, in *MessageRequest, opts ...grpc.CallOption) (*MessageListResponse, error)
+	GetMessagePageList(ctx context.Context, in *MessageFilterPageRequest, opts ...grpc.CallOption) (*MessagePageResponse, error)
 	CreateMessage(ctx context.Context, in *MessageRequest, opts ...grpc.CallOption) (*MessageResponse, error)
+	DeleteMessageByIds(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type messageClient struct {
@@ -39,10 +42,10 @@ func NewMessageClient(cc grpc.ClientConnInterface) MessageClient {
 	return &messageClient{cc}
 }
 
-func (c *messageClient) MessageList(ctx context.Context, in *MessageRequest, opts ...grpc.CallOption) (*MessageListResponse, error) {
+func (c *messageClient) GetMessagePageList(ctx context.Context, in *MessageFilterPageRequest, opts ...grpc.CallOption) (*MessagePageResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MessageListResponse)
-	err := c.cc.Invoke(ctx, Message_MessageList_FullMethodName, in, out, cOpts...)
+	out := new(MessagePageResponse)
+	err := c.cc.Invoke(ctx, Message_GetMessagePageList_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -59,12 +62,23 @@ func (c *messageClient) CreateMessage(ctx context.Context, in *MessageRequest, o
 	return out, nil
 }
 
+func (c *messageClient) DeleteMessageByIds(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Message_DeleteMessageByIds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageServer is the server API for Message service.
 // All implementations must embed UnimplementedMessageServer
 // for forward compatibility.
 type MessageServer interface {
-	MessageList(context.Context, *MessageRequest) (*MessageListResponse, error)
+	GetMessagePageList(context.Context, *MessageFilterPageRequest) (*MessagePageResponse, error)
 	CreateMessage(context.Context, *MessageRequest) (*MessageResponse, error)
+	DeleteMessageByIds(context.Context, *IdsRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedMessageServer()
 }
 
@@ -75,11 +89,14 @@ type MessageServer interface {
 // pointer dereference when methods are called.
 type UnimplementedMessageServer struct{}
 
-func (UnimplementedMessageServer) MessageList(context.Context, *MessageRequest) (*MessageListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MessageList not implemented")
+func (UnimplementedMessageServer) GetMessagePageList(context.Context, *MessageFilterPageRequest) (*MessagePageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMessagePageList not implemented")
 }
 func (UnimplementedMessageServer) CreateMessage(context.Context, *MessageRequest) (*MessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMessage not implemented")
+}
+func (UnimplementedMessageServer) DeleteMessageByIds(context.Context, *IdsRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMessageByIds not implemented")
 }
 func (UnimplementedMessageServer) mustEmbedUnimplementedMessageServer() {}
 func (UnimplementedMessageServer) testEmbeddedByValue()                 {}
@@ -102,20 +119,20 @@ func RegisterMessageServer(s grpc.ServiceRegistrar, srv MessageServer) {
 	s.RegisterService(&Message_ServiceDesc, srv)
 }
 
-func _Message_MessageList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MessageRequest)
+func _Message_GetMessagePageList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MessageFilterPageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageServer).MessageList(ctx, in)
+		return srv.(MessageServer).GetMessagePageList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Message_MessageList_FullMethodName,
+		FullMethod: Message_GetMessagePageList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageServer).MessageList(ctx, req.(*MessageRequest))
+		return srv.(MessageServer).GetMessagePageList(ctx, req.(*MessageFilterPageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -138,6 +155,24 @@ func _Message_CreateMessage_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Message_DeleteMessageByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServer).DeleteMessageByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Message_DeleteMessageByIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServer).DeleteMessageByIds(ctx, req.(*IdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Message_ServiceDesc is the grpc.ServiceDesc for Message service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -146,12 +181,16 @@ var Message_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*MessageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "MessageList",
-			Handler:    _Message_MessageList_Handler,
+			MethodName: "GetMessagePageList",
+			Handler:    _Message_GetMessagePageList_Handler,
 		},
 		{
 			MethodName: "CreateMessage",
 			Handler:    _Message_CreateMessage_Handler,
+		},
+		{
+			MethodName: "DeleteMessageByIds",
+			Handler:    _Message_DeleteMessageByIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -58,7 +58,7 @@ class GoodsStub(object):
                 _registered_method=True)
         self.UpdateGoods = channel.unary_unary(
                 '/Goods/UpdateGoods',
-                request_serializer=goods__pb2.CreateGoodsRequest.SerializeToString,
+                request_serializer=goods__pb2.UpdateGoodsRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.GetGoodsDetail = channel.unary_unary(
@@ -78,21 +78,21 @@ class GoodsStub(object):
                 _registered_method=True)
         self.CreateCategory = channel.unary_unary(
                 '/Goods/CreateCategory',
-                request_serializer=goods__pb2.CategoryInfoRequest.SerializeToString,
-                response_deserializer=goods__pb2.CategoryInfoResponse.FromString,
+                request_serializer=goods__pb2.CreateCategoryRequest.SerializeToString,
+                response_deserializer=goods__pb2.CategoryResponse.FromString,
                 _registered_method=True)
         self.DeleteCategory = channel.unary_unary(
                 '/Goods/DeleteCategory',
-                request_serializer=goods__pb2.DeleteCategoryInfo.SerializeToString,
+                request_serializer=goods__pb2.DeleteCategoryRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.UpdateCategory = channel.unary_unary(
                 '/Goods/UpdateCategory',
-                request_serializer=goods__pb2.CategoryInfoRequest.SerializeToString,
+                request_serializer=goods__pb2.UpdateCategoryRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
-        self.CategoryBrandList = channel.unary_unary(
-                '/Goods/CategoryBrandList',
+        self.CategoryBrandPageList = channel.unary_unary(
+                '/Goods/CategoryBrandPageList',
                 request_serializer=goods__pb2.CategoryBrandFilterRequest.SerializeToString,
                 response_deserializer=goods__pb2.CategoryBrandListResponse.FromString,
                 _registered_method=True)
@@ -116,8 +116,8 @@ class GoodsStub(object):
                 request_serializer=goods__pb2.UpdateCategoryBrandRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
-        self.BrandList = channel.unary_unary(
-                '/Goods/BrandList',
+        self.BrandPageList = channel.unary_unary(
+                '/Goods/BrandPageList',
                 request_serializer=goods__pb2.BrandFilterPageRequest.SerializeToString,
                 response_deserializer=goods__pb2.BrandListResponse.FromString,
                 _registered_method=True)
@@ -136,24 +136,24 @@ class GoodsStub(object):
                 request_serializer=goods__pb2.UpdateBrandRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
-        self.BannerList = channel.unary_unary(
-                '/Goods/BannerList',
+        self.BannerPageList = channel.unary_unary(
+                '/Goods/BannerPageList',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=goods__pb2.BannerListResponse.FromString,
                 _registered_method=True)
         self.CreateBanner = channel.unary_unary(
                 '/Goods/CreateBanner',
-                request_serializer=goods__pb2.BannerRequest.SerializeToString,
+                request_serializer=goods__pb2.CreateBannerRequest.SerializeToString,
                 response_deserializer=goods__pb2.BannerResponse.FromString,
                 _registered_method=True)
         self.DeleteBanner = channel.unary_unary(
                 '/Goods/DeleteBanner',
-                request_serializer=goods__pb2.BannerRequest.SerializeToString,
+                request_serializer=common__pb2.IdsRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.UpdateBanner = channel.unary_unary(
                 '/Goods/UpdateBanner',
-                request_serializer=goods__pb2.BannerRequest.SerializeToString,
+                request_serializer=goods__pb2.UpdateBannerRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
 
@@ -235,7 +235,7 @@ class GoodsServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CategoryBrandList(self, request, context):
+    def CategoryBrandPageList(self, request, context):
         """品牌分类
         获取轮播图
         """
@@ -271,7 +271,7 @@ class GoodsServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BrandList(self, request, context):
+    def BrandPageList(self, request, context):
         """品牌和轮播图
         批量获取品牌信息
         """
@@ -300,7 +300,7 @@ class GoodsServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BannerList(self, request, context):
+    def BannerPageList(self, request, context):
         """轮播图
         获取轮播列表信息
         """
@@ -354,7 +354,7 @@ def add_GoodsServicer_to_server(servicer, server):
             ),
             'UpdateGoods': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateGoods,
-                    request_deserializer=goods__pb2.CreateGoodsRequest.FromString,
+                    request_deserializer=goods__pb2.UpdateGoodsRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'GetGoodsDetail': grpc.unary_unary_rpc_method_handler(
@@ -374,21 +374,21 @@ def add_GoodsServicer_to_server(servicer, server):
             ),
             'CreateCategory': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateCategory,
-                    request_deserializer=goods__pb2.CategoryInfoRequest.FromString,
-                    response_serializer=goods__pb2.CategoryInfoResponse.SerializeToString,
+                    request_deserializer=goods__pb2.CreateCategoryRequest.FromString,
+                    response_serializer=goods__pb2.CategoryResponse.SerializeToString,
             ),
             'DeleteCategory': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteCategory,
-                    request_deserializer=goods__pb2.DeleteCategoryInfo.FromString,
+                    request_deserializer=goods__pb2.DeleteCategoryRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'UpdateCategory': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateCategory,
-                    request_deserializer=goods__pb2.CategoryInfoRequest.FromString,
+                    request_deserializer=goods__pb2.UpdateCategoryRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
-            'CategoryBrandList': grpc.unary_unary_rpc_method_handler(
-                    servicer.CategoryBrandList,
+            'CategoryBrandPageList': grpc.unary_unary_rpc_method_handler(
+                    servicer.CategoryBrandPageList,
                     request_deserializer=goods__pb2.CategoryBrandFilterRequest.FromString,
                     response_serializer=goods__pb2.CategoryBrandListResponse.SerializeToString,
             ),
@@ -412,8 +412,8 @@ def add_GoodsServicer_to_server(servicer, server):
                     request_deserializer=goods__pb2.UpdateCategoryBrandRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
-            'BrandList': grpc.unary_unary_rpc_method_handler(
-                    servicer.BrandList,
+            'BrandPageList': grpc.unary_unary_rpc_method_handler(
+                    servicer.BrandPageList,
                     request_deserializer=goods__pb2.BrandFilterPageRequest.FromString,
                     response_serializer=goods__pb2.BrandListResponse.SerializeToString,
             ),
@@ -432,24 +432,24 @@ def add_GoodsServicer_to_server(servicer, server):
                     request_deserializer=goods__pb2.UpdateBrandRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
-            'BannerList': grpc.unary_unary_rpc_method_handler(
-                    servicer.BannerList,
+            'BannerPageList': grpc.unary_unary_rpc_method_handler(
+                    servicer.BannerPageList,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=goods__pb2.BannerListResponse.SerializeToString,
             ),
             'CreateBanner': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateBanner,
-                    request_deserializer=goods__pb2.BannerRequest.FromString,
+                    request_deserializer=goods__pb2.CreateBannerRequest.FromString,
                     response_serializer=goods__pb2.BannerResponse.SerializeToString,
             ),
             'DeleteBanner': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteBanner,
-                    request_deserializer=goods__pb2.BannerRequest.FromString,
+                    request_deserializer=common__pb2.IdsRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'UpdateBanner': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateBanner,
-                    request_deserializer=goods__pb2.BannerRequest.FromString,
+                    request_deserializer=goods__pb2.UpdateBannerRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
     }
@@ -586,7 +586,7 @@ class Goods(object):
             request,
             target,
             '/Goods/UpdateGoods',
-            goods__pb2.CreateGoodsRequest.SerializeToString,
+            goods__pb2.UpdateGoodsRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -694,8 +694,8 @@ class Goods(object):
             request,
             target,
             '/Goods/CreateCategory',
-            goods__pb2.CategoryInfoRequest.SerializeToString,
-            goods__pb2.CategoryInfoResponse.FromString,
+            goods__pb2.CreateCategoryRequest.SerializeToString,
+            goods__pb2.CategoryResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -721,7 +721,7 @@ class Goods(object):
             request,
             target,
             '/Goods/DeleteCategory',
-            goods__pb2.DeleteCategoryInfo.SerializeToString,
+            goods__pb2.DeleteCategoryRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -748,7 +748,7 @@ class Goods(object):
             request,
             target,
             '/Goods/UpdateCategory',
-            goods__pb2.CategoryInfoRequest.SerializeToString,
+            goods__pb2.UpdateCategoryRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -761,7 +761,7 @@ class Goods(object):
             _registered_method=True)
 
     @staticmethod
-    def CategoryBrandList(request,
+    def CategoryBrandPageList(request,
             target,
             options=(),
             channel_credentials=None,
@@ -774,7 +774,7 @@ class Goods(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Goods/CategoryBrandList',
+            '/Goods/CategoryBrandPageList',
             goods__pb2.CategoryBrandFilterRequest.SerializeToString,
             goods__pb2.CategoryBrandListResponse.FromString,
             options,
@@ -896,7 +896,7 @@ class Goods(object):
             _registered_method=True)
 
     @staticmethod
-    def BrandList(request,
+    def BrandPageList(request,
             target,
             options=(),
             channel_credentials=None,
@@ -909,7 +909,7 @@ class Goods(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Goods/BrandList',
+            '/Goods/BrandPageList',
             goods__pb2.BrandFilterPageRequest.SerializeToString,
             goods__pb2.BrandListResponse.FromString,
             options,
@@ -1004,7 +1004,7 @@ class Goods(object):
             _registered_method=True)
 
     @staticmethod
-    def BannerList(request,
+    def BannerPageList(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1017,7 +1017,7 @@ class Goods(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Goods/BannerList',
+            '/Goods/BannerPageList',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             goods__pb2.BannerListResponse.FromString,
             options,
@@ -1045,7 +1045,7 @@ class Goods(object):
             request,
             target,
             '/Goods/CreateBanner',
-            goods__pb2.BannerRequest.SerializeToString,
+            goods__pb2.CreateBannerRequest.SerializeToString,
             goods__pb2.BannerResponse.FromString,
             options,
             channel_credentials,
@@ -1072,7 +1072,7 @@ class Goods(object):
             request,
             target,
             '/Goods/DeleteBanner',
-            goods__pb2.BannerRequest.SerializeToString,
+            common__pb2.IdsRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -1099,7 +1099,7 @@ class Goods(object):
             request,
             target,
             '/Goods/UpdateBanner',
-            goods__pb2.BannerRequest.SerializeToString,
+            goods__pb2.UpdateBannerRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,

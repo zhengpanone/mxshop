@@ -1,5 +1,5 @@
 syntax = "proto3";
-
+import "common.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = ".;proto";
@@ -12,17 +12,17 @@ service Order {
     rpc DeleteCartItem (CartItemRequest) returns (google.protobuf.Empty); // 删除购物车条目信息
 
     // 订单
-    rpc CreateOrder (OrderRequest) returns (OrderInfoResponse); //新建订单
-    rpc OrderList (OrderFilterRequest) returns (OrderListResponse); // 订单列表
-    rpc OrderDetail (OrderRequest) returns (OrderInfoDetailResponse); //订单详情
+    rpc CreateOrder (OrderRequest) returns (OrderResponse); //新建订单
+    rpc GetOrderPageList (OrderFilterPageRequest) returns (OrderPageResponse); // 订单列表
+    rpc OrderDetail (OrderRequest) returns (OrderDetailResponse); //订单详情
     rpc UpdateOrderStatus (OrderStatus) returns (google.protobuf.Empty); // 修改订单支付状态
 }
 
 message UserInfo {
-    int32 id = 1;
+    uint64 id = 1;
 }
 message ShopCartInfoResponse {
-    int32 id = 1;
+    uint64 id = 1;
     int32 userId = 2;
     int32 goodsId = 3;
     int32 nums = 4;
@@ -42,7 +42,7 @@ message CartItemRequest {
 }
 
 message OrderRequest {
-    int32 id = 1;
+    uint64 id = 1;
     int32 userId = 2;
     string address = 3;
     string mobile = 4;
@@ -50,8 +50,8 @@ message OrderRequest {
     string post = 6;
 }
 
-message OrderInfoResponse {
-    int32 id = 1;
+message OrderResponse {
+    uint64 id = 1;
     int32 userId = 2;
     string orderSn = 3;
     string payType = 4;
@@ -64,18 +64,18 @@ message OrderInfoResponse {
     string addTime = 11;
 }
 
-message OrderListResponse {
-    int32 total = 1;
-    repeated OrderInfoResponse data = 2;
+message OrderPageResponse {
+    common.PageResponse page = 1;
+    repeated OrderResponse data = 2;
 }
 
-message OrderFilterRequest {
+message OrderFilterPageRequest {
     int32 userId = 1;
     int32 page = 2;
     int32 size = 3;
 }
 message OrderItemResponse {
-    int32 id = 1;
+    uint64 id = 1;
     int32 orderId = 2;
     int32 goodsId = 3;
     string goodsName = 4;
@@ -83,8 +83,8 @@ message OrderItemResponse {
     float goodsPrice = 6;
     int32 nums = 7;
 }
-message OrderInfoDetailResponse {
-    OrderInfoResponse orderInfo = 1;
+message OrderDetailResponse {
+    OrderResponse orderInfo = 1;
     repeated OrderItemResponse goods = 2;
 }
 message OrderStatus {

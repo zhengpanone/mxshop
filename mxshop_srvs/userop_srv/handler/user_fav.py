@@ -1,6 +1,6 @@
 import grpc
 
-from userop_srv.proto import userfav_pb2_grpc, userfav_pb2
+from common.proto.pb import userfav_pb2_grpc, userfav_pb2, common_pb2
 from loguru import logger
 from userop_srv.model.models import UserFav
 from google.protobuf import empty_pb2
@@ -9,7 +9,7 @@ from peewee import DoesNotExist
 
 class UserFavServicer(userfav_pb2_grpc.UserFavServicer):
     @logger.catch
-    def GetFavList(self, request: userfav_pb2.UserFavRequest, context):
+    def GetFavPageList(self, request: userfav_pb2.UserFavFilterPageRequest, context):
         rsp = userfav_pb2.UserFavListResponse()
         user_favs = UserFav.select()
         if request.userId:
@@ -26,7 +26,7 @@ class UserFavServicer(userfav_pb2_grpc.UserFavServicer):
         return rsp
 
     @logger.catch
-    def AddUserFav(self, request: userfav_pb2.UserFavRequest, context):
+    def CreateUserFav(self, request: userfav_pb2.CreateUserFavRequest, context):
         user_fav = UserFav()
         user_fav.user = request.userId
         user_fav.goods = request.goodsId
@@ -34,8 +34,9 @@ class UserFavServicer(userfav_pb2_grpc.UserFavServicer):
         return empty_pb2.Empty()
 
     @logger.catch
-    def DeleteUserFav(self, request, context):
+    def DeleteUserFav(self, request: common_pb2.IdsRequest, context):
         try:
+            userIds = request.ids
             user_fav = UserFav.get(UserFav.user == request.userId, UserFav.goods == request.goodsId)
             user_fav.delete_instance(permanently=True)
             return empty_pb2.Empty()
@@ -45,7 +46,7 @@ class UserFavServicer(userfav_pb2_grpc.UserFavServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def GetUserFavDetail(self, request, context):
+    def GetUserFavDetail(self, request: userfav_pb2.DetailUserFavRequest, context):
         try:
             UserFav.get(UserFav.user == request.userId, UserFav.goods == request.goodsId)
             return empty_pb2.Empty()

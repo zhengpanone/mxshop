@@ -9,6 +9,7 @@ package proto
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -21,9 +22,93 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type MessageFilterPageRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageRequest   *PageRequest           `protobuf:"bytes,1,opt,name=pageRequest,proto3" json:"pageRequest,omitempty"`
+	UserId        int32                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	MessageType   int32                  `protobuf:"varint,3,opt,name=messageType,proto3" json:"messageType,omitempty"`
+	Subject       string                 `protobuf:"bytes,4,opt,name=subject,proto3" json:"subject,omitempty"`
+	Message       string                 `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`
+	File          string                 `protobuf:"bytes,6,opt,name=file,proto3" json:"file,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MessageFilterPageRequest) Reset() {
+	*x = MessageFilterPageRequest{}
+	mi := &file_message_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MessageFilterPageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MessageFilterPageRequest) ProtoMessage() {}
+
+func (x *MessageFilterPageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_message_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MessageFilterPageRequest.ProtoReflect.Descriptor instead.
+func (*MessageFilterPageRequest) Descriptor() ([]byte, []int) {
+	return file_message_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *MessageFilterPageRequest) GetPageRequest() *PageRequest {
+	if x != nil {
+		return x.PageRequest
+	}
+	return nil
+}
+
+func (x *MessageFilterPageRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *MessageFilterPageRequest) GetMessageType() int32 {
+	if x != nil {
+		return x.MessageType
+	}
+	return 0
+}
+
+func (x *MessageFilterPageRequest) GetSubject() string {
+	if x != nil {
+		return x.Subject
+	}
+	return ""
+}
+
+func (x *MessageFilterPageRequest) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *MessageFilterPageRequest) GetFile() string {
+	if x != nil {
+		return x.File
+	}
+	return ""
+}
+
 type MessageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        int32                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
 	MessageType   int32                  `protobuf:"varint,3,opt,name=messageType,proto3" json:"messageType,omitempty"`
 	Subject       string                 `protobuf:"bytes,4,opt,name=subject,proto3" json:"subject,omitempty"`
@@ -35,7 +120,7 @@ type MessageRequest struct {
 
 func (x *MessageRequest) Reset() {
 	*x = MessageRequest{}
-	mi := &file_message_proto_msgTypes[0]
+	mi := &file_message_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +132,7 @@ func (x *MessageRequest) String() string {
 func (*MessageRequest) ProtoMessage() {}
 
 func (x *MessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_message_proto_msgTypes[0]
+	mi := &file_message_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,10 +145,10 @@ func (x *MessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MessageRequest.ProtoReflect.Descriptor instead.
 func (*MessageRequest) Descriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{0}
+	return file_message_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *MessageRequest) GetId() int32 {
+func (x *MessageRequest) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -105,29 +190,29 @@ func (x *MessageRequest) GetFile() string {
 	return ""
 }
 
-type MessageListResponse struct {
+type MessagePageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Total         int32                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
-	Data          []*MessageResponse     `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
+	Page          *PageResponse          `protobuf:"bytes,1,opt,name=page,proto3" json:"page,omitempty"`
+	List          []*MessageResponse     `protobuf:"bytes,2,rep,name=list,proto3" json:"list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *MessageListResponse) Reset() {
-	*x = MessageListResponse{}
-	mi := &file_message_proto_msgTypes[1]
+func (x *MessagePageResponse) Reset() {
+	*x = MessagePageResponse{}
+	mi := &file_message_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *MessageListResponse) String() string {
+func (x *MessagePageResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MessageListResponse) ProtoMessage() {}
+func (*MessagePageResponse) ProtoMessage() {}
 
-func (x *MessageListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_message_proto_msgTypes[1]
+func (x *MessagePageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_message_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -138,28 +223,28 @@ func (x *MessageListResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MessageListResponse.ProtoReflect.Descriptor instead.
-func (*MessageListResponse) Descriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{1}
+// Deprecated: Use MessagePageResponse.ProtoReflect.Descriptor instead.
+func (*MessagePageResponse) Descriptor() ([]byte, []int) {
+	return file_message_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *MessageListResponse) GetTotal() int32 {
+func (x *MessagePageResponse) GetPage() *PageResponse {
 	if x != nil {
-		return x.Total
+		return x.Page
 	}
-	return 0
+	return nil
 }
 
-func (x *MessageListResponse) GetData() []*MessageResponse {
+func (x *MessagePageResponse) GetList() []*MessageResponse {
 	if x != nil {
-		return x.Data
+		return x.List
 	}
 	return nil
 }
 
 type MessageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        int32                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
 	MessageType   int32                  `protobuf:"varint,3,opt,name=messageType,proto3" json:"messageType,omitempty"`
 	Subject       string                 `protobuf:"bytes,4,opt,name=subject,proto3" json:"subject,omitempty"`
@@ -171,7 +256,7 @@ type MessageResponse struct {
 
 func (x *MessageResponse) Reset() {
 	*x = MessageResponse{}
-	mi := &file_message_proto_msgTypes[2]
+	mi := &file_message_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -183,7 +268,7 @@ func (x *MessageResponse) String() string {
 func (*MessageResponse) ProtoMessage() {}
 
 func (x *MessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_message_proto_msgTypes[2]
+	mi := &file_message_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -196,10 +281,10 @@ func (x *MessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MessageResponse.ProtoReflect.Descriptor instead.
 func (*MessageResponse) Descriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{2}
+	return file_message_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *MessageResponse) GetId() int32 {
+func (x *MessageResponse) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -245,27 +330,35 @@ var File_message_proto protoreflect.FileDescriptor
 
 const file_message_proto_rawDesc = "" +
 	"\n" +
-	"\rmessage.proto\"\xa2\x01\n" +
+	"\rmessage.proto\x1a\fcommon.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xd3\x01\n" +
+	"\x18MessageFilterPageRequest\x125\n" +
+	"\vpageRequest\x18\x01 \x01(\v2\x13.common.PageRequestR\vpageRequest\x12\x16\n" +
+	"\x06userId\x18\x02 \x01(\x05R\x06userId\x12 \n" +
+	"\vmessageType\x18\x03 \x01(\x05R\vmessageType\x12\x18\n" +
+	"\asubject\x18\x04 \x01(\tR\asubject\x12\x18\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage\x12\x12\n" +
+	"\x04file\x18\x06 \x01(\tR\x04file\"\xa2\x01\n" +
 	"\x0eMessageRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x16\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x16\n" +
 	"\x06userId\x18\x02 \x01(\x05R\x06userId\x12 \n" +
 	"\vmessageType\x18\x03 \x01(\x05R\vmessageType\x12\x18\n" +
 	"\asubject\x18\x04 \x01(\tR\asubject\x12\x18\n" +
 	"\amessage\x18\x05 \x01(\tR\amessage\x12\x12\n" +
-	"\x04file\x18\x06 \x01(\tR\x04file\"Q\n" +
-	"\x13MessageListResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x05R\x05total\x12$\n" +
-	"\x04data\x18\x02 \x03(\v2\x10.MessageResponseR\x04data\"\xa3\x01\n" +
+	"\x04file\x18\x06 \x01(\tR\x04file\"e\n" +
+	"\x13MessagePageResponse\x12(\n" +
+	"\x04page\x18\x01 \x01(\v2\x14.common.PageResponseR\x04page\x12$\n" +
+	"\x04list\x18\x02 \x03(\v2\x10.MessageResponseR\x04list\"\xa3\x01\n" +
 	"\x0fMessageResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x16\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x16\n" +
 	"\x06userId\x18\x02 \x01(\x05R\x06userId\x12 \n" +
 	"\vmessageType\x18\x03 \x01(\x05R\vmessageType\x12\x18\n" +
 	"\asubject\x18\x04 \x01(\tR\asubject\x12\x18\n" +
 	"\amessage\x18\x05 \x01(\tR\amessage\x12\x12\n" +
-	"\x04file\x18\x06 \x01(\tR\x04file2s\n" +
-	"\aMessage\x124\n" +
-	"\vMessageList\x12\x0f.MessageRequest\x1a\x14.MessageListResponse\x122\n" +
-	"\rCreateMessage\x12\x0f.MessageRequest\x1a\x10.MessageResponseB\tZ\a.;protob\x06proto3"
+	"\x04file\x18\x06 \x01(\tR\x04file2\xc6\x01\n" +
+	"\aMessage\x12E\n" +
+	"\x12GetMessagePageList\x12\x19.MessageFilterPageRequest\x1a\x14.MessagePageResponse\x122\n" +
+	"\rCreateMessage\x12\x0f.MessageRequest\x1a\x10.MessageResponse\x12@\n" +
+	"\x12DeleteMessageByIds\x12\x12.common.IdsRequest\x1a\x16.google.protobuf.EmptyB\tZ\a.;protob\x06proto3"
 
 var (
 	file_message_proto_rawDescOnce sync.Once
@@ -279,23 +372,32 @@ func file_message_proto_rawDescGZIP() []byte {
 	return file_message_proto_rawDescData
 }
 
-var file_message_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_message_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_message_proto_goTypes = []any{
-	(*MessageRequest)(nil),      // 0: MessageRequest
-	(*MessageListResponse)(nil), // 1: MessageListResponse
-	(*MessageResponse)(nil),     // 2: MessageResponse
+	(*MessageFilterPageRequest)(nil), // 0: MessageFilterPageRequest
+	(*MessageRequest)(nil),           // 1: MessageRequest
+	(*MessagePageResponse)(nil),      // 2: MessagePageResponse
+	(*MessageResponse)(nil),          // 3: MessageResponse
+	(*PageRequest)(nil),              // 4: common.PageRequest
+	(*PageResponse)(nil),             // 5: common.PageResponse
+	(*IdsRequest)(nil),               // 6: common.IdsRequest
+	(*emptypb.Empty)(nil),            // 7: google.protobuf.Empty
 }
 var file_message_proto_depIdxs = []int32{
-	2, // 0: MessageListResponse.data:type_name -> MessageResponse
-	0, // 1: Message.MessageList:input_type -> MessageRequest
-	0, // 2: Message.CreateMessage:input_type -> MessageRequest
-	1, // 3: Message.MessageList:output_type -> MessageListResponse
-	2, // 4: Message.CreateMessage:output_type -> MessageResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: MessageFilterPageRequest.pageRequest:type_name -> common.PageRequest
+	5, // 1: MessagePageResponse.page:type_name -> common.PageResponse
+	3, // 2: MessagePageResponse.list:type_name -> MessageResponse
+	0, // 3: Message.GetMessagePageList:input_type -> MessageFilterPageRequest
+	1, // 4: Message.CreateMessage:input_type -> MessageRequest
+	6, // 5: Message.DeleteMessageByIds:input_type -> common.IdsRequest
+	2, // 6: Message.GetMessagePageList:output_type -> MessagePageResponse
+	3, // 7: Message.CreateMessage:output_type -> MessageResponse
+	7, // 8: Message.DeleteMessageByIds:output_type -> google.protobuf.Empty
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_message_proto_init() }
@@ -303,13 +405,14 @@ func file_message_proto_init() {
 	if File_message_proto != nil {
 		return
 	}
+	file_common_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_message_proto_rawDesc), len(file_message_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

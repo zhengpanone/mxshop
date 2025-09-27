@@ -11,7 +11,7 @@ sys.path.insert(0, BASE_DIR)
 
 import grpc
 from concurrent import futures
-from goods_srv.proto import goods_pb2_grpc
+from common.proto.pb import goods_pb2_grpc
 from goods_srv.handler.goods import GoodsServicer
 from common.register import consul
 from common.grpc_health.v1 import health_pb2_grpc, health

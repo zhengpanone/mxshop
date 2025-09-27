@@ -1,4 +1,4 @@
-from userop_srv.proto import message_pb2_grpc, message_pb2
+from common.proto.pb import message_pb2_grpc, message_pb2
 from userop_srv.model.models import LeavingMessages
 
 from loguru import logger

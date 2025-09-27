@@ -20,8 +20,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserFav_GetFavList_FullMethodName       = "/UserFav/GetFavList"
-	UserFav_AddUserFav_FullMethodName       = "/UserFav/AddUserFav"
+	UserFav_GetFavPageList_FullMethodName   = "/UserFav/GetFavPageList"
+	UserFav_CreateUserFav_FullMethodName    = "/UserFav/CreateUserFav"
 	UserFav_DeleteUserFav_FullMethodName    = "/UserFav/DeleteUserFav"
 	UserFav_GetUserFavDetail_FullMethodName = "/UserFav/GetUserFavDetail"
 )
@@ -30,10 +30,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserFavClient interface {
-	GetFavList(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*UserFavListResponse, error)
-	AddUserFav(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteUserFav(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetUserFavDetail(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetFavPageList(ctx context.Context, in *UserFavFilterPageRequest, opts ...grpc.CallOption) (*UserFavListResponse, error)
+	CreateUserFav(ctx context.Context, in *CreateUserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteUserFav(ctx context.Context, in *DeleteUserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetUserFavDetail(ctx context.Context, in *DetailUserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userFavClient struct {
@@ -44,27 +44,27 @@ func NewUserFavClient(cc grpc.ClientConnInterface) UserFavClient {
 	return &userFavClient{cc}
 }
 
-func (c *userFavClient) GetFavList(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*UserFavListResponse, error) {
+func (c *userFavClient) GetFavPageList(ctx context.Context, in *UserFavFilterPageRequest, opts ...grpc.CallOption) (*UserFavListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UserFavListResponse)
-	err := c.cc.Invoke(ctx, UserFav_GetFavList_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserFav_GetFavPageList_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userFavClient) AddUserFav(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userFavClient) CreateUserFav(ctx context.Context, in *CreateUserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, UserFav_AddUserFav_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserFav_CreateUserFav_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userFavClient) DeleteUserFav(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userFavClient) DeleteUserFav(ctx context.Context, in *DeleteUserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserFav_DeleteUserFav_FullMethodName, in, out, cOpts...)
@@ -74,7 +74,7 @@ func (c *userFavClient) DeleteUserFav(ctx context.Context, in *UserFavRequest, o
 	return out, nil
 }
 
-func (c *userFavClient) GetUserFavDetail(ctx context.Context, in *UserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userFavClient) GetUserFavDetail(ctx context.Context, in *DetailUserFavRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserFav_GetUserFavDetail_FullMethodName, in, out, cOpts...)
@@ -88,10 +88,10 @@ func (c *userFavClient) GetUserFavDetail(ctx context.Context, in *UserFavRequest
 // All implementations must embed UnimplementedUserFavServer
 // for forward compatibility.
 type UserFavServer interface {
-	GetFavList(context.Context, *UserFavRequest) (*UserFavListResponse, error)
-	AddUserFav(context.Context, *UserFavRequest) (*emptypb.Empty, error)
-	DeleteUserFav(context.Context, *UserFavRequest) (*emptypb.Empty, error)
-	GetUserFavDetail(context.Context, *UserFavRequest) (*emptypb.Empty, error)
+	GetFavPageList(context.Context, *UserFavFilterPageRequest) (*UserFavListResponse, error)
+	CreateUserFav(context.Context, *CreateUserFavRequest) (*emptypb.Empty, error)
+	DeleteUserFav(context.Context, *DeleteUserFavRequest) (*emptypb.Empty, error)
+	GetUserFavDetail(context.Context, *DetailUserFavRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserFavServer()
 }
 
@@ -102,16 +102,16 @@ type UserFavServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserFavServer struct{}
 
-func (UnimplementedUserFavServer) GetFavList(context.Context, *UserFavRequest) (*UserFavListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFavList not implemented")
+func (UnimplementedUserFavServer) GetFavPageList(context.Context, *UserFavFilterPageRequest) (*UserFavListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFavPageList not implemented")
 }
-func (UnimplementedUserFavServer) AddUserFav(context.Context, *UserFavRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddUserFav not implemented")
+func (UnimplementedUserFavServer) CreateUserFav(context.Context, *CreateUserFavRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUserFav not implemented")
 }
-func (UnimplementedUserFavServer) DeleteUserFav(context.Context, *UserFavRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserFavServer) DeleteUserFav(context.Context, *DeleteUserFavRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserFav not implemented")
 }
-func (UnimplementedUserFavServer) GetUserFavDetail(context.Context, *UserFavRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserFavServer) GetUserFavDetail(context.Context, *DetailUserFavRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserFavDetail not implemented")
 }
 func (UnimplementedUserFavServer) mustEmbedUnimplementedUserFavServer() {}
@@ -135,44 +135,44 @@ func RegisterUserFavServer(s grpc.ServiceRegistrar, srv UserFavServer) {
 	s.RegisterService(&UserFav_ServiceDesc, srv)
 }
 
-func _UserFav_GetFavList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserFavRequest)
+func _UserFav_GetFavPageList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserFavFilterPageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserFavServer).GetFavList(ctx, in)
+		return srv.(UserFavServer).GetFavPageList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserFav_GetFavList_FullMethodName,
+		FullMethod: UserFav_GetFavPageList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserFavServer).GetFavList(ctx, req.(*UserFavRequest))
+		return srv.(UserFavServer).GetFavPageList(ctx, req.(*UserFavFilterPageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserFav_AddUserFav_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserFavRequest)
+func _UserFav_CreateUserFav_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserFavRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserFavServer).AddUserFav(ctx, in)
+		return srv.(UserFavServer).CreateUserFav(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserFav_AddUserFav_FullMethodName,
+		FullMethod: UserFav_CreateUserFav_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserFavServer).AddUserFav(ctx, req.(*UserFavRequest))
+		return srv.(UserFavServer).CreateUserFav(ctx, req.(*CreateUserFavRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserFav_DeleteUserFav_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserFavRequest)
+	in := new(DeleteUserFavRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -184,13 +184,13 @@ func _UserFav_DeleteUserFav_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: UserFav_DeleteUserFav_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserFavServer).DeleteUserFav(ctx, req.(*UserFavRequest))
+		return srv.(UserFavServer).DeleteUserFav(ctx, req.(*DeleteUserFavRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserFav_GetUserFavDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserFavRequest)
+	in := new(DetailUserFavRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -202,7 +202,7 @@ func _UserFav_GetUserFavDetail_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: UserFav_GetUserFavDetail_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserFavServer).GetUserFavDetail(ctx, req.(*UserFavRequest))
+		return srv.(UserFavServer).GetUserFavDetail(ctx, req.(*DetailUserFavRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -215,12 +215,12 @@ var UserFav_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserFavServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetFavList",
-			Handler:    _UserFav_GetFavList_Handler,
+			MethodName: "GetFavPageList",
+			Handler:    _UserFav_GetFavPageList_Handler,
 		},
 		{
-			MethodName: "AddUserFav",
-			Handler:    _UserFav_AddUserFav_Handler,
+			MethodName: "CreateUserFav",
+			Handler:    _UserFav_CreateUserFav_Handler,
 		},
 		{
 			MethodName: "DeleteUserFav",

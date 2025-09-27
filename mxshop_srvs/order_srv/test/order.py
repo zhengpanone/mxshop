@@ -1,6 +1,6 @@
 import grpc
 import consul
-from order_srv.proto import order_pb2, order_pb2_grpc
+from common.proto.pb import order_pb2, order_pb2_grpc
 from order_srv.settings import settings
 from loguru import logger
 
