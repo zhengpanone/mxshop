@@ -131,18 +131,20 @@ global___DictTypeFilterPageRequest = DictTypeFilterPageRequest
 class DictTypeListResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    TOTAL_FIELD_NUMBER: builtins.int
-    DATA_FIELD_NUMBER: builtins.int
-    total: builtins.int
+    PAGE_FIELD_NUMBER: builtins.int
+    LIST_FIELD_NUMBER: builtins.int
     @property
-    def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___DictTypeResponse]: ...
+    def page(self) -> common_pb2.PageResponse: ...
+    @property
+    def list(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___DictTypeResponse]: ...
     def __init__(
         self,
         *,
-        total: builtins.int = ...,
-        data: collections.abc.Iterable[global___DictTypeResponse] | None = ...,
+        page: common_pb2.PageResponse | None = ...,
+        list: collections.abc.Iterable[global___DictTypeResponse] | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["data", b"data", "total", b"total"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["page", b"page"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["list", b"list", "page", b"page"]) -> None: ...
 
 global___DictTypeListResponse = DictTypeListResponse
 
@@ -247,17 +249,19 @@ global___DictItemFilterPageRequest = DictItemFilterPageRequest
 class DictItemPageListResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    TOTAL_FIELD_NUMBER: builtins.int
+    PAGE_FIELD_NUMBER: builtins.int
     DATA_FIELD_NUMBER: builtins.int
-    total: builtins.int
+    @property
+    def page(self) -> common_pb2.PageResponse: ...
     @property
     def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___DictItemResponse]: ...
     def __init__(
         self,
         *,
-        total: builtins.int = ...,
+        page: common_pb2.PageResponse | None = ...,
         data: collections.abc.Iterable[global___DictItemResponse] | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["data", b"data", "total", b"total"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["page", b"page"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["data", b"data", "page", b"page"]) -> None: ...
 
 global___DictItemPageListResponse = DictItemPageListResponse

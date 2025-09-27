@@ -3,8 +3,9 @@
 import grpc
 import warnings
 
+from common.proto.pb import common_pb2 as common__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from common.proto.pb import role_pb2 as role__pb2
+from common.proto.pb import message_pb2 as message__pb2
 
 GRPC_GENERATED_VERSION = '1.74.0'
 GRPC_VERSION = grpc.__version__
@@ -19,14 +20,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in role_pb2_grpc.py depends on'
+        + f' but the generated code in message_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class RoleStub(object):
+class MessageStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -35,78 +36,77 @@ class RoleStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CreateRole = channel.unary_unary(
-                '/Role/CreateRole',
-                request_serializer=role__pb2.CreateRoleRequest.SerializeToString,
-                response_deserializer=role__pb2.RoleInfoResponse.FromString,
+        self.GetMessagePageList = channel.unary_unary(
+                '/Message/GetMessagePageList',
+                request_serializer=message__pb2.MessageFilterPageRequest.SerializeToString,
+                response_deserializer=message__pb2.MessagePageResponse.FromString,
                 _registered_method=True)
-        self.UpdateRole = channel.unary_unary(
-                '/Role/UpdateRole',
-                request_serializer=role__pb2.UpdateRoleRequest.SerializeToString,
+        self.CreateMessage = channel.unary_unary(
+                '/Message/CreateMessage',
+                request_serializer=message__pb2.MessageRequest.SerializeToString,
+                response_deserializer=message__pb2.MessageResponse.FromString,
+                _registered_method=True)
+        self.DeleteMessageByIds = channel.unary_unary(
+                '/Message/DeleteMessageByIds',
+                request_serializer=common__pb2.IdsRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
-        self.GetRolePageList = channel.unary_unary(
-                '/Role/GetRolePageList',
-                request_serializer=role__pb2.RoleFilterPageRequest.SerializeToString,
-                response_deserializer=role__pb2.RoleListResponse.FromString,
-                _registered_method=True)
 
 
-class RoleServicer(object):
+class MessageServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CreateRole(self, request, context):
-        """创建角色
+    def GetMessagePageList(self, request, context):
+        """批量获取留言信息
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateRole(self, request, context):
-        """更新用户信息
+    def CreateMessage(self, request, context):
+        """添加留言
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetRolePageList(self, request, context):
-        """角色列表
-        """
+    def DeleteMessageByIds(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_RoleServicer_to_server(servicer, server):
+def add_MessageServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CreateRole': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateRole,
-                    request_deserializer=role__pb2.CreateRoleRequest.FromString,
-                    response_serializer=role__pb2.RoleInfoResponse.SerializeToString,
+            'GetMessagePageList': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetMessagePageList,
+                    request_deserializer=message__pb2.MessageFilterPageRequest.FromString,
+                    response_serializer=message__pb2.MessagePageResponse.SerializeToString,
             ),
-            'UpdateRole': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateRole,
-                    request_deserializer=role__pb2.UpdateRoleRequest.FromString,
+            'CreateMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateMessage,
+                    request_deserializer=message__pb2.MessageRequest.FromString,
+                    response_serializer=message__pb2.MessageResponse.SerializeToString,
+            ),
+            'DeleteMessageByIds': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteMessageByIds,
+                    request_deserializer=common__pb2.IdsRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            ),
-            'GetRolePageList': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetRolePageList,
-                    request_deserializer=role__pb2.RoleFilterPageRequest.FromString,
-                    response_serializer=role__pb2.RoleListResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'Role', rpc_method_handlers)
+            'Message', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('Role', rpc_method_handlers)
+    server.add_registered_method_handlers('Message', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class Role(object):
+class Message(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CreateRole(request,
+    def GetMessagePageList(request,
             target,
             options=(),
             channel_credentials=None,
@@ -119,9 +119,9 @@ class Role(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Role/CreateRole',
-            role__pb2.CreateRoleRequest.SerializeToString,
-            role__pb2.RoleInfoResponse.FromString,
+            '/Message/GetMessagePageList',
+            message__pb2.MessageFilterPageRequest.SerializeToString,
+            message__pb2.MessagePageResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -133,7 +133,7 @@ class Role(object):
             _registered_method=True)
 
     @staticmethod
-    def UpdateRole(request,
+    def CreateMessage(request,
             target,
             options=(),
             channel_credentials=None,
@@ -146,36 +146,36 @@ class Role(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Role/UpdateRole',
-            role__pb2.UpdateRoleRequest.SerializeToString,
+            '/Message/CreateMessage',
+            message__pb2.MessageRequest.SerializeToString,
+            message__pb2.MessageResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteMessageByIds(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Message/DeleteMessageByIds',
+            common__pb2.IdsRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetRolePageList(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/Role/GetRolePageList',
-            role__pb2.RoleFilterPageRequest.SerializeToString,
-            role__pb2.RoleListResponse.FromString,
             options,
             channel_credentials,
             insecure,

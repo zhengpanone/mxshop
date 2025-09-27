@@ -26,7 +26,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from common.proto.pb import common_pb2 as common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nrole.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0c\x63ommon.proto\">\n\x0e\x43reateRoleInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06remark\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\x08\"L\n\x10RoleInfoResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"J\n\x0eUpdateRoleInfo\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"l\n\x12RoleFilterPageInfo\x12(\n\x0bpageRequest\x18\x01 \x01(\x0b\x32\x13.common.PageRequest\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"B\n\x10RoleListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12\x1f\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x11.RoleInfoResponse2\xa6\x01\n\x04Role\x12\x30\n\nCreateRole\x12\x0f.CreateRoleInfo\x1a\x11.RoleInfoResponse\x12\x35\n\nUpdateRole\x12\x0f.UpdateRoleInfo\x1a\x16.google.protobuf.Empty\x12\x35\n\x0bGetRoleList\x12\x13.RoleFilterPageInfo\x1a\x11.RoleListResponseB\tZ\x07.;protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nrole.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0c\x63ommon.proto\"A\n\x11\x43reateRoleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06remark\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\x08\"L\n\x10RoleInfoResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"M\n\x11UpdateRoleRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"o\n\x15RoleFilterPageRequest\x12(\n\x0bpageRequest\x18\x01 \x01(\x0b\x32\x13.common.PageRequest\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"B\n\x10RoleListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12\x1f\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x11.RoleInfoResponse2\xb3\x01\n\x04Role\x12\x33\n\nCreateRole\x12\x12.CreateRoleRequest\x1a\x11.RoleInfoResponse\x12\x38\n\nUpdateRole\x12\x12.UpdateRoleRequest\x1a\x16.google.protobuf.Empty\x12<\n\x0fGetRolePageList\x12\x16.RoleFilterPageRequest\x1a\x11.RoleListResponseB\tZ\x07.;protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,16 +34,16 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'role_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z\007.;proto'
-  _globals['_CREATEROLEINFO']._serialized_start=57
-  _globals['_CREATEROLEINFO']._serialized_end=119
-  _globals['_ROLEINFORESPONSE']._serialized_start=121
-  _globals['_ROLEINFORESPONSE']._serialized_end=197
-  _globals['_UPDATEROLEINFO']._serialized_start=199
-  _globals['_UPDATEROLEINFO']._serialized_end=273
-  _globals['_ROLEFILTERPAGEINFO']._serialized_start=275
-  _globals['_ROLEFILTERPAGEINFO']._serialized_end=383
-  _globals['_ROLELISTRESPONSE']._serialized_start=385
-  _globals['_ROLELISTRESPONSE']._serialized_end=451
-  _globals['_ROLE']._serialized_start=454
-  _globals['_ROLE']._serialized_end=620
+  _globals['_CREATEROLEREQUEST']._serialized_start=57
+  _globals['_CREATEROLEREQUEST']._serialized_end=122
+  _globals['_ROLEINFORESPONSE']._serialized_start=124
+  _globals['_ROLEINFORESPONSE']._serialized_end=200
+  _globals['_UPDATEROLEREQUEST']._serialized_start=202
+  _globals['_UPDATEROLEREQUEST']._serialized_end=279
+  _globals['_ROLEFILTERPAGEREQUEST']._serialized_start=281
+  _globals['_ROLEFILTERPAGEREQUEST']._serialized_end=392
+  _globals['_ROLELISTRESPONSE']._serialized_start=394
+  _globals['_ROLELISTRESPONSE']._serialized_end=460
+  _globals['_ROLE']._serialized_start=463
+  _globals['_ROLE']._serialized_end=642
 # @@protoc_insertion_point(module_scope)

@@ -26,7 +26,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from common.proto.pb import common_pb2 as common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ndict.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0c\x63ommon.proto\"o\n\x15\x43reateDictTypeRequest\x12\x12\n\nsystemFlag\x18\x01 \x01(\x08\x12\x10\n\x08\x64ictCode\x18\x02 \x01(\t\x12\x10\n\x08\x64ictName\x18\x03 \x01(\t\x12\x0e\n\x06remark\x18\x04 \x01(\t\x12\x0e\n\x06status\x18\x05 \x01(\x08\"\xac\x01\n\x10\x44ictTypeResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x12\n\nsystemFlag\x18\x02 \x01(\x08\x12\x10\n\x08\x64ictCode\x18\x03 \x01(\t\x12\x10\n\x08\x64ictName\x18\x04 \x01(\t\x12\x0e\n\x06remark\x18\x05 \x01(\t\x12\x0e\n\x06status\x18\x06 \x01(\x08\x12\x34\n\x11timestampResponse\x18\x07 \x01(\x0b\x32\x19.common.TimestampResponse\"Q\n\x15UpdateDictTypeRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"s\n\x19\x44ictTypeFilterPageRequest\x12(\n\x0bpageRequest\x18\x01 \x01(\x0b\x32\x13.common.PageRequest\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"F\n\x14\x44ictTypeListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12\x1f\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x11.DictTypeResponse\"E\n\x15\x43reateDictItemRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06remark\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\x08\"L\n\x10\x44ictItemResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"Q\n\x15UpdateDictItemRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"s\n\x19\x44ictItemFilterPageRequest\x12(\n\x0bpageRequest\x18\x01 \x01(\x0b\x32\x13.common.PageRequest\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"J\n\x18\x44ictItemPageListResponse\x12\r\n\x05total\x18\x01 \x01(\x05\x12\x1f\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x11.DictItemResponse2\xa2\x04\n\x04\x44ict\x12;\n\x0e\x43reateDictType\x12\x16.CreateDictTypeRequest\x1a\x11.DictTypeResponse\x12@\n\x0eUpdateDictType\x12\x16.UpdateDictTypeRequest\x1a\x16.google.protobuf.Empty\x12H\n\x13GetDictTypePageList\x12\x1a.DictTypeFilterPageRequest\x1a\x15.DictTypeListResponse\x12\x41\n\x13\x44\x65leteDictTypeByIds\x12\x12.common.IdsRequest\x1a\x16.google.protobuf.Empty\x12;\n\x0e\x43reateDictItem\x12\x16.CreateDictItemRequest\x1a\x11.DictItemResponse\x12@\n\x0eUpdateDictItem\x12\x16.UpdateDictItemRequest\x1a\x16.google.protobuf.Empty\x12L\n\x13GetDictItemPageList\x12\x1a.DictItemFilterPageRequest\x1a\x19.DictItemPageListResponse\x12\x41\n\x13\x44\x65leteDictItemByIds\x12\x12.common.IdsRequest\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ndict.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0c\x63ommon.proto\"o\n\x15\x43reateDictTypeRequest\x12\x12\n\nsystemFlag\x18\x01 \x01(\x08\x12\x10\n\x08\x64ictCode\x18\x02 \x01(\t\x12\x10\n\x08\x64ictName\x18\x03 \x01(\t\x12\x0e\n\x06remark\x18\x04 \x01(\t\x12\x0e\n\x06status\x18\x05 \x01(\x08\"\xac\x01\n\x10\x44ictTypeResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x12\n\nsystemFlag\x18\x02 \x01(\x08\x12\x10\n\x08\x64ictCode\x18\x03 \x01(\t\x12\x10\n\x08\x64ictName\x18\x04 \x01(\t\x12\x0e\n\x06remark\x18\x05 \x01(\t\x12\x0e\n\x06status\x18\x06 \x01(\x08\x12\x34\n\x11timestampResponse\x18\x07 \x01(\x0b\x32\x19.common.TimestampResponse\"Q\n\x15UpdateDictTypeRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"s\n\x19\x44ictTypeFilterPageRequest\x12(\n\x0bpageRequest\x18\x01 \x01(\x0b\x32\x13.common.PageRequest\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"[\n\x14\x44ictTypeListResponse\x12\"\n\x04page\x18\x01 \x01(\x0b\x32\x14.common.PageResponse\x12\x1f\n\x04list\x18\x02 \x03(\x0b\x32\x11.DictTypeResponse\"E\n\x15\x43reateDictItemRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06remark\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\x08\"L\n\x10\x44ictItemResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"Q\n\x15UpdateDictItemRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"s\n\x19\x44ictItemFilterPageRequest\x12(\n\x0bpageRequest\x18\x01 \x01(\x0b\x32\x13.common.PageRequest\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06remark\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\x08\"_\n\x18\x44ictItemPageListResponse\x12\"\n\x04page\x18\x01 \x01(\x0b\x32\x14.common.PageResponse\x12\x1f\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x11.DictItemResponse2\xa2\x04\n\x04\x44ict\x12;\n\x0e\x43reateDictType\x12\x16.CreateDictTypeRequest\x1a\x11.DictTypeResponse\x12@\n\x0eUpdateDictType\x12\x16.UpdateDictTypeRequest\x1a\x16.google.protobuf.Empty\x12H\n\x13GetDictTypePageList\x12\x1a.DictTypeFilterPageRequest\x1a\x15.DictTypeListResponse\x12\x41\n\x13\x44\x65leteDictTypeByIds\x12\x12.common.IdsRequest\x1a\x16.google.protobuf.Empty\x12;\n\x0e\x43reateDictItem\x12\x16.CreateDictItemRequest\x1a\x11.DictItemResponse\x12@\n\x0eUpdateDictItem\x12\x16.UpdateDictItemRequest\x1a\x16.google.protobuf.Empty\x12L\n\x13GetDictItemPageList\x12\x1a.DictItemFilterPageRequest\x1a\x19.DictItemPageListResponse\x12\x41\n\x13\x44\x65leteDictItemByIds\x12\x12.common.IdsRequest\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -43,17 +43,17 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_DICTTYPEFILTERPAGEREQUEST']._serialized_start=428
   _globals['_DICTTYPEFILTERPAGEREQUEST']._serialized_end=543
   _globals['_DICTTYPELISTRESPONSE']._serialized_start=545
-  _globals['_DICTTYPELISTRESPONSE']._serialized_end=615
-  _globals['_CREATEDICTITEMREQUEST']._serialized_start=617
-  _globals['_CREATEDICTITEMREQUEST']._serialized_end=686
-  _globals['_DICTITEMRESPONSE']._serialized_start=688
-  _globals['_DICTITEMRESPONSE']._serialized_end=764
-  _globals['_UPDATEDICTITEMREQUEST']._serialized_start=766
-  _globals['_UPDATEDICTITEMREQUEST']._serialized_end=847
-  _globals['_DICTITEMFILTERPAGEREQUEST']._serialized_start=849
-  _globals['_DICTITEMFILTERPAGEREQUEST']._serialized_end=964
-  _globals['_DICTITEMPAGELISTRESPONSE']._serialized_start=966
-  _globals['_DICTITEMPAGELISTRESPONSE']._serialized_end=1040
-  _globals['_DICT']._serialized_start=1043
-  _globals['_DICT']._serialized_end=1589
+  _globals['_DICTTYPELISTRESPONSE']._serialized_end=636
+  _globals['_CREATEDICTITEMREQUEST']._serialized_start=638
+  _globals['_CREATEDICTITEMREQUEST']._serialized_end=707
+  _globals['_DICTITEMRESPONSE']._serialized_start=709
+  _globals['_DICTITEMRESPONSE']._serialized_end=785
+  _globals['_UPDATEDICTITEMREQUEST']._serialized_start=787
+  _globals['_UPDATEDICTITEMREQUEST']._serialized_end=868
+  _globals['_DICTITEMFILTERPAGEREQUEST']._serialized_start=870
+  _globals['_DICTITEMFILTERPAGEREQUEST']._serialized_end=985
+  _globals['_DICTITEMPAGELISTRESPONSE']._serialized_start=987
+  _globals['_DICTITEMPAGELISTRESPONSE']._serialized_end=1082
+  _globals['_DICT']._serialized_start=1085
+  _globals['_DICT']._serialized_end=1631
 # @@protoc_insertion_point(module_scope)

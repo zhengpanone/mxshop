@@ -14,7 +14,7 @@ import typing
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing.final
-class CreateRoleInfo(google.protobuf.message.Message):
+class CreateRoleRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     NAME_FIELD_NUMBER: builtins.int
@@ -32,7 +32,7 @@ class CreateRoleInfo(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["name", b"name", "remark", b"remark", "status", b"status"]) -> None: ...
 
-global___CreateRoleInfo = CreateRoleInfo
+global___CreateRoleRequest = CreateRoleRequest
 
 @typing.final
 class RoleInfoResponse(google.protobuf.message.Message):
@@ -59,7 +59,7 @@ class RoleInfoResponse(google.protobuf.message.Message):
 global___RoleInfoResponse = RoleInfoResponse
 
 @typing.final
-class UpdateRoleInfo(google.protobuf.message.Message):
+class UpdateRoleRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -80,10 +80,10 @@ class UpdateRoleInfo(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["id", b"id", "name", b"name", "remark", b"remark", "status", b"status"]) -> None: ...
 
-global___UpdateRoleInfo = UpdateRoleInfo
+global___UpdateRoleRequest = UpdateRoleRequest
 
 @typing.final
-class RoleFilterPageInfo(google.protobuf.message.Message):
+class RoleFilterPageRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     PAGEREQUEST_FIELD_NUMBER: builtins.int
@@ -108,7 +108,7 @@ class RoleFilterPageInfo(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["pageRequest", b"pageRequest"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["name", b"name", "pageRequest", b"pageRequest", "remark", b"remark", "status", b"status"]) -> None: ...
 
-global___RoleFilterPageInfo = RoleFilterPageInfo
+global___RoleFilterPageRequest = RoleFilterPageRequest
 
 @typing.final
 class RoleListResponse(google.protobuf.message.Message):
