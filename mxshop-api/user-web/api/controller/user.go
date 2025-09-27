@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/go-redis/redis/v8"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
 	commonGlobal "github.com/zhengpanone/mxshop/mxshop-api/common/global"
@@ -12,9 +13,9 @@ import (
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
-	"github.com/zhengpanone/mxshop/mxshop-api/user-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
-	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global/response"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/request"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/response"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/utils"
 	"go.uber.org/zap"
 	"net/http"
@@ -86,17 +87,17 @@ func GetUserList(ctx *gin.Context) {
 //	@Tags			用户管理
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		forms.PasswordLoginForm	true	"请求参数"
+//	@Param			request	body		request.PasswordLoginForm	true	"请求参数"
 //	@success		200		{object}	utils.Response{data=interface{}}
 //	@Router			/v1/user/pwd_login [post]
 func PasswordLogin(ctx *gin.Context) {
-	passwordLogin := forms.PasswordLoginForm{}
+	passwordLogin := request.PasswordLoginForm{}
 	if err := ctx.ShouldBind(&passwordLogin); err != nil {
 		HandleValidatorError(ctx, err)
 		return
 	}
 	if global.ServerConfig.EnableCaptcha {
-		if !utils.VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.Captcha) {
+		if !utils.VerifyCaptcha(passwordLogin.CaptchaId, passwordLogin.CaptchaId) {
 			commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
 			return
 		}
@@ -104,7 +105,7 @@ func PasswordLogin(ctx *gin.Context) {
 
 	// 登录的逻辑
 	if rsp, err := global.UserSrvClient.GetUserByMobile(context.Background(), &commonpb.MobileRequest{
-		Mobile: passwordLogin.Mobile,
+		Mobile: passwordLogin.Account,
 	}); err != nil {
 		zap.S().Errorw("用户登录失败失败" + err.Error())
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "用户srv")
@@ -181,32 +182,36 @@ func LogOut(ctx *gin.Context) {
 //	@Tags			用户管理
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		forms.RegisterForm	true	"请求参数"
+//	@Param			request	body		request.RegisterForm	true	"请求参数"
 //	@success		200		{object}	utils.Response{data=interface{}}
 //	@Router			/v1/user/register [post]
 func Register(ctx *gin.Context) {
-	registerForm := forms.RegisterForm{}
+	registerForm := request.RegisterForm{}
 	if err := ctx.ShouldBind(&registerForm); err != nil {
 		HandleValidatorError(ctx, err)
 		return
 	}
 	// 验证码校验
-	code, err := commonGlobal.RedisClient.Get(context.Background(), registerForm.Mobile).Result()
-	if err != nil {
-		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
-		return
-	}
-	if code != registerForm.Code {
-		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
-		return
+	if global.ServerConfig.EnableCaptcha {
+		code, err := global.RedisClient.Get(context.Background(), registerForm.Account).Result()
+		if errors.Is(err, redis.Nil) {
+			commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, registerForm.Account+"验证码已过期")
+			return
+		} else if err != nil {
+			commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "服务器内部错误"+err.Error())
+			return
+		}
+		if code != registerForm.Code {
+			commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusBadRequest, "验证码不正确")
+			return
+		}
 	}
 	user, err := global.UserSrvClient.CreateUser(context.Background(), &commonpb.CreateUserInfo{
-		Mobile:   registerForm.Mobile,
-		Nickname: registerForm.Mobile,
+		Mobile:   registerForm.Account,
 		Password: registerForm.Password,
 	})
 	if err != nil {
-		zap.S().Errorf("[Register]新建用户失败：%s", err.Error())
+		zap.S().Errorf("[Register]注册用户失败：%s", err.Error())
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "用户服务srv")
 		return
 	}
@@ -232,12 +237,13 @@ func Register(ctx *gin.Context) {
 		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusInternalServerError, "生成token失败")
 		return
 	}
-	data := gin.H{
-		"id":         user.Id,
-		"nick_name":  user.Nickname,
-		"token":      token,
-		"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
+	data := response.RegisterResponse{
+		Id:        strconv.Itoa(int(user.Id)),
+		Nickname:  user.Nickname,
+		Token:     token,
+		ExpiredAt: (time.Now().Unix() + 60*60*24*30) * 1000,
 	}
+
 	commonResponse.OkWithData(ctx, data)
 }
 

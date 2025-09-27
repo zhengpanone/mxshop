@@ -22,7 +22,7 @@ type BrandController struct{}
 //	@Accept			json
 //	@Produce		json
 //	@Param			x-token	header		string			true	"认证令牌"
-//	@Param			brand	body		forms.BrandForm	true	"品牌信息"
+//	@Param			brand	body		request.BrandForm	true	"品牌信息"
 //	@Success		201		{object}	utils.Response	"品牌创建成功"
 //	@Failure		400		{object}	utils.Response	"无效的请求参数"
 //	@Failure		500		{object}	utils.Response	"服务器错误"
@@ -86,7 +86,7 @@ func (*BrandController) DeleteBrand(ctx *gin.Context) {
 //	@Produce		json
 //	@Param			x-token	header		string			true	"认证令牌"
 //	@Param			id		path		int				true	"品牌ID"
-//	@Param			brand	body		forms.BrandForm	true	"更新品牌信息"
+//	@Param			brand	body		request.BrandForm	true	"更新品牌信息"
 //	@Success		200		{object}	utils.Response	"品牌更新成功"
 //	@Failure		400		{object}	utils.Response	"无效的请求参数"
 //	@Failure		404		{object}	utils.Response	"品牌未找到"

@@ -666,7 +666,7 @@ paths:
         type: string
       - description: 分类信息
         in: body
-        name: forms.CategoryForm
+        name: request.CategoryForm
         required: true
         schema:
           $ref: '#/definitions/forms.CategoryForm'

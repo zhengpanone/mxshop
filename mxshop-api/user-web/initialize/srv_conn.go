@@ -18,7 +18,6 @@ func InitSrvConn() {
 	// 如果已有连接先关闭
 	if global.UserConn != nil {
 		global.UserConn.Close()
-
 	}
 	consul := global.ServerConfig.Consul
 	url := fmt.Sprintf("consul://%s:%d/%s?wait=14s&tag=srv", consul.Host, consul.Port, global.ServerConfig.UserSrvConfig.Name)
@@ -34,7 +33,9 @@ func InitSrvConn() {
 	global.UserConn = userConn
 	// 注册客户端
 	userSrvClient := commonpb.NewUserClient(userConn)
+	roleSrvClient := commonpb.NewRoleClient(userConn)
 	global.UserSrvClient = userSrvClient
+	global.RoleSrvClient = roleSrvClient
 
 }
 

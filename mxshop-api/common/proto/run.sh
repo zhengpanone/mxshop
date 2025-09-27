@@ -6,3 +6,4 @@ protoc -I . order.proto  --go_out=pb --go_opt=paths=source_relative  --go-grpc_o
 protoc -I . user.proto  --go_out=pb --go_opt=paths=source_relative  --go-grpc_out=pb --go-grpc_opt=paths=source_relative
 protoc -I . message.proto  --go_out=pb --go_opt=paths=source_relative  --go-grpc_out=pb --go-grpc_opt=paths=source_relative
 protoc -I . userfav.proto  --go_out=pb --go_opt=paths=source_relative  --go-grpc_out=pb --go-grpc_opt=paths=source_relative
+protoc -I . common.proto role.proto  --go_out=pb --go_opt=paths=source_relative  --go-grpc_out=pb --go-grpc_opt=paths=source_relative

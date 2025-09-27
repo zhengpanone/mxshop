@@ -1,0 +1,1 @@
+python -m grpc_tools.protoc --python_out=. --grpc_python_out=. -I=common/proto -I=user_srv/proto  ./common/proto/common.proto ./user_srv/proto/role.proto

@@ -113,7 +113,7 @@ func (c *CategoryController) Detail(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@param			x-token				header		string				true	"x-token header"
-//	@param			forms.CategoryForm	body		forms.CategoryForm	true	"分类信息"
+//	@param			request.CategoryForm	body		request.CategoryForm	true	"分类信息"
 //	@Success		201					{object}	utils.Response		"创建成功的响应数据"
 //	@Failure		400					{object}	utils.Response		"无效的请求参数"
 //	@Failure		401					{object}	utils.Response		"未授权"
@@ -158,7 +158,7 @@ func (c *CategoryController) CreateCategory(ctx *gin.Context) {
 //	@Produce		json
 //	@Param			x-token		header		string				true	"认证令牌"
 //	@Param			id			path		int					true	"分类ID"
-//	@Param			category	body		forms.CategoryForm	true	"分类信息"
+//	@Param			category	body		request.CategoryForm	true	"分类信息"
 //	@Success		200			{object}	utils.Response		"分类信息更新成功"
 //	@Failure		400			{object}	utils.Response		"无效的请求参数"
 //	@Failure		401			{object}	utils.Response		"未授权"

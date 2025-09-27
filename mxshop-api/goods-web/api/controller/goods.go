@@ -60,7 +60,7 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 		request.IsTab = true
 	}
 
-	categoryId := ctx.DefaultQuery("c", "0")
+	categoryId := ctx.DefaultQuery("categoryId", "0")
 	categoryIdInt, _ := strconv.Atoi(categoryId)
 	request.TopCategory = int32(categoryIdInt)
 
@@ -72,10 +72,10 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 	sizeInt, _ := strconv.Atoi(size)
 	request.Size = uint32(sizeInt)
 
-	keywords := ctx.DefaultQuery("kw", "")
+	keywords := ctx.DefaultQuery("productName", "")
 	request.KeyWords = keywords
 
-	brand := ctx.DefaultQuery("brand", "")
+	brand := ctx.DefaultQuery("brandId", "")
 	brandInt, _ := strconv.Atoi(brand)
 	request.Brand = int32(brandInt)
 
@@ -132,7 +132,7 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			x-token	header		string			true	"认证令牌"
-//	@Param			goods	body		forms.GoodsForm	true	"商品信息"
+//	@Param			goods	body		request.GoodsForm	true	"商品信息"
 //	@Success		201		{object}	utils.Response	"商品创建成功"
 //	@Failure		400		{object}	utils.Response	"无效的请求参数"
 //	@Failure		500		{object}	utils.Response	"服务器错误"
@@ -176,7 +176,7 @@ func (*GoodsController) NewGoods(ctx *gin.Context) {
 //	@Produce		json
 //	@Param			x-token	header		string					true	"认证令牌"
 //	@Param			id		path		int						true	"商品ID"
-//	@Param			status	body		forms.GoodsStatusForm	true	"商品状态信息"
+//	@Param			status	body		request.GoodsStatusForm	true	"商品状态信息"
 //	@Success		200		{object}	utils.Response			"商品状态更新成功"
 //	@Failure		400		{object}	utils.Response			"无效的请求参数"
 //	@Failure		500		{object}	utils.Response			"服务器错误"

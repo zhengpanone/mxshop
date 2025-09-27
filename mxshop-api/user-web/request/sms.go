@@ -1,4 +1,4 @@
-package forms
+package request
 
 type SendSmsForm struct {
 	Mobile string `form:"mobile" json:"mobile" binding:"required,mobile"` // 手机号码 自定义validator

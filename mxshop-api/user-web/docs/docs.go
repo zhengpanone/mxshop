@@ -90,7 +90,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.PasswordLoginForm"
+                            "$ref": "#/definitions/request.PasswordLoginForm"
                         }
                     }
                 ],
@@ -134,7 +134,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.RegisterForm"
+                            "$ref": "#/definitions/request.RegisterForm"
                         }
                     }
                 ],
@@ -160,7 +160,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "forms.PasswordLoginForm": {
+        "request.PasswordLoginForm": {
             "type": "object",
             "required": [
                 "mobile",
@@ -185,7 +185,7 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.RegisterForm": {
+        "request.RegisterForm": {
             "type": "object",
             "required": [
                 "code",

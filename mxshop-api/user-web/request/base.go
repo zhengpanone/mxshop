@@ -1,4 +1,4 @@
-package forms
+package request
 
 type CaptchaForm struct {
 	Height int `form:"height" json:"height" ` // 高度

@@ -14,6 +14,7 @@ var (
 	ServerConfig  = &config.ServerConfig{}
 	Logger        *zap.Logger
 	UserSrvClient commonpb.UserClient
+	RoleSrvClient commonpb.RoleClient
 	UserConn      *grpc.ClientConn
 	RedisClient   *redis.Client
 )

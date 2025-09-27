@@ -20,3 +20,11 @@ type UserResponse struct {
 	Gender   string   `json:"gender"`
 	Mobile   string   `json:"mobile"`
 }
+
+type RegisterResponse struct {
+	Id        string `form:"id" json:"id"`
+	Account   string `form:"account" json:"account" ` // 手机号码
+	Nickname  string `form:"nickname" json:"nickname" `
+	Token     string `form:"token" json:"token" `
+	ExpiredAt int64  `form:"expiredAt" json:"expiredAt" `
+}

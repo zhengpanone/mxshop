@@ -41,7 +41,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         rsp = goods_pb2.GoodsListResponse()
         goods = Goods.select()
         if request.keyWords:
-            goods = goods.filter(Goods.name.constraints(request.key_words))
+            goods = goods.filter(Goods.name.contains(request.keyWords))
         if request.isHot:
             goods = goods.filter(Goods.is_hot == True)
         if request.isNew:
@@ -49,9 +49,9 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
         if request.isTab:
             goods = goods.filter(Goods.is_hot == True)
         if request.priceMin:
-            goods = goods.filter(Goods.shop_price >= request.price_min)
+            goods = goods.filter(Goods.shop_price >= request.priceMin)
         if request.priceMax:
-            goods = goods.filter(Goods.shop_price <= request.price_max)
+            goods = goods.filter(Goods.shop_price <= request.priceMax)
         if request.brand:
             goods = goods.filter(Goods.brand_id == request.brand)
 

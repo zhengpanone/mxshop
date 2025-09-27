@@ -11,8 +11,9 @@ sys.path.insert(0, BASE_DIR)
 
 import grpc
 from concurrent import futures
-from user_srv.proto import user_pb2_grpc
+from user_srv.proto import user_pb2_grpc,role_pb2_grpc
 from user_srv.handler.user import UserServicer
+from user_srv.handler.role import RoleServicer
 from common.register import consul
 from common.grpc_health.v1 import health_pb2_grpc, health
 from user_srv.settings import settings
@@ -60,6 +61,7 @@ def server():
 
     # 注册用户服务
     user_pb2_grpc.add_UserServicer_to_server(UserServicer(), server)
+    role_pb2_grpc.add_RoleServicer_to_server(RoleServicer(), server)
 
     # 注册健康检查
     health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)

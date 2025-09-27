@@ -55,7 +55,7 @@ func (*BannerController) ListBanner(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			x-token	header		string				true	"认证令牌"
-//	@Param			banner	body		forms.BannerForm	true	"品牌信息"
+//	@Param			banner	body		request.BannerForm	true	"品牌信息"
 //	@Success		201		{object}	utils.Response		"品牌创建成功"
 //	@Failure		400		{object}	utils.Response		"无效的请求参数"
 //	@Failure		500		{object}	utils.Response		"服务器错误"
@@ -96,7 +96,7 @@ func (*BannerController) NewBanner(ctx *gin.Context) {
 //	@Produce		json
 //	@Param			x-token	header		string				true	"认证令牌"
 //	@Param			id		path		int					true	"轮播图ID"
-//	@Param			banner	body		forms.BannerForm	true	"更新的轮播图信息"
+//	@Param			banner	body		request.BannerForm	true	"更新的轮播图信息"
 //	@Success		200		{object}	utils.Response		"轮播图更新成功"
 //	@Failure		400		{object}	utils.Response		"无效的请求参数"
 //	@Failure		404		{object}	utils.Response		"轮播图未找到"

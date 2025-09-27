@@ -3,14 +3,14 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
-	"github.com/zhengpanone/mxshop/mxshop-api/user-web/forms"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/request"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/utils"
 	"go.uber.org/zap"
 	"net/http"
 )
 
 func GenerateCaptcha(ctx *gin.Context) {
-	captchaForm := forms.CaptchaForm{}
+	captchaForm := request.CaptchaForm{}
 	if err := ctx.ShouldBind(&captchaForm); err != nil {
 		HandleValidatorError(ctx, err)
 		return
@@ -33,8 +33,8 @@ func GenerateCaptcha(ctx *gin.Context) {
 		return
 	}
 	h := gin.H{
-		"captchaId": id,
-		"picPath":   base64,
+		"captchaId":   id,
+		"imageBase64": base64,
 	}
 	commonResponse.OkWithData(ctx, h)
 }

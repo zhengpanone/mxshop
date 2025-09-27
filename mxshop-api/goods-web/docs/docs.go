@@ -101,7 +101,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.BannerForm"
+                            "$ref": "#/definitions/request.BannerForm"
                         }
                     }
                 ],
@@ -161,7 +161,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.BannerForm"
+                            "$ref": "#/definitions/request.BannerForm"
                         }
                     }
                 ],
@@ -572,7 +572,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.BrandForm"
+                            "$ref": "#/definitions/request.BrandForm"
                         }
                     }
                 ],
@@ -747,7 +747,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.BrandForm"
+                            "$ref": "#/definitions/request.BrandForm"
                         }
                     }
                 ],
@@ -802,11 +802,11 @@ const docTemplate = `{
                     },
                     {
                         "description": "分类信息",
-                        "name": "forms.CategoryForm",
+                        "name": "request.CategoryForm",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.CategoryForm"
+                            "$ref": "#/definitions/request.CategoryForm"
                         }
                     }
                 ],
@@ -1005,7 +1005,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.CategoryForm"
+                            "$ref": "#/definitions/request.CategoryForm"
                         }
                     }
                 ],
@@ -1070,7 +1070,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.GoodsForm"
+                            "$ref": "#/definitions/request.GoodsForm"
                         }
                     }
                 ],
@@ -1236,7 +1236,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.GoodsStatusForm"
+                            "$ref": "#/definitions/request.GoodsStatusForm"
                         }
                     }
                 ],
@@ -1264,7 +1264,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "forms.BannerForm": {
+        "request.BannerForm": {
             "type": "object",
             "required": [
                 "index"
@@ -1281,7 +1281,7 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.BrandForm": {
+        "request.BrandForm": {
             "type": "object",
             "required": [
                 "name"
@@ -1299,7 +1299,7 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.CategoryForm": {
+        "request.CategoryForm": {
             "type": "object",
             "required": [
                 "is_tab",
@@ -1328,7 +1328,7 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.GoodsForm": {
+        "request.GoodsForm": {
             "type": "object",
             "required": [
                 "brand",
@@ -1403,7 +1403,7 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.GoodsStatusForm": {
+        "request.GoodsStatusForm": {
             "type": "object",
             "required": [
                 "hot",
