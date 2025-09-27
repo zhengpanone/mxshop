@@ -6,16 +6,16 @@ import (
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
-	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/global"
+	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/request"
+	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/response"
 	"go.uber.org/zap"
-	"math"
 	"strconv"
 )
 
 type GoodsController struct{}
 
-// GetGoodsList 获取商品列表
+// GetGoodsPageList 获取商品列表
 //
 //	@Summary		获取商品列表
 //	@Description	根据多个查询条件（价格区间、是否热销、是否新品、分类、品牌等）获取商品列表。
@@ -35,92 +35,60 @@ type GoodsController struct{}
 //	@Success		200		{object}	utils.Response	"成功获取商品列表"
 //	@Failure		400		{object}	utils.Response	"无效的请求参数"
 //	@Failure		500		{object}	utils.Response	"服务器错误"
-//	@Router			/v1/goods/list [get]
-func (*GoodsController) GetGoodsList(ctx *gin.Context) {
-	request := &commonpb.GoodsFilterPageRequest{}
-	priceMin := ctx.DefaultQuery("pMin", "0")
-	priceMinInt, _ := strconv.Atoi(priceMin)
-	request.PriceMin = int32(priceMinInt)
+//	@Router			/v1/goods/getGoodsPageList [get]
+func (g *GoodsController) GetGoodsPageList(ctx *gin.Context) {
+	goodsPageForm := request.GoodsPageForm{}
 
-	priceMax := ctx.DefaultQuery("pMax", "0")
-	priceMaxInt, _ := strconv.Atoi(priceMax)
-	request.PriceMax = int32(priceMaxInt)
-
-	isHot := ctx.DefaultQuery("ih", "0")
-	if isHot == "1" {
-		request.IsHot = true
+	if err := ctx.ShouldBindJSON(&goodsPageForm); err != nil {
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
+		return
 	}
 
-	isNew := ctx.DefaultQuery("ih", "0")
-	if isNew == "1" {
-		request.IsNew = true
+	goodsRequest := &commonpb.GoodsFilterPageRequest{
+		PriceMin: goodsPageForm.PriceMin,
+		PriceMax: goodsPageForm.PriceMax,
+		PageRequest: &commonpb.PageRequest{
+			PageNum:  goodsPageForm.PageNum,
+			PageSize: goodsPageForm.PageSize,
+		},
 	}
-	isTab := ctx.DefaultQuery("ih", "0")
-	if isTab == "1" {
-		request.IsTab = true
-	}
-
-	categoryId := ctx.DefaultQuery("categoryId", "0")
-	categoryIdInt, _ := strconv.Atoi(categoryId)
-	request.TopCategory = int32(categoryIdInt)
-
-	page := ctx.DefaultQuery("page", "1")
-	pageInt, _ := strconv.ParseUint(page, 10, 64)
-	request.PageRequest.PageNum = pageInt
-
-	size := ctx.DefaultQuery("size", "10")
-	sizeInt, _ := strconv.ParseUint(size, 10, 64)
-	request.PageRequest.PageNum = sizeInt
-
-	keywords := ctx.DefaultQuery("productName", "")
-	request.KeyWords = keywords
-
-	brand := ctx.DefaultQuery("brandId", "")
-	brandInt, _ := strconv.Atoi(brand)
-	request.Brand = int32(brandInt)
 
 	// 请求商品service服务
-	r, err := global.GoodsSrvClient.GoodsPageList(context.WithValue(context.Background(), "ginContext", ctx), request)
+	rsp, err := global.GoodsSrvClient.GoodsPageList(context.Background(), goodsRequest)
 	if err != nil {
 		zap.S().Errorw("[GetGoodsList]查询【商品列表】失败")
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
 	}
-
-	reMap := map[string]interface{}{
-		"total":     r.Total,
-		"totalPage": int(math.Ceil(float64(r.Total) / float64(request.PageRequest.PageSize))),
-		"pageNum":   request.PageRequest.PageNum,
-		"pageSize":  request.PageRequest.PageSize,
-	}
-	goodsList := make([]interface{}, 0)
-	for _, value := range r.Data {
-		goodsList = append(goodsList, map[string]interface{}{
-			"id":          value.Id,
-			"name":        value.Name,
-			"goods_brief": value.GoodsBrief,
-			"desc":        value.GoodsDesc,
-			"ship_free":   value.ShipFree,
-			"images":      value.Images,
-			"desc_images": value.DescImages,
-			"front_image": value.GoodsFrontImage,
-			"shop_price":  value.ShopPrice,
-			"category": map[string]interface{}{
-				"id":   value.Category.Id,
-				"name": value.Category.Name,
+	goodsList := make([]response.GoodsResponse, 0)
+	for _, value := range rsp.List {
+		goods := response.GoodsResponse{
+			Id:          value.Id,
+			Name:        value.Name,
+			GoodsBrief:  value.GoodsBrief,
+			Description: value.GoodsDesc,
+			ShipFree:    value.ShipFree,
+			Images:      value.Images,
+			DescImages:  value.DescImages,
+			FrontImage:  value.GoodsFrontImage,
+			ShopPrice:   value.ShopPrice,
+			Category: response.CategoryResponse{
+				Id:   value.Category.Id,
+				Name: value.Category.Name,
 			},
-			"brand": map[string]interface{}{
-				"id":   value.Brand.Id,
-				"name": value.Brand.Name,
-				"logo": value.Brand.Logo,
+			Brand: response.BrandResponse{
+				Id:   value.Brand.Id,
+				Name: value.Brand.Name,
+				Logo: value.Brand.Logo,
 			},
-			"is_hot":  value.IsHot,
-			"is_new":  value.IsNew,
-			"on_sale": value.OnSale,
-		})
+			IsHot:  value.IsHot,
+			IsNew:  value.IsNew,
+			OnSale: value.OnSale,
+		}
+		goodsList = append(goodsList, goods)
 	}
-	reMap["list"] = goodsList
-	commonResponse.OkWithData(ctx, reMap)
+	pageResult := commonUtils.ConvertPage(rsp.Page, goodsList)
+	commonResponse.OkWithData(ctx, pageResult)
 
 }
 
@@ -138,7 +106,7 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 //	@Failure		500		{object}	utils.Response	"服务器错误"
 //	@Router			/v1/goods/create [post]
 func (*GoodsController) NewGoods(ctx *gin.Context) {
-	goodsForm := forms.GoodsForm{}
+	goodsForm := request.GoodsForm{}
 	if err := ctx.ShouldBindJSON(&goodsForm); err != nil {
 		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
@@ -182,7 +150,7 @@ func (*GoodsController) NewGoods(ctx *gin.Context) {
 //	@Failure		500		{object}	utils.Response			"服务器错误"
 //	@Router			/v1/goods/status/{id} [put]
 func (*GoodsController) UpdateStatus(ctx *gin.Context) {
-	goodsStatusForm := forms.GoodsStatusForm{}
+	goodsStatusForm := request.GoodsStatusForm{}
 	if err := ctx.ShouldBindJSON(&goodsStatusForm); err != nil {
 		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return

@@ -1,8 +1,8 @@
 package request
 
 type PageRequest struct {
-	Page     int `json:"page" form:"page" binding:"required,min=1"`                 // 页码
-	PageSize int `json:"pageSize" form:"pageSize" binding:"required,min=1,max=100"` // 每页大小
+	PageNum  uint64 `json:"pageNum" form:"pageNum" binding:"required,min=1"`           // 页码
+	PageSize uint64 `json:"pageSize" form:"pageSize" binding:"required,min=1,max=100"` // 每页大小
 }
 type CommonIds struct {
 	Ids []uint64 `json:"ids" form:"ids"`

@@ -49,7 +49,7 @@ class GoodsStub(object):
         self.CreateGoods = channel.unary_unary(
                 '/Goods/CreateGoods',
                 request_serializer=goods__pb2.CreateGoodsRequest.SerializeToString,
-                response_deserializer=goods__pb2.GoodsInfoResponse.FromString,
+                response_deserializer=goods__pb2.GoodsResponse.FromString,
                 _registered_method=True)
         self.DeleteGoods = channel.unary_unary(
                 '/Goods/DeleteGoods',
@@ -64,7 +64,7 @@ class GoodsStub(object):
         self.GetGoodsDetail = channel.unary_unary(
                 '/Goods/GetGoodsDetail',
                 request_serializer=goods__pb2.GoodsDetailRequest.SerializeToString,
-                response_deserializer=goods__pb2.GoodsInfoResponse.FromString,
+                response_deserializer=goods__pb2.GoodsDetailResponse.FromString,
                 _registered_method=True)
         self.GetAllCategoryList = channel.unary_unary(
                 '/Goods/GetAllCategoryList',
@@ -98,7 +98,7 @@ class GoodsStub(object):
                 _registered_method=True)
         self.GetCategoryBrandList = channel.unary_unary(
                 '/Goods/GetCategoryBrandList',
-                request_serializer=common__pb2.IdsRequest.SerializeToString,
+                request_serializer=common__pb2.IdRequest.SerializeToString,
                 response_deserializer=goods__pb2.BrandListResponse.FromString,
                 _registered_method=True)
         self.CreateCategoryBrand = channel.unary_unary(
@@ -345,7 +345,7 @@ def add_GoodsServicer_to_server(servicer, server):
             'CreateGoods': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateGoods,
                     request_deserializer=goods__pb2.CreateGoodsRequest.FromString,
-                    response_serializer=goods__pb2.GoodsInfoResponse.SerializeToString,
+                    response_serializer=goods__pb2.GoodsResponse.SerializeToString,
             ),
             'DeleteGoods': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteGoods,
@@ -360,7 +360,7 @@ def add_GoodsServicer_to_server(servicer, server):
             'GetGoodsDetail': grpc.unary_unary_rpc_method_handler(
                     servicer.GetGoodsDetail,
                     request_deserializer=goods__pb2.GoodsDetailRequest.FromString,
-                    response_serializer=goods__pb2.GoodsInfoResponse.SerializeToString,
+                    response_serializer=goods__pb2.GoodsDetailResponse.SerializeToString,
             ),
             'GetAllCategoryList': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAllCategoryList,
@@ -394,7 +394,7 @@ def add_GoodsServicer_to_server(servicer, server):
             ),
             'GetCategoryBrandList': grpc.unary_unary_rpc_method_handler(
                     servicer.GetCategoryBrandList,
-                    request_deserializer=common__pb2.IdsRequest.FromString,
+                    request_deserializer=common__pb2.IdRequest.FromString,
                     response_serializer=goods__pb2.BrandListResponse.SerializeToString,
             ),
             'CreateCategoryBrand': grpc.unary_unary_rpc_method_handler(
@@ -533,7 +533,7 @@ class Goods(object):
             target,
             '/Goods/CreateGoods',
             goods__pb2.CreateGoodsRequest.SerializeToString,
-            goods__pb2.GoodsInfoResponse.FromString,
+            goods__pb2.GoodsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -614,7 +614,7 @@ class Goods(object):
             target,
             '/Goods/GetGoodsDetail',
             goods__pb2.GoodsDetailRequest.SerializeToString,
-            goods__pb2.GoodsInfoResponse.FromString,
+            goods__pb2.GoodsDetailResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -802,7 +802,7 @@ class Goods(object):
             request,
             target,
             '/Goods/GetCategoryBrandList',
-            common__pb2.IdsRequest.SerializeToString,
+            common__pb2.IdRequest.SerializeToString,
             goods__pb2.BrandListResponse.FromString,
             options,
             channel_credentials,

@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0finventory.proto\x1a\x1bgoogle/protobuf/empty.proto\",\n\x0cGoodsInvInfo\x12\x0f\n\x07goodsId\x18\x01 \x01(\x05\x12\x0b\n\x03num\x18\x02 \x01(\x05\",\n\x08SellInfo\x12 \n\tgoodsInfo\x18\x01 \x03(\x0b\x32\r.GoodsInvInfo2\xbf\x01\n\tInventory\x12/\n\x06SetInv\x12\r.GoodsInvInfo\x1a\x16.google.protobuf.Empty\x12)\n\tInvDetail\x12\r.GoodsInvInfo\x1a\r.GoodsInvInfo\x12)\n\x04Sell\x12\t.SellInfo\x1a\x16.google.protobuf.Empty\x12+\n\x06Reback\x12\t.SellInfo\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0finventory.proto\x1a\x1bgoogle/protobuf/empty.proto\",\n\x0cGoodsInvInfo\x12\x0f\n\x07goodsId\x18\x01 \x01(\x04\x12\x0b\n\x03num\x18\x02 \x01(\x04\",\n\x08SellInfo\x12 \n\tgoodsInfo\x18\x01 \x03(\x0b\x32\r.GoodsInvInfo2\xbf\x01\n\tInventory\x12/\n\x06SetInv\x12\r.GoodsInvInfo\x1a\x16.google.protobuf.Empty\x12)\n\tInvDetail\x12\r.GoodsInvInfo\x1a\r.GoodsInvInfo\x12)\n\x04Sell\x12\t.SellInfo\x1a\x16.google.protobuf.Empty\x12+\n\x06Reback\x12\t.SellInfo\x1a\x16.google.protobuf.EmptyB\tZ\x07.;protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)

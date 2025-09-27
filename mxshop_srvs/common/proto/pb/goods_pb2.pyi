@@ -26,8 +26,8 @@ class GoodsFilterPageRequest(google.protobuf.message.Message):
     TOPCATEGORY_FIELD_NUMBER: builtins.int
     KEYWORDS_FIELD_NUMBER: builtins.int
     BRAND_FIELD_NUMBER: builtins.int
-    priceMin: builtins.int
-    priceMax: builtins.int
+    priceMin: builtins.float
+    priceMax: builtins.float
     isHot: builtins.bool
     isNew: builtins.bool
     isTab: builtins.bool
@@ -40,8 +40,8 @@ class GoodsFilterPageRequest(google.protobuf.message.Message):
         self,
         *,
         pageRequest: common_pb2.PageRequest | None = ...,
-        priceMin: builtins.int = ...,
-        priceMax: builtins.int = ...,
+        priceMin: builtins.float = ...,
+        priceMax: builtins.float = ...,
         isHot: builtins.bool = ...,
         isNew: builtins.bool = ...,
         isTab: builtins.bool = ...,
@@ -58,18 +58,20 @@ global___GoodsFilterPageRequest = GoodsFilterPageRequest
 class GoodsListResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    TOTAL_FIELD_NUMBER: builtins.int
-    DATA_FIELD_NUMBER: builtins.int
-    total: builtins.int
+    PAGE_FIELD_NUMBER: builtins.int
+    LIST_FIELD_NUMBER: builtins.int
     @property
-    def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___GoodsInfoResponse]: ...
+    def page(self) -> common_pb2.PageResponse: ...
+    @property
+    def list(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___GoodsResponse]: ...
     def __init__(
         self,
         *,
-        total: builtins.int = ...,
-        data: collections.abc.Iterable[global___GoodsInfoResponse] | None = ...,
+        page: common_pb2.PageResponse | None = ...,
+        list: collections.abc.Iterable[global___GoodsResponse] | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["data", b"data", "total", b"total"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["page", b"page"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["list", b"list", "page", b"page"]) -> None: ...
 
 global___GoodsListResponse = GoodsListResponse
 
@@ -237,7 +239,7 @@ class CategoryBriefInfoResponse(google.protobuf.message.Message):
 global___CategoryBriefInfoResponse = CategoryBriefInfoResponse
 
 @typing.final
-class GoodsInfoResponse(google.protobuf.message.Message):
+class GoodsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
@@ -314,7 +316,87 @@ class GoodsInfoResponse(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["brand", b"brand", "category", b"category"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["addTime", b"addTime", "brand", b"brand", "category", b"category", "categoryId", b"categoryId", "clickNum", b"clickNum", "descImages", b"descImages", "favNum", b"favNum", "goodsBrief", b"goodsBrief", "goodsDesc", b"goodsDesc", "goodsFrontImage", b"goodsFrontImage", "goodsSn", b"goodsSn", "id", b"id", "images", b"images", "isHot", b"isHot", "isNew", b"isNew", "marketPrice", b"marketPrice", "name", b"name", "onSale", b"onSale", "shipFree", b"shipFree", "shopPrice", b"shopPrice", "soldNum", b"soldNum"]) -> None: ...
 
-global___GoodsInfoResponse = GoodsInfoResponse
+global___GoodsResponse = GoodsResponse
+
+@typing.final
+class GoodsDetailResponse(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    ID_FIELD_NUMBER: builtins.int
+    CATEGORYID_FIELD_NUMBER: builtins.int
+    NAME_FIELD_NUMBER: builtins.int
+    GOODSSN_FIELD_NUMBER: builtins.int
+    CLICKNUM_FIELD_NUMBER: builtins.int
+    SOLDNUM_FIELD_NUMBER: builtins.int
+    FAVNUM_FIELD_NUMBER: builtins.int
+    MARKETPRICE_FIELD_NUMBER: builtins.int
+    SHOPPRICE_FIELD_NUMBER: builtins.int
+    GOODSBRIEF_FIELD_NUMBER: builtins.int
+    GOODSDESC_FIELD_NUMBER: builtins.int
+    SHIPFREE_FIELD_NUMBER: builtins.int
+    IMAGES_FIELD_NUMBER: builtins.int
+    DESCIMAGES_FIELD_NUMBER: builtins.int
+    GOODSFRONTIMAGE_FIELD_NUMBER: builtins.int
+    ISNEW_FIELD_NUMBER: builtins.int
+    ISHOT_FIELD_NUMBER: builtins.int
+    ONSALE_FIELD_NUMBER: builtins.int
+    ADDTIME_FIELD_NUMBER: builtins.int
+    CATEGORY_FIELD_NUMBER: builtins.int
+    BRAND_FIELD_NUMBER: builtins.int
+    id: builtins.int
+    categoryId: builtins.int
+    name: builtins.str
+    goodsSn: builtins.str
+    clickNum: builtins.int
+    soldNum: builtins.int
+    favNum: builtins.int
+    marketPrice: builtins.float
+    shopPrice: builtins.float
+    goodsBrief: builtins.str
+    goodsDesc: builtins.str
+    shipFree: builtins.bool
+    goodsFrontImage: builtins.str
+    isNew: builtins.bool
+    isHot: builtins.bool
+    onSale: builtins.bool
+    addTime: builtins.int
+    @property
+    def images(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    @property
+    def descImages(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    @property
+    def category(self) -> global___CategoryBriefInfoResponse: ...
+    @property
+    def brand(self) -> global___BrandInfoResponse: ...
+    def __init__(
+        self,
+        *,
+        id: builtins.int = ...,
+        categoryId: builtins.int = ...,
+        name: builtins.str = ...,
+        goodsSn: builtins.str = ...,
+        clickNum: builtins.int = ...,
+        soldNum: builtins.int = ...,
+        favNum: builtins.int = ...,
+        marketPrice: builtins.float = ...,
+        shopPrice: builtins.float = ...,
+        goodsBrief: builtins.str = ...,
+        goodsDesc: builtins.str = ...,
+        shipFree: builtins.bool = ...,
+        images: collections.abc.Iterable[builtins.str] | None = ...,
+        descImages: collections.abc.Iterable[builtins.str] | None = ...,
+        goodsFrontImage: builtins.str = ...,
+        isNew: builtins.bool = ...,
+        isHot: builtins.bool = ...,
+        onSale: builtins.bool = ...,
+        addTime: builtins.int = ...,
+        category: global___CategoryBriefInfoResponse | None = ...,
+        brand: global___BrandInfoResponse | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["brand", b"brand", "category", b"category"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["addTime", b"addTime", "brand", b"brand", "category", b"category", "categoryId", b"categoryId", "clickNum", b"clickNum", "descImages", b"descImages", "favNum", b"favNum", "goodsBrief", b"goodsBrief", "goodsDesc", b"goodsDesc", "goodsFrontImage", b"goodsFrontImage", "goodsSn", b"goodsSn", "id", b"id", "images", b"images", "isHot", b"isHot", "isNew", b"isNew", "marketPrice", b"marketPrice", "name", b"name", "onSale", b"onSale", "shipFree", b"shipFree", "shopPrice", b"shopPrice", "soldNum", b"soldNum"]) -> None: ...
+
+global___GoodsDetailResponse = GoodsDetailResponse
 
 @typing.final
 class GoodsDetailRequest(google.protobuf.message.Message):

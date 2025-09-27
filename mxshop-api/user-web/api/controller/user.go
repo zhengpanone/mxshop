@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/zhengpanone/mxshop/mxshop-api/common/claims"
@@ -98,7 +97,7 @@ func GetAdminUserList(ctx *gin.Context) {
 func PasswordLogin(ctx *gin.Context) {
 	passwordLogin := request.PasswordLoginForm{}
 	if err := ctx.ShouldBind(&passwordLogin); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	if global.ServerConfig.EnableCaptcha {
@@ -193,7 +192,7 @@ func LogOut(ctx *gin.Context) {
 func Register(ctx *gin.Context) {
 	registerForm := request.RegisterForm{}
 	if err := ctx.ShouldBind(&registerForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	// 验证码校验
@@ -254,20 +253,4 @@ func Register(ctx *gin.Context) {
 
 func Ping(ctx *gin.Context) {
 	commonResponse.Ok(ctx)
-}
-
-func HandleValidatorError(ctx *gin.Context, err error) {
-	// 如何返回错误信息
-	var errs validator.ValidationErrors
-	ok := errors.As(err, &errs)
-	if !ok {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"msg": err.Error(),
-		})
-		return
-	}
-	ctx.JSON(http.StatusBadRequest, gin.H{
-		"error": removeTopStruct(errs.Translate(global.Trans)),
-	})
-	return
 }

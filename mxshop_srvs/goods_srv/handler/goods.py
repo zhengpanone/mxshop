@@ -3,6 +3,8 @@ from google.protobuf import empty_pb2
 from loguru import logger
 from peewee import DoesNotExist
 import json
+
+from common.utils.page import make_page_response
 from goods_srv.model.models import Goods, Category, Brands, GoodsCategoryBrand, Banner
 from common.proto.pb import goods_pb2, goods_pb2_grpc,common_pb2
 
@@ -10,7 +12,7 @@ from common.proto.pb import goods_pb2, goods_pb2_grpc,common_pb2
 class GoodsServicer(goods_pb2_grpc.GoodsServicer):
 
     def convert_model_to_message(self, goods):
-        info_rsp = goods_pb2.GoodsInfoResponse()
+        info_rsp = goods_pb2.GoodsResponse()
         info_rsp.id = goods.id
         info_rsp.categoryId = goods.category_id
         info_rsp.name = goods.name
@@ -78,16 +80,20 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             except Exception as e:
                 pass
             goods = goods.filter(Goods.is_hot == True)
-        size = 10
-        page = 1
-        if request.page:
-            page = request.page
-        if request.size:
-            size = request.size
-        rsp.total = goods.count()
-        result = goods.paginate(page, size)
+        page_num = 1
+        page_size = 10
+        page_request= request.pageRequest
+        if page_request.pageNum:
+            page_num = page_request.pageNum
+        if page_request.pageSize:
+            page_size = page_request.pageSize
+        total = goods.count()
+        result = goods.paginate(page_num, page_size)
+
         for good in result:
-            rsp.data.append(self.convert_model_to_message(good))
+            rsp.list.append(self.convert_model_to_message(good))
+        page_response = make_page_response(total, page_request)
+        rsp.page.CopyFrom(page_response)
 
         return rsp
 
@@ -355,7 +361,7 @@ class GoodsServicer(goods_pb2_grpc.GoodsServicer):
             return empty_pb2.Empty()
 
     @logger.catch
-    def BrandList(self, request: goods_pb2.BrandFilterPageRequest, context):
+    def BrandPageList(self, request: goods_pb2.BrandFilterPageRequest, context):
         rsp = goods_pb2.BrandListResponse()
         brands = Brands.select()
         rsp.total = brands.count()

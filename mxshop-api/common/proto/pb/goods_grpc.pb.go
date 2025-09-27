@@ -54,10 +54,10 @@ type GoodsClient interface {
 	GoodsPageList(ctx context.Context, in *GoodsFilterPageRequest, opts ...grpc.CallOption) (*GoodsListResponse, error)
 	// 用户提交订单有多个商品，批量查询商品信息
 	BatchGetGoods(ctx context.Context, in *BatchGoodsIdRequest, opts ...grpc.CallOption) (*GoodsListResponse, error)
-	CreateGoods(ctx context.Context, in *CreateGoodsRequest, opts ...grpc.CallOption) (*GoodsInfoResponse, error)
+	CreateGoods(ctx context.Context, in *CreateGoodsRequest, opts ...grpc.CallOption) (*GoodsResponse, error)
 	DeleteGoods(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateGoods(ctx context.Context, in *UpdateGoodsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetGoodsDetail(ctx context.Context, in *GoodsDetailRequest, opts ...grpc.CallOption) (*GoodsInfoResponse, error)
+	GetGoodsDetail(ctx context.Context, in *GoodsDetailRequest, opts ...grpc.CallOption) (*GoodsDetailResponse, error)
 	// 商品分类
 	// 获取所有的分类
 	GetAllCategoryList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CategoryListResponse, error)
@@ -115,9 +115,9 @@ func (c *goodsClient) BatchGetGoods(ctx context.Context, in *BatchGoodsIdRequest
 	return out, nil
 }
 
-func (c *goodsClient) CreateGoods(ctx context.Context, in *CreateGoodsRequest, opts ...grpc.CallOption) (*GoodsInfoResponse, error) {
+func (c *goodsClient) CreateGoods(ctx context.Context, in *CreateGoodsRequest, opts ...grpc.CallOption) (*GoodsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GoodsInfoResponse)
+	out := new(GoodsResponse)
 	err := c.cc.Invoke(ctx, Goods_CreateGoods_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -145,9 +145,9 @@ func (c *goodsClient) UpdateGoods(ctx context.Context, in *UpdateGoodsRequest, o
 	return out, nil
 }
 
-func (c *goodsClient) GetGoodsDetail(ctx context.Context, in *GoodsDetailRequest, opts ...grpc.CallOption) (*GoodsInfoResponse, error) {
+func (c *goodsClient) GetGoodsDetail(ctx context.Context, in *GoodsDetailRequest, opts ...grpc.CallOption) (*GoodsDetailResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GoodsInfoResponse)
+	out := new(GoodsDetailResponse)
 	err := c.cc.Invoke(ctx, Goods_GetGoodsDetail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -343,10 +343,10 @@ type GoodsServer interface {
 	GoodsPageList(context.Context, *GoodsFilterPageRequest) (*GoodsListResponse, error)
 	// 用户提交订单有多个商品，批量查询商品信息
 	BatchGetGoods(context.Context, *BatchGoodsIdRequest) (*GoodsListResponse, error)
-	CreateGoods(context.Context, *CreateGoodsRequest) (*GoodsInfoResponse, error)
+	CreateGoods(context.Context, *CreateGoodsRequest) (*GoodsResponse, error)
 	DeleteGoods(context.Context, *IdsRequest) (*emptypb.Empty, error)
 	UpdateGoods(context.Context, *UpdateGoodsRequest) (*emptypb.Empty, error)
-	GetGoodsDetail(context.Context, *GoodsDetailRequest) (*GoodsInfoResponse, error)
+	GetGoodsDetail(context.Context, *GoodsDetailRequest) (*GoodsDetailResponse, error)
 	// 商品分类
 	// 获取所有的分类
 	GetAllCategoryList(context.Context, *emptypb.Empty) (*CategoryListResponse, error)
@@ -390,7 +390,7 @@ func (UnimplementedGoodsServer) GoodsPageList(context.Context, *GoodsFilterPageR
 func (UnimplementedGoodsServer) BatchGetGoods(context.Context, *BatchGoodsIdRequest) (*GoodsListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchGetGoods not implemented")
 }
-func (UnimplementedGoodsServer) CreateGoods(context.Context, *CreateGoodsRequest) (*GoodsInfoResponse, error) {
+func (UnimplementedGoodsServer) CreateGoods(context.Context, *CreateGoodsRequest) (*GoodsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGoods not implemented")
 }
 func (UnimplementedGoodsServer) DeleteGoods(context.Context, *IdsRequest) (*emptypb.Empty, error) {
@@ -399,7 +399,7 @@ func (UnimplementedGoodsServer) DeleteGoods(context.Context, *IdsRequest) (*empt
 func (UnimplementedGoodsServer) UpdateGoods(context.Context, *UpdateGoodsRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateGoods not implemented")
 }
-func (UnimplementedGoodsServer) GetGoodsDetail(context.Context, *GoodsDetailRequest) (*GoodsInfoResponse, error) {
+func (UnimplementedGoodsServer) GetGoodsDetail(context.Context, *GoodsDetailRequest) (*GoodsDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGoodsDetail not implemented")
 }
 func (UnimplementedGoodsServer) GetAllCategoryList(context.Context, *emptypb.Empty) (*CategoryListResponse, error) {
