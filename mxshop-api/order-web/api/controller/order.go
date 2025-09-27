@@ -21,27 +21,27 @@ func (*OrderApi) GetOrderList(ctx *gin.Context) {
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
 	model := claims.(*commonClaims.CustomClaims)
-	request := commonpb.OrderFilterRequest{}
+	request := commonpb.OrderFilterPageRequest{}
 	if model.AuthorityId == 1 {
-		request.UserId = int32(userId.(uint))
+		request.UserId = userId.(uint64)
 	}
 
 	page := ctx.DefaultQuery("page", "1")
 	pageInt, _ := strconv.Atoi(page)
-	request.Page = int32(pageInt)
+	request.Page = uint64(pageInt)
 
 	size := ctx.DefaultQuery("size", "10")
 	sizeInt, _ := strconv.Atoi(size)
-	request.Size = int32(sizeInt)
+	request.Size = uint64(sizeInt)
 
-	rsp, err := global.OrderSrvClient.OrderList(context.Background(), &request)
+	rsp, err := global.OrderSrvClient.GetOrderPageList(context.Background(), &request)
 	if err != nil {
 		global.Logger.Error("获取订单列表失败")
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
 	reMap := map[string]interface{}{
-		"total": rsp.Total,
+		"total": rsp.Page.Total,
 	}
 	orderList := make([]interface{}, 0)
 	for _, item := range rsp.Data {
@@ -71,7 +71,7 @@ func (*OrderApi) NewOrder(ctx *gin.Context) {
 	}
 	userId, _ := ctx.Get("userId")
 	request := commonpb.OrderRequest{
-		UserId:  int32(userId.(uint)),
+		UserId:  uint64(userId.(uint)),
 		Name:    orderForm.Name,
 		Address: orderForm.Address,
 		Post:    orderForm.Post,
@@ -135,9 +135,8 @@ func (*OrderApi) NewOrder(ctx *gin.Context) {
 func (*OrderApi) GetOrderDetail(ctx *gin.Context) {
 	id := ctx.Param("id")
 	userId, _ := ctx.Get("userId")
-	i, err := strconv.Atoi(id)
+	orderId, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
-
 		commonResponse.ErrorWithCodeAndMsg(ctx, http.StatusNotFound, "url格式错误")
 		return
 	}
@@ -145,10 +144,10 @@ func (*OrderApi) GetOrderDetail(ctx *gin.Context) {
 	// 管理员查询所有订单
 	model := claims.(*commonClaims.CustomClaims)
 	request := commonpb.OrderRequest{
-		Id: int32(i),
+		Id: orderId,
 	}
 	if model.AuthorityId == 1 {
-		request.UserId = int32(userId.(uint))
+		request.UserId = uint64(userId.(uint))
 	}
 
 	rsp, err := global.OrderSrvClient.OrderDetail(context.Background(), &request)

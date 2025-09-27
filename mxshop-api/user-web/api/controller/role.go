@@ -17,7 +17,7 @@ func CreateRole(ctx *gin.Context) {
 		HandleValidatorError(ctx, err)
 		return
 	}
-	role, err := global.RoleSrvClient.CreateRole(context.Background(), &commonpb.CreateRoleInfo{
+	role, err := global.RoleSrvClient.CreateRole(context.Background(), &commonpb.CreateRoleRequest{
 		Name:   addRoleForm.Name,
 		Remark: addRoleForm.Desc,
 		Status: addRoleForm.Status,

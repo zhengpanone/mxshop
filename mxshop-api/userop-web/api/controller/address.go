@@ -5,6 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	customClaims "github.com/zhengpanone/mxshop/mxshop-api/common/claims"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonRequest "github.com/zhengpanone/mxshop/mxshop-api/common/request"
+	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
 	"go.uber.org/zap"
@@ -27,25 +30,25 @@ import (
 //	@Failure		500			{object}	utils.Response	"服务器错误"
 //	@Router			/v1/userop/address/list [get]
 func GetAddressList(ctx *gin.Context) {
-	request := commonpb.AddressRequest{}
+	request := commonpb.AddressFilterPageRequest{}
 	userId, _ := ctx.Get("userId")
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
 	model := claims.(*customClaims.CustomClaims)
 	if model.AuthorityId != 2 {
-		request.UserId = int32(userId.(uint))
+		request.UserId = userId.(uint64)
 	}
-	rsp, err := global.AddressSrvClient.GetAddressList(context.Background(), &request)
+	rsp, err := global.AddressSrvClient.GetAddressPageList(context.Background(), &request)
 	if err != nil {
 		zap.S().Errorw("获取地址列表失败")
 		HandleGrpcErrorToHttp(err, ctx, "用户操作srv")
 		return
 	}
 	reMap := map[string]interface{}{
-		"total": rsp.Total,
+		"total": rsp.Page,
 	}
 	result := make([]interface{}, 0)
-	for _, value := range rsp.Data {
+	for _, value := range rsp.List {
 		item := make(map[string]interface{})
 		item["id"] = value.Id
 		item["userId"] = value.UserId
@@ -82,7 +85,7 @@ func CreateAddress(ctx *gin.Context) {
 		HandleValidatorError(ctx, err)
 		return
 	}
-	rsp, err := global.AddressSrvClient.CreateAddress(context.Background(), &commonpb.AddressRequest{
+	rsp, err := global.AddressSrvClient.CreateAddress(context.Background(), &commonpb.CreateAddressRequest{
 		Province:     addressForm.Province,
 		City:         addressForm.City,
 		District:     addressForm.District,
@@ -115,21 +118,20 @@ func CreateAddress(ctx *gin.Context) {
 //	@Failure		500			{object}	utils.Response	"服务器错误"
 //	@Router			/v1/userop/address/delete [delete]
 func DeleteAddress(ctx *gin.Context) {
-	id := ctx.Param("id")
-	i, err := strconv.ParseInt(id, 10, 32)
-	if err != nil {
-		ctx.Status(http.StatusNotFound)
+	var commonIds commonRequest.CommonIds
+	if err := ctx.ShouldBindJSON(&commonIds); err != nil {
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
-	_, err = global.AddressSrvClient.DeleteAddress(context.Background(), &commonpb.AddressRequest{Id: int32(i)})
+	_, err := global.AddressSrvClient.DeleteAddressByIds(context.Background(), &commonpb.IdsRequest{Ids: commonIds.Ids})
 	if err != nil {
 		zap.S().Errorw("删除地址失败")
 		HandleGrpcErrorToHttp(err, ctx, "用户操作srv")
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"msg": "删除地址成功",
-	})
+	commonResponse.OkWithMsg(ctx, "删除地址成功")
+	return
+
 }
 
 // UpdateAddress 更新用户地址
@@ -158,8 +160,8 @@ func UpdateAddress(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.AddressSrvClient.UpdateAddress(context.Background(), &commonpb.AddressRequest{
-		Id:           int32(i),
+	_, err = global.AddressSrvClient.UpdateAddress(context.Background(), &commonpb.UpdateAddressRequest{
+		Id:           uint64(i),
 		Province:     addressForm.Province,
 		City:         addressForm.City,
 		District:     addressForm.District,

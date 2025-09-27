@@ -71,7 +71,7 @@ type GoodsClient interface {
 	UpdateCategory(ctx context.Context, in *UpdateCategoryRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 品牌分类
 	CategoryBrandPageList(ctx context.Context, in *CategoryBrandFilterRequest, opts ...grpc.CallOption) (*CategoryBrandListResponse, error)
-	GetCategoryBrandList(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*BrandListResponse, error)
+	GetCategoryBrandList(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*BrandListResponse, error)
 	CreateCategoryBrand(ctx context.Context, in *CreateCategoryBrandRequest, opts ...grpc.CallOption) (*CategoryBrandResponse, error)
 	DeleteCategoryBrand(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateCategoryBrand(ctx context.Context, in *UpdateCategoryBrandRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -215,7 +215,7 @@ func (c *goodsClient) CategoryBrandPageList(ctx context.Context, in *CategoryBra
 	return out, nil
 }
 
-func (c *goodsClient) GetCategoryBrandList(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*BrandListResponse, error) {
+func (c *goodsClient) GetCategoryBrandList(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*BrandListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BrandListResponse)
 	err := c.cc.Invoke(ctx, Goods_GetCategoryBrandList_FullMethodName, in, out, cOpts...)
@@ -360,7 +360,7 @@ type GoodsServer interface {
 	UpdateCategory(context.Context, *UpdateCategoryRequest) (*emptypb.Empty, error)
 	// 品牌分类
 	CategoryBrandPageList(context.Context, *CategoryBrandFilterRequest) (*CategoryBrandListResponse, error)
-	GetCategoryBrandList(context.Context, *IdsRequest) (*BrandListResponse, error)
+	GetCategoryBrandList(context.Context, *IdRequest) (*BrandListResponse, error)
 	CreateCategoryBrand(context.Context, *CreateCategoryBrandRequest) (*CategoryBrandResponse, error)
 	DeleteCategoryBrand(context.Context, *IdRequest) (*emptypb.Empty, error)
 	UpdateCategoryBrand(context.Context, *UpdateCategoryBrandRequest) (*emptypb.Empty, error)
@@ -420,7 +420,7 @@ func (UnimplementedGoodsServer) UpdateCategory(context.Context, *UpdateCategoryR
 func (UnimplementedGoodsServer) CategoryBrandPageList(context.Context, *CategoryBrandFilterRequest) (*CategoryBrandListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryBrandPageList not implemented")
 }
-func (UnimplementedGoodsServer) GetCategoryBrandList(context.Context, *IdsRequest) (*BrandListResponse, error) {
+func (UnimplementedGoodsServer) GetCategoryBrandList(context.Context, *IdRequest) (*BrandListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCategoryBrandList not implemented")
 }
 func (UnimplementedGoodsServer) CreateCategoryBrand(context.Context, *CreateCategoryBrandRequest) (*CategoryBrandResponse, error) {
@@ -694,7 +694,7 @@ func _Goods_CategoryBrandPageList_Handler(srv interface{}, ctx context.Context, 
 }
 
 func _Goods_GetCategoryBrandList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdsRequest)
+	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -706,7 +706,7 @@ func _Goods_GetCategoryBrandList_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: Goods_GetCategoryBrandList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoodsServer).GetCategoryBrandList(ctx, req.(*IdsRequest))
+		return srv.(GoodsServer).GetCategoryBrandList(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

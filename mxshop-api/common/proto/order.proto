@@ -23,27 +23,27 @@ message UserInfo {
 }
 message ShopCartInfoResponse {
     uint64 id = 1;
-    int32 userId = 2;
-    int32 goodsId = 3;
-    int32 nums = 4;
+    uint64 userId = 2;
+    uint64 goodsId = 3;
+    uint64 nums = 4;
     bool checked = 5;
 
 }
 message CartItemListResponse {
-    int32 total = 1;
+    uint64 total = 1;
     repeated ShopCartInfoResponse data = 2;
 }
 
 message CartItemRequest {
-    int32 userId = 1;
-    int32 goodsId = 2;
-    int32 nums = 3;
+    uint64 userId = 1;
+    uint64 goodsId = 2;
+    uint64 nums = 3;
     bool checked = 4;
 }
 
 message OrderRequest {
     uint64 id = 1;
-    int32 userId = 2;
+    uint64 userId = 2;
     string address = 3;
     string mobile = 4;
     string name = 5;
@@ -52,7 +52,7 @@ message OrderRequest {
 
 message OrderResponse {
     uint64 id = 1;
-    int32 userId = 2;
+    uint64 userId = 2;
     string orderSn = 3;
     string payType = 4;
     string status = 5;
@@ -70,18 +70,18 @@ message OrderPageResponse {
 }
 
 message OrderFilterPageRequest {
-    int32 userId = 1;
-    int32 page = 2;
-    int32 size = 3;
+    uint64 userId = 1;
+    uint64 page = 2;
+    uint64 size = 3;
 }
 message OrderItemResponse {
     uint64 id = 1;
-    int32 orderId = 2;
-    int32 goodsId = 3;
+    uint64 orderId = 2;
+    uint64 goodsId = 3;
     string goodsName = 4;
     string goodsImage = 5;
     float goodsPrice = 6;
-    int32 nums = 7;
+    uint64 nums = 7;
 }
 message OrderDetailResponse {
     OrderResponse orderInfo = 1;

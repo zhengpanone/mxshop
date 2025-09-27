@@ -31,21 +31,21 @@ func GetMessageList(ctx *gin.Context) {
 	claims, _ := ctx.Get("claims")
 	// 管理员查询所有订单
 	model := claims.(*customClaims.CustomClaims)
-	request := commonpb.MessageRequest{}
+	request := commonpb.MessageFilterPageRequest{}
 	if model.AuthorityId == 1 {
 		request.UserId = int32(userId.(uint))
 	}
-	rsp, err := global.MessageSrvClient.MessageList(context.Background(), &request)
+	rsp, err := global.MessageSrvClient.GetMessagePageList(context.Background(), &request)
 	if err != nil {
 		zap.S().Errorw("获取留言失败")
 		HandleGrpcErrorToHttp(err, ctx, "用户操作srv")
 		return
 	}
 	reMap := map[string]interface{}{
-		"total": rsp.Total,
+		"total": rsp.Page.Total,
 	}
 	result := make([]interface{}, 0)
-	for _, value := range rsp.Data {
+	for _, value := range rsp.List {
 		reMap := make(map[string]interface{})
 		reMap["id"] = value.Id
 		reMap["userId"] = value.UserId

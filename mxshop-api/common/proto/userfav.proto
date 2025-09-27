@@ -11,27 +11,27 @@ service UserFav {
 }
 
 message UserFavFilterPageRequest {
-  int32 userId = 1;
-  int32 goodsId = 2;
+  uint64 userId = 1;
+  uint64 goodsId = 2;
 }
 
 message CreateUserFavRequest {
-  int32 userId = 1;
-  int32 goodsId = 2;
+  uint64 userId = 1;
+  uint64 goodsId = 2;
 }
 
 message UserFavResponse {
-  int32 userId = 1;
-  int32 goodsId = 2;
+  uint64 userId = 1;
+  uint64 goodsId = 2;
 }
 
 message UserFavDetailResponse {
-  int32 userId = 1;
-  int32 goodsId = 2;
+  uint64 userId = 1;
+  uint64 goodsId = 2;
 }
 
 message UserFavListResponse {
-  int32 total = 1;
+  uint64 total = 1;
   repeated UserFavResponse data = 2;
 }
 

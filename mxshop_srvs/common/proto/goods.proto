@@ -32,7 +32,7 @@ service Goods {
 
   // 品牌分类
   rpc CategoryBrandPageList (CategoryBrandFilterRequest) returns (CategoryBrandListResponse); //获取轮播图
-  rpc GetCategoryBrandList (common.IdsRequest) returns (BrandListResponse); //通过category获取brands
+  rpc GetCategoryBrandList (common.IdRequest) returns (BrandListResponse); //通过category获取brands
   rpc CreateCategoryBrand (CreateCategoryBrandRequest) returns (CategoryBrandResponse); //添加banner图片
   rpc DeleteCategoryBrand (common.IdRequest) returns (google.protobuf.Empty);//删除轮播图
   rpc UpdateCategoryBrand (UpdateCategoryBrandRequest) returns (google.protobuf.Empty); //修改轮播图

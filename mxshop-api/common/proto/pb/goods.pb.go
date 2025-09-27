@@ -2494,7 +2494,7 @@ const file_goods_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x14\n" +
 	"\x05index\x18\x02 \x01(\x04R\x05index\x12\x14\n" +
 	"\x05image\x18\x03 \x01(\tR\x05image\x12\x10\n" +
-	"\x03url\x18\x04 \x01(\tR\x03url2\xfb\v\n" +
+	"\x03url\x18\x04 \x01(\tR\x03url2\xfa\v\n" +
 	"\x05Goods\x12<\n" +
 	"\rGoodsPageList\x12\x17.GoodsFilterPageRequest\x1a\x12.GoodsListResponse\x129\n" +
 	"\rBatchGetGoods\x12\x14.BatchGoodsIdRequest\x1a\x12.GoodsListResponse\x126\n" +
@@ -2507,8 +2507,8 @@ const file_goods_proto_rawDesc = "" +
 	"\x0eCreateCategory\x12\x16.CreateCategoryRequest\x1a\x11.CategoryResponse\x12@\n" +
 	"\x0eDeleteCategory\x12\x16.DeleteCategoryRequest\x1a\x16.google.protobuf.Empty\x12@\n" +
 	"\x0eUpdateCategory\x12\x16.UpdateCategoryRequest\x1a\x16.google.protobuf.Empty\x12P\n" +
-	"\x15CategoryBrandPageList\x12\x1b.CategoryBrandFilterRequest\x1a\x1a.CategoryBrandListResponse\x12>\n" +
-	"\x14GetCategoryBrandList\x12\x12.common.IdsRequest\x1a\x12.BrandListResponse\x12J\n" +
+	"\x15CategoryBrandPageList\x12\x1b.CategoryBrandFilterRequest\x1a\x1a.CategoryBrandListResponse\x12=\n" +
+	"\x14GetCategoryBrandList\x12\x11.common.IdRequest\x1a\x12.BrandListResponse\x12J\n" +
 	"\x13CreateCategoryBrand\x12\x1b.CreateCategoryBrandRequest\x1a\x16.CategoryBrandResponse\x12@\n" +
 	"\x13DeleteCategoryBrand\x12\x11.common.IdRequest\x1a\x16.google.protobuf.Empty\x12J\n" +
 	"\x13UpdateCategoryBrand\x12\x1b.UpdateCategoryBrandRequest\x1a\x16.google.protobuf.Empty\x12<\n" +
@@ -2599,7 +2599,7 @@ var file_goods_proto_depIdxs = []int32{
 	18, // 22: Goods.DeleteCategory:input_type -> DeleteCategoryRequest
 	22, // 23: Goods.UpdateCategory:input_type -> UpdateCategoryRequest
 	9,  // 24: Goods.CategoryBrandPageList:input_type -> CategoryBrandFilterRequest
-	34, // 25: Goods.GetCategoryBrandList:input_type -> common.IdsRequest
+	36, // 25: Goods.GetCategoryBrandList:input_type -> common.IdRequest
 	8,  // 26: Goods.CreateCategoryBrand:input_type -> CreateCategoryBrandRequest
 	36, // 27: Goods.DeleteCategoryBrand:input_type -> common.IdRequest
 	11, // 28: Goods.UpdateCategoryBrand:input_type -> UpdateCategoryBrandRequest

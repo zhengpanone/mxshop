@@ -27,13 +27,13 @@ import (
 //	@Router			/v1/userop/userfavs/list [get]
 func GetFavList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
-	userFavRsp, err := global.UserFavSrvClient.GetFavList(context.Background(), &commonpb.UserFavRequest{UserId: int32(userId.(uint))})
+	userFavRsp, err := global.UserFavSrvClient.GetFavPageList(context.Background(), &commonpb.UserFavFilterPageRequest{UserId: userId.(uint64)})
 	if err != nil {
 		zap.S().Errorw("获取收藏列表失败")
 		HandleGrpcErrorToHttp(err, ctx, "用户操作srv")
 		return
 	}
-	goodsIds := make([]int32, 0)
+	goodsIds := make([]uint64, 0)
 	for _, item := range userFavRsp.Data {
 		goodsIds = append(goodsIds, item.GoodsId)
 	}
@@ -43,7 +43,7 @@ func GetFavList(ctx *gin.Context) {
 		})
 		return
 	}
-	goods, err := global.GoodsSrvClient.BatchGetGoods(context.Background(), &commonpb.BatchGoodsIdInfo{
+	goods, err := global.GoodsSrvClient.BatchGetGoods(context.Background(), &commonpb.BatchGoodsIdRequest{
 		Id: goodsIds,
 	})
 	if err != nil {
@@ -92,8 +92,8 @@ func AddUserFav(ctx *gin.Context) {
 		return
 	}
 	userId, _ := ctx.Get("userId")
-	_, err := global.UserFavSrvClient.AddUserFav(context.Background(), &commonpb.UserFavRequest{
-		UserId:  int32(userId.(uint)),
+	_, err := global.UserFavSrvClient.CreateUserFav(context.Background(), &commonpb.CreateUserFavRequest{
+		UserId:  userId.(uint64),
 		GoodsId: userFavForm.GoodsId,
 	})
 	if err != nil {
@@ -130,9 +130,9 @@ func DeleteUserFav(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.UserFavSrvClient.DeleteUserFav(context.Background(), &commonpb.UserFavRequest{
-		UserId:  int32(userId.(uint)),
-		GoodsId: int32(i),
+	_, err = global.UserFavSrvClient.DeleteUserFav(context.Background(), &commonpb.DeleteUserFavRequest{
+		UserId:  userId.(uint64),
+		GoodsId: uint64(i),
 	})
 	if err != nil {
 		zap.S().Errorw("删除收藏列表失败")
@@ -162,14 +162,14 @@ func DeleteUserFav(ctx *gin.Context) {
 func GetUserFavDetail(ctx *gin.Context) {
 	goodsId := ctx.Param("id")
 	userId, _ := ctx.Get("userId")
-	goodsIdInt, err := strconv.ParseInt(goodsId, 10, 32)
+	goodsIdInt, err := strconv.ParseUint(goodsId, 10, 64)
 	if err != nil {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.UserFavSrvClient.GetUserFavDetail(context.Background(), &commonpb.UserFavRequest{
-		UserId:  int32(userId.(uint)),
-		GoodsId: int32(goodsIdInt),
+	_, err = global.UserFavSrvClient.GetUserFavDetail(context.Background(), &commonpb.DetailUserFavRequest{
+		UserId:  userId.(uint64),
+		GoodsId: goodsIdInt,
 	})
 	if err != nil {
 		zap.S().Errorw("获取商品收藏状态失败")

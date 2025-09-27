@@ -72,7 +72,7 @@ func (c *CategoryController) GetCategoryList(ctx *gin.Context) {
 //	@Router			/v1/goods/category/detail/{id} [get]
 func (c *CategoryController) Detail(ctx *gin.Context) {
 	id := ctx.Param("id")
-	i, err := strconv.ParseInt(id, 10, 32)
+	categoryId, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		ctx.Status(http.StatusNotFound)
 		return
@@ -80,7 +80,7 @@ func (c *CategoryController) Detail(ctx *gin.Context) {
 	reMap := make(map[string]interface{})
 	subCategorys := make([]interface{}, 0)
 	if r, err := global.GoodsSrvClient.GetSubCategory(context.Background(), &commonpb.CategoryListRequest{
-		Id: int32(i),
+		Id: categoryId,
 	}); err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
@@ -128,7 +128,7 @@ func (c *CategoryController) CreateCategory(ctx *gin.Context) {
 		return
 	}
 	goodsClient := global.GoodsSrvClient
-	rsp, err := goodsClient.CreateCategory(context.Background(), &commonpb.CategoryInfoRequest{
+	rsp, err := goodsClient.CreateCategory(context.Background(), &commonpb.CreateCategoryRequest{
 		Name:           categoryForm.Name,
 		IsTab:          *categoryForm.IsTab,
 		Level:          categoryForm.Level,
@@ -172,13 +172,13 @@ func (c *CategoryController) UpdateCategory(ctx *gin.Context) {
 		return
 	}
 	id := ctx.Param("id")
-	idInt, err := strconv.ParseInt(id, 10, 32)
+	idInt, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	request := &commonpb.CategoryInfoRequest{
-		Id:   int32(idInt),
+	request := &commonpb.UpdateCategoryRequest{
+		Id:   idInt,
 		Name: categoryForm.Name,
 	}
 	if categoryForm.IsTab != nil {

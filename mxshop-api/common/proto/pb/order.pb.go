@@ -69,9 +69,9 @@ func (x *UserInfo) GetId() uint64 {
 type ShopCartInfoResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId        int32                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
-	GoodsId       int32                  `protobuf:"varint,3,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
-	Nums          int32                  `protobuf:"varint,4,opt,name=nums,proto3" json:"nums,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,3,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	Nums          uint64                 `protobuf:"varint,4,opt,name=nums,proto3" json:"nums,omitempty"`
 	Checked       bool                   `protobuf:"varint,5,opt,name=checked,proto3" json:"checked,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -114,21 +114,21 @@ func (x *ShopCartInfoResponse) GetId() uint64 {
 	return 0
 }
 
-func (x *ShopCartInfoResponse) GetUserId() int32 {
+func (x *ShopCartInfoResponse) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *ShopCartInfoResponse) GetGoodsId() int32 {
+func (x *ShopCartInfoResponse) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
 	return 0
 }
 
-func (x *ShopCartInfoResponse) GetNums() int32 {
+func (x *ShopCartInfoResponse) GetNums() uint64 {
 	if x != nil {
 		return x.Nums
 	}
@@ -144,7 +144,7 @@ func (x *ShopCartInfoResponse) GetChecked() bool {
 
 type CartItemListResponse struct {
 	state         protoimpl.MessageState  `protogen:"open.v1"`
-	Total         int32                   `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	Total         uint64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
 	Data          []*ShopCartInfoResponse `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -180,7 +180,7 @@ func (*CartItemListResponse) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CartItemListResponse) GetTotal() int32 {
+func (x *CartItemListResponse) GetTotal() uint64 {
 	if x != nil {
 		return x.Total
 	}
@@ -196,9 +196,9 @@ func (x *CartItemListResponse) GetData() []*ShopCartInfoResponse {
 
 type CartItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
-	Nums          int32                  `protobuf:"varint,3,opt,name=nums,proto3" json:"nums,omitempty"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	Nums          uint64                 `protobuf:"varint,3,opt,name=nums,proto3" json:"nums,omitempty"`
 	Checked       bool                   `protobuf:"varint,4,opt,name=checked,proto3" json:"checked,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -234,21 +234,21 @@ func (*CartItemRequest) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CartItemRequest) GetUserId() int32 {
+func (x *CartItemRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *CartItemRequest) GetGoodsId() int32 {
+func (x *CartItemRequest) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
 	return 0
 }
 
-func (x *CartItemRequest) GetNums() int32 {
+func (x *CartItemRequest) GetNums() uint64 {
 	if x != nil {
 		return x.Nums
 	}
@@ -265,7 +265,7 @@ func (x *CartItemRequest) GetChecked() bool {
 type OrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId        int32                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
 	Address       string                 `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
 	Mobile        string                 `protobuf:"bytes,4,opt,name=mobile,proto3" json:"mobile,omitempty"`
 	Name          string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
@@ -311,7 +311,7 @@ func (x *OrderRequest) GetId() uint64 {
 	return 0
 }
 
-func (x *OrderRequest) GetUserId() int32 {
+func (x *OrderRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
@@ -349,7 +349,7 @@ func (x *OrderRequest) GetPost() string {
 type OrderResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId        int32                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
 	OrderSn       string                 `protobuf:"bytes,3,opt,name=orderSn,proto3" json:"orderSn,omitempty"`
 	PayType       string                 `protobuf:"bytes,4,opt,name=payType,proto3" json:"payType,omitempty"`
 	Status        string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
@@ -400,7 +400,7 @@ func (x *OrderResponse) GetId() uint64 {
 	return 0
 }
 
-func (x *OrderResponse) GetUserId() int32 {
+func (x *OrderResponse) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
@@ -524,9 +524,9 @@ func (x *OrderPageResponse) GetData() []*OrderResponse {
 
 type OrderFilterPageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
-	Size          int32                  `protobuf:"varint,3,opt,name=size,proto3" json:"size,omitempty"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	Page          uint64                 `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	Size          uint64                 `protobuf:"varint,3,opt,name=size,proto3" json:"size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -561,21 +561,21 @@ func (*OrderFilterPageRequest) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *OrderFilterPageRequest) GetUserId() int32 {
+func (x *OrderFilterPageRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *OrderFilterPageRequest) GetPage() int32 {
+func (x *OrderFilterPageRequest) GetPage() uint64 {
 	if x != nil {
 		return x.Page
 	}
 	return 0
 }
 
-func (x *OrderFilterPageRequest) GetSize() int32 {
+func (x *OrderFilterPageRequest) GetSize() uint64 {
 	if x != nil {
 		return x.Size
 	}
@@ -585,12 +585,12 @@ func (x *OrderFilterPageRequest) GetSize() int32 {
 type OrderItemResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	OrderId       int32                  `protobuf:"varint,2,opt,name=orderId,proto3" json:"orderId,omitempty"`
-	GoodsId       int32                  `protobuf:"varint,3,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	OrderId       uint64                 `protobuf:"varint,2,opt,name=orderId,proto3" json:"orderId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,3,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
 	GoodsName     string                 `protobuf:"bytes,4,opt,name=goodsName,proto3" json:"goodsName,omitempty"`
 	GoodsImage    string                 `protobuf:"bytes,5,opt,name=goodsImage,proto3" json:"goodsImage,omitempty"`
 	GoodsPrice    float32                `protobuf:"fixed32,6,opt,name=goodsPrice,proto3" json:"goodsPrice,omitempty"`
-	Nums          int32                  `protobuf:"varint,7,opt,name=nums,proto3" json:"nums,omitempty"`
+	Nums          uint64                 `protobuf:"varint,7,opt,name=nums,proto3" json:"nums,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -632,14 +632,14 @@ func (x *OrderItemResponse) GetId() uint64 {
 	return 0
 }
 
-func (x *OrderItemResponse) GetOrderId() int32 {
+func (x *OrderItemResponse) GetOrderId() uint64 {
 	if x != nil {
 		return x.OrderId
 	}
 	return 0
 }
 
-func (x *OrderItemResponse) GetGoodsId() int32 {
+func (x *OrderItemResponse) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
@@ -667,7 +667,7 @@ func (x *OrderItemResponse) GetGoodsPrice() float32 {
 	return 0
 }
 
-func (x *OrderItemResponse) GetNums() int32 {
+func (x *OrderItemResponse) GetNums() uint64 {
 	if x != nil {
 		return x.Nums
 	}
@@ -787,28 +787,28 @@ const file_order_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\"\x86\x01\n" +
 	"\x14ShopCartInfoResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x16\n" +
-	"\x06userId\x18\x02 \x01(\x05R\x06userId\x12\x18\n" +
-	"\agoodsId\x18\x03 \x01(\x05R\agoodsId\x12\x12\n" +
-	"\x04nums\x18\x04 \x01(\x05R\x04nums\x12\x18\n" +
+	"\x06userId\x18\x02 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x03 \x01(\x04R\agoodsId\x12\x12\n" +
+	"\x04nums\x18\x04 \x01(\x04R\x04nums\x12\x18\n" +
 	"\achecked\x18\x05 \x01(\bR\achecked\"W\n" +
 	"\x14CartItemListResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x05R\x05total\x12)\n" +
+	"\x05total\x18\x01 \x01(\x04R\x05total\x12)\n" +
 	"\x04data\x18\x02 \x03(\v2\x15.ShopCartInfoResponseR\x04data\"q\n" +
 	"\x0fCartItemRequest\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
-	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\x12\x12\n" +
-	"\x04nums\x18\x03 \x01(\x05R\x04nums\x12\x18\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x04R\agoodsId\x12\x12\n" +
+	"\x04nums\x18\x03 \x01(\x04R\x04nums\x12\x18\n" +
 	"\achecked\x18\x04 \x01(\bR\achecked\"\x90\x01\n" +
 	"\fOrderRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x16\n" +
-	"\x06userId\x18\x02 \x01(\x05R\x06userId\x12\x18\n" +
+	"\x06userId\x18\x02 \x01(\x04R\x06userId\x12\x18\n" +
 	"\aaddress\x18\x03 \x01(\tR\aaddress\x12\x16\n" +
 	"\x06mobile\x18\x04 \x01(\tR\x06mobile\x12\x12\n" +
 	"\x04name\x18\x05 \x01(\tR\x04name\x12\x12\n" +
 	"\x04post\x18\x06 \x01(\tR\x04post\"\x8d\x02\n" +
 	"\rOrderResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x16\n" +
-	"\x06userId\x18\x02 \x01(\x05R\x06userId\x12\x18\n" +
+	"\x06userId\x18\x02 \x01(\x04R\x06userId\x12\x18\n" +
 	"\aorderSn\x18\x03 \x01(\tR\aorderSn\x12\x18\n" +
 	"\apayType\x18\x04 \x01(\tR\apayType\x12\x16\n" +
 	"\x06status\x18\x05 \x01(\tR\x06status\x12\x12\n" +
@@ -823,13 +823,13 @@ const file_order_proto_rawDesc = "" +
 	"\x04page\x18\x01 \x01(\v2\x14.common.PageResponseR\x04page\x12\"\n" +
 	"\x04data\x18\x02 \x03(\v2\x0e.OrderResponseR\x04data\"X\n" +
 	"\x16OrderFilterPageRequest\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
-	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x12\n" +
-	"\x04size\x18\x03 \x01(\x05R\x04size\"\xc9\x01\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x04R\x04page\x12\x12\n" +
+	"\x04size\x18\x03 \x01(\x04R\x04size\"\xc9\x01\n" +
 	"\x11OrderItemResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x18\n" +
-	"\aorderId\x18\x02 \x01(\x05R\aorderId\x12\x18\n" +
-	"\agoodsId\x18\x03 \x01(\x05R\agoodsId\x12\x1c\n" +
+	"\aorderId\x18\x02 \x01(\x04R\aorderId\x12\x18\n" +
+	"\agoodsId\x18\x03 \x01(\x04R\agoodsId\x12\x1c\n" +
 	"\tgoodsName\x18\x04 \x01(\tR\tgoodsName\x12\x1e\n" +
 	"\n" +
 	"goodsImage\x18\x05 \x01(\tR\n" +
@@ -837,7 +837,7 @@ const file_order_proto_rawDesc = "" +
 	"\n" +
 	"goodsPrice\x18\x06 \x01(\x02R\n" +
 	"goodsPrice\x12\x12\n" +
-	"\x04nums\x18\a \x01(\x05R\x04nums\"m\n" +
+	"\x04nums\x18\a \x01(\x04R\x04nums\"m\n" +
 	"\x13OrderDetailResponse\x12,\n" +
 	"\torderInfo\x18\x01 \x01(\v2\x0e.OrderResponseR\torderInfo\x12(\n" +
 	"\x05goods\x18\x02 \x03(\v2\x12.OrderItemResponseR\x05goods\"?\n" +

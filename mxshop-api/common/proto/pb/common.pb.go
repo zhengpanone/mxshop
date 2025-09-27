@@ -120,7 +120,7 @@ func (x *IdRequest) GetId() uint64 {
 
 type IdsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ids           []*IdRequest           `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
+	Ids           []uint64               `protobuf:"varint,1,rep,packed,name=ids,proto3" json:"ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -155,7 +155,7 @@ func (*IdsRequest) Descriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *IdsRequest) GetIds() []*IdRequest {
+func (x *IdsRequest) GetIds() []uint64 {
 	if x != nil {
 		return x.Ids
 	}
@@ -299,10 +299,10 @@ const file_common_proto_rawDesc = "" +
 	"\apageNum\x18\x01 \x01(\x04R\apageNum\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x04R\bpageSize\"\x1b\n" +
 	"\tIdRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"1\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\"\x1e\n" +
 	"\n" +
-	"IdsRequest\x12#\n" +
-	"\x03ids\x18\x01 \x03(\v2\x11.common.IdRequestR\x03ids\"q\n" +
+	"IdsRequest\x12\x10\n" +
+	"\x03ids\x18\x01 \x03(\x04R\x03ids\"q\n" +
 	"\x11TimestampResponse\x12\x1e\n" +
 	"\n" +
 	"createTime\x18\x01 \x01(\x03R\n" +
@@ -338,12 +338,11 @@ var file_common_proto_goTypes = []any{
 	(*PageResponse)(nil),      // 4: common.PageResponse
 }
 var file_common_proto_depIdxs = []int32{
-	1, // 0: common.IdsRequest.ids:type_name -> common.IdRequest
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }

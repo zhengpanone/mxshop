@@ -55,11 +55,11 @@ class IdsRequest(google.protobuf.message.Message):
 
     IDS_FIELD_NUMBER: builtins.int
     @property
-    def ids(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___IdRequest]: ...
+    def ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.int]: ...
     def __init__(
         self,
         *,
-        ids: collections.abc.Iterable[global___IdRequest] | None = ...,
+        ids: collections.abc.Iterable[builtins.int] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["ids", b"ids"]) -> None: ...
 

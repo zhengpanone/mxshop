@@ -32,14 +32,14 @@ type ShopCartApi struct{}
 func (*ShopCartApi) GetShopCartList(ctx *gin.Context) {
 	userId, _ := ctx.Get("userId")
 	rsp, err := global.OrderSrvClient.CarItemList(context.Background(), &commonpb.UserInfo{
-		Id: int32(userId.(uint)),
+		Id: userId.(uint64),
 	})
 	if err != nil {
 		zap.S().Errorw("查询【购物车列表】失败")
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
 		return
 	}
-	ids := make([]int32, 0)
+	ids := make([]uint64, 0)
 	for _, item := range rsp.Data {
 		ids = append(ids, item.GoodsId)
 	}
@@ -50,7 +50,7 @@ func (*ShopCartApi) GetShopCartList(ctx *gin.Context) {
 		return
 	}
 	// 请求商品服务获取商品信息
-	goodsRsp, err := global.GoodsSrvClient.BatchGetGoods(context.Background(), &commonpb.BatchGoodsIdInfo{Id: ids})
+	goodsRsp, err := global.GoodsSrvClient.BatchGetGoods(context.Background(), &commonpb.BatchGoodsIdRequest{Id: ids})
 	if err != nil {
 		zap.S().Errorw("批量查询【商品列表】失败")
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
@@ -103,7 +103,7 @@ func (*ShopCartApi) NewShopCart(ctx *gin.Context) {
 		return
 	}
 	// 添加商品到购物车前，检查商品是否存在
-	_, err := global.GoodsSrvClient.GetGoodsDetail(context.Background(), &commonpb.GoodInfoRequest{
+	_, err := global.GoodsSrvClient.GetGoodsDetail(context.Background(), &commonpb.GoodsDetailRequest{
 		Id: itemForm.GoodsId,
 	})
 	if err != nil {
@@ -128,7 +128,7 @@ func (*ShopCartApi) NewShopCart(ctx *gin.Context) {
 	}
 	userId, _ := ctx.Get("userId")
 	rsp, err := global.OrderSrvClient.CreateCartItem(context.Background(), &commonpb.CartItemRequest{
-		UserId:  int32(userId.(uint)),
+		UserId:  userId.(uint64),
 		GoodsId: itemForm.GoodsId,
 		Nums:    itemForm.Nums,
 	})
@@ -153,7 +153,7 @@ func (*ShopCartApi) DeleteShopCart(ctx *gin.Context) {
 		return
 	}
 	userId, _ := ctx.Get("userId")
-	_, err = global.OrderSrvClient.DeleteCartItem(context.Background(), &commonpb.CartItemRequest{UserId: int32(userId.(uint)), GoodsId: int32(i)})
+	_, err = global.OrderSrvClient.DeleteCartItem(context.Background(), &commonpb.CartItemRequest{UserId: userId.(uint64), GoodsId: uint64(i)})
 	if err != nil {
 		zap.S().Errorw("删除购物车失败")
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "订单srv")
@@ -178,8 +178,8 @@ func (*ShopCartApi) UpdateShopCart(ctx *gin.Context) {
 	}
 	userId, _ := ctx.Get("userId")
 	request := commonpb.CartItemRequest{
-		UserId:  int32(userId.(uint)),
-		GoodsId: int32(i),
+		UserId:  userId.(uint64),
+		GoodsId: uint64(i),
 		Nums:    itemForm.Nums,
 		Checked: false,
 	}

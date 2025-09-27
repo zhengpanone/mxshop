@@ -24,8 +24,8 @@ const (
 
 type GoodsInvInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	GoodsId       int32                  `protobuf:"varint,1,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
-	Num           int32                  `protobuf:"varint,2,opt,name=num,proto3" json:"num,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,1,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	Num           uint64                 `protobuf:"varint,2,opt,name=num,proto3" json:"num,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -60,14 +60,14 @@ func (*GoodsInvInfo) Descriptor() ([]byte, []int) {
 	return file_inventory_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GoodsInvInfo) GetGoodsId() int32 {
+func (x *GoodsInvInfo) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
 	return 0
 }
 
-func (x *GoodsInvInfo) GetNum() int32 {
+func (x *GoodsInvInfo) GetNum() uint64 {
 	if x != nil {
 		return x.Num
 	}
@@ -124,8 +124,8 @@ const file_inventory_proto_rawDesc = "" +
 	"\n" +
 	"\x0finventory.proto\x1a\x1bgoogle/protobuf/empty.proto\":\n" +
 	"\fGoodsInvInfo\x12\x18\n" +
-	"\agoodsId\x18\x01 \x01(\x05R\agoodsId\x12\x10\n" +
-	"\x03num\x18\x02 \x01(\x05R\x03num\"7\n" +
+	"\agoodsId\x18\x01 \x01(\x04R\agoodsId\x12\x10\n" +
+	"\x03num\x18\x02 \x01(\x04R\x03num\"7\n" +
 	"\bSellInfo\x12+\n" +
 	"\tgoodsInfo\x18\x01 \x03(\v2\r.GoodsInvInfoR\tgoodsInfo2\xbf\x01\n" +
 	"\tInventory\x12/\n" +

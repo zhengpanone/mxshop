@@ -37,7 +37,7 @@ type GoodsController struct{}
 //	@Failure		500		{object}	utils.Response	"服务器错误"
 //	@Router			/v1/goods/list [get]
 func (*GoodsController) GetGoodsList(ctx *gin.Context) {
-	request := &commonpb.GoodsFilterRequest{}
+	request := &commonpb.GoodsFilterPageRequest{}
 	priceMin := ctx.DefaultQuery("pMin", "0")
 	priceMinInt, _ := strconv.Atoi(priceMin)
 	request.PriceMin = int32(priceMinInt)
@@ -65,12 +65,12 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 	request.TopCategory = int32(categoryIdInt)
 
 	page := ctx.DefaultQuery("page", "1")
-	pageInt, _ := strconv.Atoi(page)
-	request.Page = uint32(pageInt)
+	pageInt, _ := strconv.ParseUint(page, 10, 64)
+	request.PageRequest.PageNum = pageInt
 
 	size := ctx.DefaultQuery("size", "10")
-	sizeInt, _ := strconv.Atoi(size)
-	request.Size = uint32(sizeInt)
+	sizeInt, _ := strconv.ParseUint(size, 10, 64)
+	request.PageRequest.PageNum = sizeInt
 
 	keywords := ctx.DefaultQuery("productName", "")
 	request.KeyWords = keywords
@@ -80,7 +80,7 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 	request.Brand = int32(brandInt)
 
 	// 请求商品service服务
-	r, err := global.GoodsSrvClient.GoodsList(context.WithValue(context.Background(), "ginContext", ctx), request)
+	r, err := global.GoodsSrvClient.GoodsPageList(context.WithValue(context.Background(), "ginContext", ctx), request)
 	if err != nil {
 		zap.S().Errorw("[GetGoodsList]查询【商品列表】失败")
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
@@ -89,9 +89,9 @@ func (*GoodsController) GetGoodsList(ctx *gin.Context) {
 
 	reMap := map[string]interface{}{
 		"total":     r.Total,
-		"totalPage": int(math.Ceil(float64(r.Total) / float64(request.Size))),
-		"pageNum":   request.Page,
-		"pageSize":  request.Size,
+		"totalPage": int(math.Ceil(float64(r.Total) / float64(request.PageRequest.PageSize))),
+		"pageNum":   request.PageRequest.PageNum,
+		"pageSize":  request.PageRequest.PageSize,
 	}
 	goodsList := make([]interface{}, 0)
 	for _, value := range r.Data {
@@ -144,7 +144,7 @@ func (*GoodsController) NewGoods(ctx *gin.Context) {
 		return
 	}
 	goodsClient := global.GoodsSrvClient
-	rsp, err := goodsClient.CreateGoods(context.Background(), &commonpb.CreateGoodsInfo{
+	rsp, err := goodsClient.CreateGoods(context.Background(), &commonpb.CreateGoodsRequest{
 		Name:            goodsForm.Name,
 		GoodsSn:         goodsForm.GoodsSn,
 		Stocks:          goodsForm.Stocks,
@@ -157,7 +157,7 @@ func (*GoodsController) NewGoods(ctx *gin.Context) {
 		DescImages:      goodsForm.DescImages,
 		GoodsFrontImage: goodsForm.FrontImage,
 		CategoryId:      goodsForm.CategoryId,
-		BrandId:         goodsForm.Brand,
+		BrandId:         goodsForm.BrandId,
 	})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
@@ -188,9 +188,9 @@ func (*GoodsController) UpdateStatus(ctx *gin.Context) {
 		return
 	}
 	id := ctx.Param("id")
-	i, err := strconv.ParseInt(id, 10, 32)
-	if _, err = global.GoodsSrvClient.UpdateGoods(context.Background(), &commonpb.CreateGoodsInfo{
-		Id:     int32(i),
+	goodsId, err := strconv.ParseUint(id, 10, 64)
+	if _, err = global.GoodsSrvClient.UpdateGoods(context.Background(), &commonpb.UpdateGoodsRequest{
+		Id:     goodsId,
 		IsHot:  *goodsStatusForm.IsHot,
 		IsNew:  *goodsStatusForm.IsNew,
 		OnSale: *goodsStatusForm.OnSale,

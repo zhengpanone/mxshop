@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonRequest "github.com/zhengpanone/mxshop/mxshop-api/common/request"
 	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
@@ -33,7 +34,7 @@ func (*BrandController) NewBrand(ctx *gin.Context) {
 		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
-	rsp, err := global.GoodsSrvClient.CreateBrand(context.Background(), &commonpb.BrandRequest{
+	rsp, err := global.GoodsSrvClient.CreateBrand(context.Background(), &commonpb.CreateBrandRequest{
 		Name: brandForm.Name,
 		Logo: brandForm.Logo,
 	})
@@ -63,13 +64,13 @@ func (*BrandController) NewBrand(ctx *gin.Context) {
 //	@Failure		500		{object}	utils.Response	"服务器错误"
 //	@Router			/v1/brand/delete/{id} [delete]
 func (*BrandController) DeleteBrand(ctx *gin.Context) {
-	id := ctx.Param("id")
-	idInt, err := strconv.ParseInt(id, 10, 32)
-	if err != nil {
-		ctx.Status(http.StatusNotFound)
+	var commonIds commonRequest.CommonIds
+	if err := ctx.ShouldBindJSON(&commonIds); err != nil {
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &commonpb.BrandRequest{Id: int32(idInt)})
+
+	_, err := global.GoodsSrvClient.DeleteBrand(context.Background(), &commonpb.IdsRequest{Ids: commonIds.Ids})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
@@ -99,13 +100,13 @@ func (*BrandController) UpdateBrand(ctx *gin.Context) {
 		return
 	}
 	id := ctx.Param("id")
-	idInt, err := strconv.ParseInt(id, 10, 32)
+	idInt, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &commonpb.BrandRequest{
-		Id:   int32(idInt),
+	_, err = global.GoodsSrvClient.UpdateBrand(context.Background(), &commonpb.UpdateBrandRequest{
+		Id:   idInt,
 		Name: brandForm.Name,
 		Logo: brandForm.Logo,
 	})
@@ -136,7 +137,7 @@ func (*BrandController) GetBrandList(ctx *gin.Context) {
 	size := ctx.DefaultQuery("size", "10")
 	sizeInt, _ := strconv.Atoi(size)
 
-	rsp, err := global.GoodsSrvClient.BrandList(context.Background(), &commonpb.BrandFilterRequest{
+	rsp, err := global.GoodsSrvClient.BrandPageList(context.Background(), &commonpb.BrandFilterPageRequest{
 		Page: int32(pageInt),
 		Size: int32(sizeInt),
 	})
@@ -179,8 +180,8 @@ func (*BrandController) GetCategoryBrandList(ctx *gin.Context) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	resp, err := global.GoodsSrvClient.GetCategoryBrandList(context.Background(), &commonpb.CategoryBrandInfoRequest{
-		Id: int32(categoryId),
+	resp, err := global.GoodsSrvClient.GetCategoryBrandList(context.Background(), &commonpb.IdRequest{
+		Id: uint64(categoryId),
 	})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
@@ -239,7 +240,7 @@ func (*BrandController) CategoryBrandList(ctx *gin.Context) {
 			"data":[{},{}]
 		}
 	*/
-	rsp, err := global.GoodsSrvClient.CategoryBrandList(context.Background(), &commonpb.CategoryBrandFilterRequest{})
+	rsp, err := global.GoodsSrvClient.CategoryBrandPageList(context.Background(), &commonpb.CategoryBrandFilterRequest{})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return

@@ -5,7 +5,7 @@ type PageRequest struct {
 	PageSize int `json:"pageSize" form:"pageSize" binding:"required,min=1,max=100"` // 每页大小
 }
 type CommonIds struct {
-	Ids []interface{} `json:"ids"`
+	Ids []uint64 `json:"ids" form:"ids"`
 }
 
 type Empty struct{}

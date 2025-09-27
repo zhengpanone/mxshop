@@ -24,8 +24,8 @@ const (
 
 type UserFavFilterPageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -60,14 +60,14 @@ func (*UserFavFilterPageRequest) Descriptor() ([]byte, []int) {
 	return file_userfav_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UserFavFilterPageRequest) GetUserId() int32 {
+func (x *UserFavFilterPageRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *UserFavFilterPageRequest) GetGoodsId() int32 {
+func (x *UserFavFilterPageRequest) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
@@ -76,8 +76,8 @@ func (x *UserFavFilterPageRequest) GetGoodsId() int32 {
 
 type CreateUserFavRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -112,14 +112,14 @@ func (*CreateUserFavRequest) Descriptor() ([]byte, []int) {
 	return file_userfav_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateUserFavRequest) GetUserId() int32 {
+func (x *CreateUserFavRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *CreateUserFavRequest) GetGoodsId() int32 {
+func (x *CreateUserFavRequest) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
@@ -128,8 +128,8 @@ func (x *CreateUserFavRequest) GetGoodsId() int32 {
 
 type UserFavResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -164,14 +164,14 @@ func (*UserFavResponse) Descriptor() ([]byte, []int) {
 	return file_userfav_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *UserFavResponse) GetUserId() int32 {
+func (x *UserFavResponse) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *UserFavResponse) GetGoodsId() int32 {
+func (x *UserFavResponse) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
@@ -180,8 +180,8 @@ func (x *UserFavResponse) GetGoodsId() int32 {
 
 type UserFavDetailResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	GoodsId       int32                  `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	GoodsId       uint64                 `protobuf:"varint,2,opt,name=goodsId,proto3" json:"goodsId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -216,14 +216,14 @@ func (*UserFavDetailResponse) Descriptor() ([]byte, []int) {
 	return file_userfav_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *UserFavDetailResponse) GetUserId() int32 {
+func (x *UserFavDetailResponse) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *UserFavDetailResponse) GetGoodsId() int32 {
+func (x *UserFavDetailResponse) GetGoodsId() uint64 {
 	if x != nil {
 		return x.GoodsId
 	}
@@ -232,7 +232,7 @@ func (x *UserFavDetailResponse) GetGoodsId() int32 {
 
 type UserFavListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Total         int32                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	Total         uint64                 `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
 	Data          []*UserFavResponse     `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -268,7 +268,7 @@ func (*UserFavListResponse) Descriptor() ([]byte, []int) {
 	return file_userfav_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UserFavListResponse) GetTotal() int32 {
+func (x *UserFavListResponse) GetTotal() uint64 {
 	if x != nil {
 		return x.Total
 	}
@@ -392,19 +392,19 @@ const file_userfav_proto_rawDesc = "" +
 	"\n" +
 	"\ruserfav.proto\x1a\x1bgoogle/protobuf/empty.proto\"L\n" +
 	"\x18UserFavFilterPageRequest\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
-	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"H\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x04R\agoodsId\"H\n" +
 	"\x14CreateUserFavRequest\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
-	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"C\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x04R\agoodsId\"C\n" +
 	"\x0fUserFavResponse\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
-	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"I\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x04R\agoodsId\"I\n" +
 	"\x15UserFavDetailResponse\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x05R\x06userId\x12\x18\n" +
-	"\agoodsId\x18\x02 \x01(\x05R\agoodsId\"Q\n" +
+	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +
+	"\agoodsId\x18\x02 \x01(\x04R\agoodsId\"Q\n" +
 	"\x13UserFavListResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x05R\x05total\x12$\n" +
+	"\x05total\x18\x01 \x01(\x04R\x05total\x12$\n" +
 	"\x04data\x18\x02 \x03(\v2\x10.UserFavResponseR\x04data\"H\n" +
 	"\x14DeleteUserFavRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x04R\x06userId\x12\x18\n" +

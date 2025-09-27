@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
+	commonRequest "github.com/zhengpanone/mxshop/mxshop-api/common/request"
 	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
 	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
 	"github.com/zhengpanone/mxshop/mxshop-api/goods-web/forms"
@@ -30,7 +31,7 @@ type BannerController struct{}
 //	@Failure		500		{object}	utils.Response	"服务器错误"
 //	@Router			/v1/banner [get]
 func (*BannerController) ListBanner(ctx *gin.Context) {
-	rsp, err := global.GoodsSrvClient.BannerList(context.Background(), &emptypb.Empty{})
+	rsp, err := global.GoodsSrvClient.BannerPageList(context.Background(), &emptypb.Empty{})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return
@@ -68,8 +69,8 @@ func (*BannerController) NewBanner(ctx *gin.Context) {
 	}
 
 	rsp, err := global.GoodsSrvClient.CreateBanner(context.Background(),
-		&commonpb.BannerRequest{
-			Index: int32(bannerForm.Index),
+		&commonpb.CreateBannerRequest{
+			Index: uint64(bannerForm.Index),
 			Url:   bannerForm.Url,
 			Image: bannerForm.Image,
 		})
@@ -109,14 +110,14 @@ func (*BannerController) UpdateBanner(ctx *gin.Context) {
 		return
 	}
 	id := ctx.Param("id")
-	idInt, err := strconv.ParseInt(id, 10, 32)
+	idInt, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.UpdateBanner(context.Background(), &commonpb.BannerRequest{
-		Id:    int32(idInt),
-		Index: int32(bannerForm.Index),
+	_, err = global.GoodsSrvClient.UpdateBanner(context.Background(), &commonpb.UpdateBannerRequest{
+		Id:    idInt,
+		Index: bannerForm.Index,
 		Url:   bannerForm.Url,
 	})
 	if err != nil {
@@ -141,13 +142,12 @@ func (*BannerController) UpdateBanner(ctx *gin.Context) {
 //	@Failure		500		{object}	utils.Response	"服务器错误"
 //	@Router			/v1/banner/{id} [delete]
 func (*BannerController) DeleteBanner(ctx *gin.Context) {
-	id := ctx.Param("id")
-	idInt, err := strconv.ParseInt(id, 10, 32)
-	if err != nil {
-		ctx.Status(http.StatusNotFound)
+	var commonIds commonRequest.CommonIds
+	if err := ctx.ShouldBindJSON(&commonIds); err != nil {
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBanner(context.Background(), &commonpb.BannerRequest{Id: int32(idInt)})
+	_, err := global.GoodsSrvClient.DeleteBanner(context.Background(), &commonpb.IdsRequest{Ids: commonIds.Ids})
 	if err != nil {
 		commonUtils.HandleGrpcErrorToHttp(err, ctx, "商品srv")
 		return

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63ommon.proto\x12\x06\x63ommon\"0\n\x0bPageRequest\x12\x0f\n\x07pageNum\x18\x01 \x01(\x04\x12\x10\n\x08pageSize\x18\x02 \x01(\x04\"\x17\n\tIdRequest\x12\n\n\x02id\x18\x01 \x01(\x04\",\n\nIdsRequest\x12\x1e\n\x03ids\x18\x01 \x03(\x0b\x32\x11.common.IdRequest\"N\n\x11TimestampResponse\x12\x12\n\ncreateTime\x18\x01 \x01(\x03\x12\x12\n\nupdateTime\x18\x02 \x01(\x03\x12\x11\n\tisDeleted\x18\x03 \x01(\x03\"S\n\x0cPageResponse\x12\x0f\n\x07pageNum\x18\x01 \x01(\x04\x12\x10\n\x08pageSize\x18\x02 \x01(\x04\x12\r\n\x05total\x18\x03 \x01(\x04\x12\x11\n\ttotalPage\x18\x04 \x01(\x04\x42\tZ\x07.;protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63ommon.proto\x12\x06\x63ommon\"0\n\x0bPageRequest\x12\x0f\n\x07pageNum\x18\x01 \x01(\x04\x12\x10\n\x08pageSize\x18\x02 \x01(\x04\"\x17\n\tIdRequest\x12\n\n\x02id\x18\x01 \x01(\x04\"\x19\n\nIdsRequest\x12\x0b\n\x03ids\x18\x01 \x03(\x04\"N\n\x11TimestampResponse\x12\x12\n\ncreateTime\x18\x01 \x01(\x03\x12\x12\n\nupdateTime\x18\x02 \x01(\x03\x12\x11\n\tisDeleted\x18\x03 \x01(\x03\"S\n\x0cPageResponse\x12\x0f\n\x07pageNum\x18\x01 \x01(\x04\x12\x10\n\x08pageSize\x18\x02 \x01(\x04\x12\r\n\x05total\x18\x03 \x01(\x04\x12\x11\n\ttotalPage\x18\x04 \x01(\x04\x42\tZ\x07.;protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,9 +37,9 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_IDREQUEST']._serialized_start=74
   _globals['_IDREQUEST']._serialized_end=97
   _globals['_IDSREQUEST']._serialized_start=99
-  _globals['_IDSREQUEST']._serialized_end=143
-  _globals['_TIMESTAMPRESPONSE']._serialized_start=145
-  _globals['_TIMESTAMPRESPONSE']._serialized_end=223
-  _globals['_PAGERESPONSE']._serialized_start=225
-  _globals['_PAGERESPONSE']._serialized_end=308
+  _globals['_IDSREQUEST']._serialized_end=124
+  _globals['_TIMESTAMPRESPONSE']._serialized_start=126
+  _globals['_TIMESTAMPRESPONSE']._serialized_end=204
+  _globals['_PAGERESPONSE']._serialized_start=206
+  _globals['_PAGERESPONSE']._serialized_end=289
 # @@protoc_insertion_point(module_scope)
