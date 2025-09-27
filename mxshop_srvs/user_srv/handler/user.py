@@ -2,18 +2,21 @@ import time
 
 import grpc
 import peewee
+from google.protobuf import empty_pb2
 from passlib.handlers.pbkdf2 import pbkdf2_sha256
 
-from user_srv.proto import user_pb2, user_pb2_grpc
+from common.proto.pb import user_pb2, user_pb2_grpc
+from common.utils.page import make_page_response
 from user_srv.model.models import User
 
 from loguru import logger
+from math import ceil
 
 
 class UserServicer(user_pb2_grpc.UserServicer):
 
     def convert_user_to_rsp(self, user):
-        user_info_rsp = user_pb2.UserInfoResponse()
+        user_info_rsp = user_pb2.UserResponse()
         user_info_rsp.id = user.id
         user_info_rsp.password = user.password
         user_info_rsp.mobile = user.mobile
@@ -27,22 +30,25 @@ class UserServicer(user_pb2_grpc.UserServicer):
         return user_info_rsp
 
     @logger.catch
-    def GetUserList(self, request: user_pb2.PageInfo, context):
-        print("--------")
-        rsp = user_pb2.UserListResponse()
-        size = 10
-        page = 1
-        if request.size:
-            size = request.size
-        if request.page:
-            page = request.page
+    def GetUserPageList(self, request: user_pb2.UserFilterPageInfo, context):
+        rsp = user_pb2.UserPageResponse()
+        pageSize = 10
+        pageNum = 1
+        page_request = request.pageRequest
+        if page_request.pageSize:
+            pageSize = page_request.pageSize
+        if page_request.pageNum:
+            pageNum = page_request.pageNum
 
-        users = User.select().paginate(page, size)
-        rsp.total = users.count()
+        users = User.select().paginate(pageNum, pageSize)
+        total = users.count()
+
+        page_response = make_page_response(total=total,page=page_request)
+        rsp.page.CopyFrom(page_response)
 
         for user in users:
             user_info_rsp = self.convert_user_to_rsp(user)
-            rsp.data.append(user_info_rsp)
+            rsp.list.append(user_info_rsp)
 
         return rsp
 
@@ -54,7 +60,7 @@ class UserServicer(user_pb2_grpc.UserServicer):
         except peewee.DoesNotExist:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details('用户不存在')
-            return user_pb2.UserInfoResponse()
+            return user_pb2.UserResponse()
 
     @logger.catch
     def GetUserByMobile(self, request, context):
@@ -64,20 +70,20 @@ class UserServicer(user_pb2_grpc.UserServicer):
         except peewee.DoesNotExist:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details('用户不存在')
-            return user_pb2.UserInfoResponse()
+            return user_pb2.UserResponse()
 
     @logger.catch
-    def CheckPassword(self, request: user_pb2.PasswordCheckInfo, context):
-        return user_pb2.CheckPasswordResponse(success=pbkdf2_sha256.verify(request.password, request.encryptedPassword))
+    def CheckPassword(self, request: user_pb2.PasswordCheckRequest, context):
+        return user_pb2.PasswordCheckRequest(success=pbkdf2_sha256.verify(request.password, request.encryptedPassword))
 
     @logger.catch
-    def CreateUser(self, request:user_pb2.CreateUserInfo, context):
+    def CreateUser(self, request:user_pb2.CreateUserRequest, context):
         try:
             User.get(User.mobile == request.mobile)
 
             context.set_code(grpc.StatusCode.ALREADY_EXISTS)
             context.set_details("用户已存在")
-            return user_pb2.UserInfoResponse()
+            return user_pb2.UserResponse()
         except peewee.DoesNotExist as e:
             pass
 
@@ -89,3 +95,14 @@ class UserServicer(user_pb2_grpc.UserServicer):
         user.save()
 
         return self.convert_user_to_rsp(user)
+
+    @logger.catch
+    def DeleteUserByIds(self, request, context):
+        try:
+            User.delete().where(User.id.in_(request.ids)).execute()
+            context.set_code(grpc.StatusCode.OK)
+            return empty_pb2.Empty()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"用户删除失败:{str(e)}")
+            return empty_pb2.Empty()

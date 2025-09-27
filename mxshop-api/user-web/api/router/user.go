@@ -10,7 +10,7 @@ import (
 func InitUserRouter(router *gin.RouterGroup) {
 	UserRouter := router.Group("user")
 	{
-		UserRouter.GET("list", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey) /*, middleware.IsAdmin(), */, controller.GetUserList)
+		UserRouter.GET("getAdminList", commonMiddleware.JWTAuth(global.ServerConfig.JWTInfo.SigningKey) /*, middleware.IsAdmin(), */, controller.GetAdminUserList)
 		UserRouter.POST("pwd_login", controller.PasswordLogin)
 		UserRouter.POST("register", controller.Register)
 		UserRouter.POST("logout", controller.LogOut)

@@ -1,0 +1,85 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "common.proto";
+option go_package = ".;proto";
+
+service Dict{
+  rpc CreateDictType(CreateDictTypeRequest) returns (DictTypeResponse); // 创建字典类型
+  rpc UpdateDictType(UpdateDictTypeRequest) returns (google.protobuf.Empty);// 更新字典类型
+  rpc GetDictTypePageList(DictTypeFilterPageRequest) returns (DictTypeListResponse); //字典类型列表
+  rpc DeleteDictTypeByIds (common.IdsRequest) returns (google.protobuf.Empty); // 删除字典类型
+
+  rpc CreateDictItem(CreateDictItemRequest) returns (DictItemResponse); // 创建字典
+  rpc UpdateDictItem(UpdateDictItemRequest) returns (google.protobuf.Empty);// 更新字典
+  rpc GetDictItemPageList(DictItemFilterPageRequest) returns (DictItemPageListResponse); //字典列表
+  rpc DeleteDictItemByIds (common.IdsRequest) returns (google.protobuf.Empty); // 删除字典
+}
+
+message CreateDictTypeRequest{
+  bool systemFlag = 1;
+  string dictCode = 2;
+  string dictName = 3;
+  string remark = 4;
+  bool status = 5;
+}
+
+message DictTypeResponse{
+  int64 id = 1;
+  bool systemFlag = 2;
+  string dictCode = 3;
+  string dictName = 4;
+  string remark = 5;
+  bool status = 6;
+  common.TimestampResponse timestampResponse =7;
+}
+
+message UpdateDictTypeRequest{
+  int64 id = 1;
+  string name = 2;
+  string remark = 3;
+  bool status = 4;
+}
+
+message DictTypeFilterPageRequest{
+  common.PageRequest pageRequest = 1; // 分页参数
+  string name = 2;
+  string remark = 3;
+  bool status = 4;
+}
+
+message DictTypeListResponse{
+  int32 total = 1;
+  repeated DictTypeResponse data = 2;
+}
+
+message CreateDictItemRequest{
+  string name = 1;
+  string remark = 2;
+  bool status = 3;
+}
+
+message DictItemResponse{
+  int64 id = 1;
+  string name = 2;
+  string remark = 3;
+  bool status = 4;
+}
+
+message UpdateDictItemRequest{
+  int64 id = 1;
+  string name = 2;
+  string remark = 3;
+  bool status = 4;
+}
+
+message DictItemFilterPageRequest{
+  common.PageRequest pageRequest = 1; // 分页参数
+  string name = 2;
+  string remark = 3;
+  bool status = 4;
+}
+
+message DictItemPageListResponse{
+  int32 total = 1;
+  repeated DictItemResponse data = 2;
+}

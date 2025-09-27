@@ -83,6 +83,33 @@ class UserRole(BaseModel):
             (("user_id", "role_id"), True),  # 组合唯一索引
         )
 
+class DictType(BaseModel,TimestampMixin):
+    system_flag = BooleanField(default=True, verbose_name="是否系统内置")
+    dict_code = CharField(max_length=255, null=False,  unique=True, verbose_name="字典标识")
+    dict_name = CharField(max_length=255, null=False, verbose_name="字典名称")
+    remark = TextField(null=True, verbose_name="备注信息")
+    status = BooleanField(default=True, verbose_name="是否启用")
+
+    class Meta:
+        table_name = "dict_type"
+
+class DictItem(BaseModel,TimestampMixin):
+    dict_type_id =IntegerField(index=True, verbose_name="字典类ID")
+    dict_type = CharField(max_length=255, verbose_name="字典类型")
+    label = CharField(max_length=255,  verbose_name="标签名")
+    item_value = CharField(max_length=255,  verbose_name="数据值")
+    description= CharField(max_length=255, verbose_name="描述")
+    sort_order = IntegerField(verbose_name="排序")
+    remark = TextField(null=True, verbose_name="备注信息")
+    status = BooleanField(default=True, verbose_name="是否启用")
+
+
+    class Meta:
+        table_name = "dict_item"
+        indexes = (
+            (("dict_type", "item_value"), True),  # 组合唯一索引
+        )
+
 
 
 if __name__ == '__main__':
@@ -119,5 +146,5 @@ if __name__ == '__main__':
     #         print(user.birthday)
     #         u_time = int(time.mktime(user.birthday.timetuple()))
     #         print(date.fromtimestamp(u_time))
-    settings.DB.create_tables([User,Role,UserRole], safe=True)
+    settings.DB.create_tables([DictType,DictItem], safe=True)
     pass

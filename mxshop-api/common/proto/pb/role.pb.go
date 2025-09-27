@@ -220,7 +220,7 @@ func (x *UpdateRoleInfo) GetStatus() bool {
 
 type RoleFilterPageInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PageInfo      *PageInfo1             `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"` // 分页参数
+	PageRequest   *PageRequest           `protobuf:"bytes,1,opt,name=pageRequest,proto3" json:"pageRequest,omitempty"` // 分页参数
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Remark        string                 `protobuf:"bytes,3,opt,name=remark,proto3" json:"remark,omitempty"`
 	Status        bool                   `protobuf:"varint,4,opt,name=status,proto3" json:"status,omitempty"`
@@ -258,9 +258,9 @@ func (*RoleFilterPageInfo) Descriptor() ([]byte, []int) {
 	return file_role_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *RoleFilterPageInfo) GetPageInfo() *PageInfo1 {
+func (x *RoleFilterPageInfo) GetPageRequest() *PageRequest {
 	if x != nil {
-		return x.PageInfo
+		return x.PageRequest
 	}
 	return nil
 }
@@ -357,9 +357,9 @@ const file_role_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
 	"\x06remark\x18\x03 \x01(\tR\x06remark\x12\x16\n" +
-	"\x06status\x18\x04 \x01(\bR\x06status\"\x88\x01\n" +
-	"\x12RoleFilterPageInfo\x12.\n" +
-	"\tpage_info\x18\x01 \x01(\v2\x11.common.PageInfo1R\bpageInfo\x12\x12\n" +
+	"\x06status\x18\x04 \x01(\bR\x06status\"\x8f\x01\n" +
+	"\x12RoleFilterPageInfo\x125\n" +
+	"\vpageRequest\x18\x01 \x01(\v2\x13.common.PageRequestR\vpageRequest\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
 	"\x06remark\x18\x03 \x01(\tR\x06remark\x12\x16\n" +
 	"\x06status\x18\x04 \x01(\bR\x06status\"O\n" +
@@ -392,11 +392,11 @@ var file_role_proto_goTypes = []any{
 	(*UpdateRoleInfo)(nil),     // 2: UpdateRoleInfo
 	(*RoleFilterPageInfo)(nil), // 3: RoleFilterPageInfo
 	(*RoleListResponse)(nil),   // 4: RoleListResponse
-	(*PageInfo1)(nil),          // 5: common.PageInfo1
+	(*PageRequest)(nil),        // 5: common.PageRequest
 	(*emptypb.Empty)(nil),      // 6: google.protobuf.Empty
 }
 var file_role_proto_depIdxs = []int32{
-	5, // 0: RoleFilterPageInfo.page_info:type_name -> common.PageInfo1
+	5, // 0: RoleFilterPageInfo.pageRequest:type_name -> common.PageRequest
 	1, // 1: RoleListResponse.data:type_name -> RoleInfoResponse
 	0, // 2: Role.CreateRole:input_type -> CreateRoleInfo
 	2, // 3: Role.UpdateRole:input_type -> UpdateRoleInfo

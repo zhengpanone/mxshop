@@ -32,7 +32,7 @@ func removeTopStruct(fields map[string]string) map[string]string {
 	return rsp
 }
 
-// GetUserList 获取用户列表
+// GetAdminUserList 获取用户列表
 //
 //	@Summary		用户列表
 //	@Description	获取用户列表
@@ -45,13 +45,15 @@ func removeTopStruct(fields map[string]string) map[string]string {
 //	@success		200		{array}	response.UserResponse
 //	@Router			/v1/user/list [get]
 //	@ID				/v1/user/list
-func GetUserList(ctx *gin.Context) {
+func GetAdminUserList(ctx *gin.Context) {
 
-	page, _ := strconv.Atoi(ctx.DefaultQuery("pageNum", "1"))
-	size, _ := strconv.Atoi(ctx.DefaultQuery("pageSize", "10"))
-	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &commonpb.PageInfo{
-		PageNum:  uint32(page),
-		PageSize: uint32(size),
+	pageNum, _ := strconv.Atoi(ctx.DefaultQuery("pageNum", "1"))
+	pageSize, _ := strconv.Atoi(ctx.DefaultQuery("pageSize", "10"))
+	rsp, err := global.UserSrvClient.GetUserPageList(context.Background(), &commonpb.UserFilterPageInfo{
+		PageRequest: &commonpb.PageRequest{
+			PageNum:  uint64(pageNum),
+			PageSize: uint64(pageSize),
+		},
 	})
 	if err != nil {
 		zap.S().Errorw("[GetUserList]查询【用户列表】失败")
@@ -63,7 +65,7 @@ func GetUserList(ctx *gin.Context) {
 	zap.S().Infof("当前访问用户：%d", customClaims.ID)*/
 	//zap.S().Debugf("获取用户列表页")
 	result := make([]response.UserResponse, 0)
-	for _, value := range rsp.Data {
+	for _, value := range rsp.List {
 		user := response.UserResponse{
 			Id:       value.Id,
 			NickName: value.Nickname,
@@ -73,11 +75,14 @@ func GetUserList(ctx *gin.Context) {
 		}
 		result = append(result, user)
 	}
-	reMap := map[string]interface{}{
-		"total": rsp.Total,
-		"data":  result,
+	pageResult := commonResponse.PageResult[response.UserResponse]{
+		List:     result,
+		Total:    rsp.Page.Total,
+		PageNum:  rsp.Page.PageNum,
+		PageSize: rsp.Page.PageSize,
 	}
-	commonResponse.OkWithData(ctx, reMap)
+
+	commonResponse.OkWithData(ctx, pageResult)
 }
 
 // PasswordLogin
@@ -112,7 +117,7 @@ func PasswordLogin(ctx *gin.Context) {
 		return
 	} else {
 		// 只是查询到用户，没有检查密码
-		if passRsp, passErr := global.UserSrvClient.CheckPassword(context.Background(), &commonpb.PasswordCheckInfo{
+		if passRsp, passErr := global.UserSrvClient.CheckPassword(context.Background(), &commonpb.PasswordCheckRequest{
 			EncryptedPassword: rsp.Password,
 			Password:          passwordLogin.Password,
 		}); passErr != nil {
@@ -206,7 +211,7 @@ func Register(ctx *gin.Context) {
 			return
 		}
 	}
-	user, err := global.UserSrvClient.CreateUser(context.Background(), &commonpb.CreateUserInfo{
+	user, err := global.UserSrvClient.CreateUser(context.Background(), &commonpb.CreateUserRequest{
 		Mobile:   registerForm.Account,
 		Password: registerForm.Password,
 	})

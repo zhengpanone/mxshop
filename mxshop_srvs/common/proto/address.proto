@@ -1,0 +1,60 @@
+syntax = "proto3";
+import "common.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = ".;proto";
+
+service Address {
+  rpc GetAddressPageList (AddressFilterPageRequest) returns (AddressListResponse); // 查看地址
+  rpc CreateAddress (CreateAddressRequest) returns (AddressResponse); // 新增地址
+  rpc DeleteAddressByIds (common.IdsRequest) returns (google.protobuf.Empty); // 删除地址
+  rpc UpdateAddress (UpdateAddressRequest) returns (google.protobuf.Empty); // 修改地址
+}
+
+message AddressFilterPageRequest {
+  common.PageRequest pageRequest = 1;
+  uint64 userId = 2;
+  string province = 3;
+  string city = 4;
+  string district = 5;
+  string address = 6;
+  string singerName = 7;
+  string singerMobile = 8;
+}
+
+message CreateAddressRequest {
+  uint64 userId = 2;
+  string province = 3;
+  string city = 4;
+  string district = 5;
+  string address = 6;
+  string singerName = 7;
+  string singerMobile = 8;
+}
+
+message UpdateAddressRequest {
+  uint64 id = 1;
+  uint64 userId = 2;
+  string province = 3;
+  string city = 4;
+  string district = 5;
+  string address = 6;
+  string singerName = 7;
+  string singerMobile = 8;
+}
+
+message AddressResponse {
+  uint64 id = 1;
+  uint64 userId = 2;
+  string province = 3;
+  string city = 4;
+  string district = 5;
+  string address = 6;
+  string singerName = 7;
+  string singerMobile = 8;
+}
+
+message AddressListResponse {
+  common.PageResponse page = 1;
+  repeated AddressResponse list = 2;
+}

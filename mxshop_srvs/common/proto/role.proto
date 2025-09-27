@@ -4,13 +4,13 @@ import "common.proto";  // 引入 common 包
 option go_package = ".;proto";
 
 service Role{
-  rpc CreateRole(CreateRoleInfo) returns (RoleInfoResponse); // 创建角色
-  rpc UpdateRole(UpdateRoleInfo) returns (google.protobuf.Empty);// 更新用户信息
-  rpc GetRoleList(RoleFilterPageInfo) returns (RoleListResponse); //角色列表
+  rpc CreateRole(CreateRoleRequest) returns (RoleInfoResponse); // 创建角色
+  rpc UpdateRole(UpdateRoleRequest) returns (google.protobuf.Empty);// 更新用户信息
+  rpc GetRolePageList(RoleFilterPageRequest) returns (RoleListResponse); //角色列表
 }
 
 
-message CreateRoleInfo{
+message CreateRoleRequest{
   string name = 1;
   string remark = 2;
   bool status = 3;
@@ -23,14 +23,14 @@ message RoleInfoResponse{
   bool status = 4;
 }
 
-message UpdateRoleInfo{
+message UpdateRoleRequest{
   int64 id = 1;
   string name = 2;
   string remark = 3;
   bool status = 4;
 }
 
-message RoleFilterPageInfo{
+message RoleFilterPageRequest{
   common.PageRequest pageRequest = 1; // 分页参数
   string name = 2;
   string remark = 3;

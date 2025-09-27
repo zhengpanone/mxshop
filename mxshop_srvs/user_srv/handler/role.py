@@ -2,7 +2,7 @@ import grpc
 import peewee
 
 from user_srv.model.models import Role
-from user_srv.proto import role_pb2_grpc,role_pb2
+from common.proto.pb import role_pb2_grpc,role_pb2
 from loguru import logger
 
 

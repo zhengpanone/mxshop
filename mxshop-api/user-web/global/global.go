@@ -15,6 +15,7 @@ var (
 	Logger        *zap.Logger
 	UserSrvClient commonpb.UserClient
 	RoleSrvClient commonpb.RoleClient
+	DictSrvClient commonpb.DictClient
 	UserConn      *grpc.ClientConn
 	RedisClient   *redis.Client
 )

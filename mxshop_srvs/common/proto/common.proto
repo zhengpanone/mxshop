@@ -4,7 +4,29 @@ package common; // 单独的 common 包
 option go_package = ".;proto";
 
 // 通用分页参数
-message PageInfo1 {
-  uint32 page = 1;  // 页码，从 1 开始
-  uint32 size = 2;  // 每页数量
+message PageRequest {
+  uint64 pageNum = 1;  // 页码，从 1 开始
+  uint64 pageSize = 2;  // 每页数量
+}
+
+message IdRequest{
+  int32 id = 1;
+}
+
+message IdsRequest{
+  repeated IdRequest ids=1;
+}
+
+message TimestampResponse{
+  int64 createTime =1;
+  int64 updateTime =2;
+  int64 isDeleted =3;
+}
+
+message PageResponse {
+  uint64 pageNum = 1;  // 页码，从 1 开始
+  uint64 pageSize = 2;  // 每页数量
+  uint64 total = 3;
+  uint64 totalPage = 4;
+
 }

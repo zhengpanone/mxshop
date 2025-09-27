@@ -63,8 +63,8 @@ func ErrorWithCodeAndMsg(ctx *gin.Context, code int, msg string) {
 }
 
 type PageResult[T any] struct {
-	List     []T   `json:"list"`
-	Total    int64 `json:"total"`
-	Page     int   `json:"page"`
-	PageSize int   `json:"pageSize"`
+	List     []T    `json:"list"`
+	Total    uint64 `json:"total"`
+	PageNum  uint64 `json:"pageNum"`
+	PageSize uint64 `json:"pageSize"`
 }

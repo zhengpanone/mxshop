@@ -34,8 +34,10 @@ func InitSrvConn() {
 	// 注册客户端
 	userSrvClient := commonpb.NewUserClient(userConn)
 	roleSrvClient := commonpb.NewRoleClient(userConn)
+	dictSrvClient := commonpb.NewDictClient(userConn)
 	global.UserSrvClient = userSrvClient
 	global.RoleSrvClient = roleSrvClient
+	global.DictSrvClient = dictSrvClient
 
 }
 

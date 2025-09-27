@@ -39,6 +39,7 @@ dependencies = [
     "jaeger-client==4.8.0",
     "loguru==0.7.3",
     "multidict==6.6.3",
+    "mypy-protobuf>=3.6.0",
     "nacos-sdk-python==2.0.8",
     "opentracing==2.4.0",
     "passlib==1.7.4",
