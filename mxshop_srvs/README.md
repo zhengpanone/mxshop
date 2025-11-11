@@ -1,3 +1,8 @@
+# 初始化
+```shell
+uv venv --python 3.12
+uv sync
+```
 
 # 构建镜像
 ```shell

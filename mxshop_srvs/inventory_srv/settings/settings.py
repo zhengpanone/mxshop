@@ -34,7 +34,7 @@ def get_server_ip():
 
 NACOS = {
     "host": "127.0.0.1",
-    "port": 8848,
+    "port": 30848,
     "namespace": "ac2997b0-1569-47d9-a792-efc10375341b",
     "dataId": "inventory-srv.json",
     "groupId": "dev",
