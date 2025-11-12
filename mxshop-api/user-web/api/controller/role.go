@@ -14,7 +14,7 @@ import (
 func CreateRole(ctx *gin.Context) {
 	addRoleForm := request.AddRoleForm{}
 	if err := ctx.ShouldBindJSON(&addRoleForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	role, err := global.RoleSrvClient.CreateRole(context.Background(), &commonpb.CreateRoleRequest{

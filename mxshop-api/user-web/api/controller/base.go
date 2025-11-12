@@ -3,6 +3,8 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/request"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/utils"
 	"go.uber.org/zap"
@@ -12,7 +14,7 @@ import (
 func GenerateCaptcha(ctx *gin.Context) {
 	captchaForm := request.CaptchaForm{}
 	if err := ctx.ShouldBind(&captchaForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	if captchaForm.Height == 0 {
