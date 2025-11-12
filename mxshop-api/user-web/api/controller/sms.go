@@ -2,6 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	commonUtils "github.com/zhengpanone/mxshop/mxshop-api/common/utils"
+	"github.com/zhengpanone/mxshop/mxshop-api/user-web/global"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/request"
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/utils"
 	"go.uber.org/zap"
@@ -11,7 +13,7 @@ import (
 func SendSms(ctx *gin.Context) {
 	smsForm := request.SendSmsForm{}
 	if err := ctx.ShouldBind(&smsForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	code := utils.GenerateSmsCode(5)

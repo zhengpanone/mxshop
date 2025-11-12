@@ -23,7 +23,7 @@ func (m *MenuController) GetDictTypeById(ctx *gin.Context) {}
 func (d *DictTypeController) CreateDictType(ctx *gin.Context) {
 	addDictTypeForm := request.CreateDictTypeRequest{}
 	if err := ctx.ShouldBindJSON(&addDictTypeForm); err != nil {
-		HandleValidatorError(ctx, err)
+		commonUtils.HandleValidatorError(ctx, global.Trans, err)
 		return
 	}
 	dictType, err := global.DictSrvClient.CreateDictType(context.Background(), &commonpb.CreateDictTypeRequest{

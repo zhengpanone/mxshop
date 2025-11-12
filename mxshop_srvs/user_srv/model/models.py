@@ -40,39 +40,6 @@ class Role(BaseModel,TimestampMixin):
     class Meta:
         table_name = 'role'
 
-class User(BaseModel,TimestampMixin):
-    GENDER_CHOICES = (
-        ('1', '男'),
-        ('2', '女')
-    )
-
-    ROLE_CHOICES = (
-        ('1', '管理员'),
-        ('2', '普通用户')
-    )
-    mobile = CharField(max_length=11, index=True, unique=True, verbose_name="手机号码")
-    password = CharField(max_length=255, verbose_name="密码")
-    nickname = CharField(max_length=20, null=True, verbose_name="昵称")
-    head_url = CharField(max_length=255, null=True, verbose_name="头像")
-    birthday = DateField(null=True, verbose_name="出生日期")
-    address = CharField(max_length=255, null=True, verbose_name="地址")
-    desc = TextField(null=True, verbose_name="个人简介")
-    gender = SmallIntegerField(choices=GENDER_CHOICES, null=True, verbose_name="性别")
-    role = TextField(choices=ROLE_CHOICES, verbose_name="角色")
-
-    class Meta:
-        table_name = 'user'
-
-
-class Role(BaseModel,TimestampMixin):
-    name = CharField(max_length=255, verbose_name="角色名称")
-    remark = TextField(null=True, verbose_name="角色备注")
-    status =  BooleanField(default=True, verbose_name="是否启用")
-
-    class Meta:
-        table_name = 'role'
-
-
 class UserRole(BaseModel):
     user_id = IntegerField(index=True, verbose_name="用户ID")
     role_id = IntegerField(index=True, verbose_name="角色ID")
@@ -109,6 +76,13 @@ class DictItem(BaseModel,TimestampMixin):
         indexes = (
             (("dict_type", "item_value"), True),  # 组合唯一索引
         )
+
+class Menu(BaseModel,TimestampMixin):
+    name = CharField(max_length=255, null=False,  unique=True, verbose_name="菜单名称")
+    status = BooleanField(default=True, verbose_name="是否启用")
+
+    class Meta:
+        table_name = "menu"
 
 
 
