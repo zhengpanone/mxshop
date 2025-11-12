@@ -4,6 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"syscall"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	ut "github.com/go-playground/universal-translator"
@@ -18,13 +26,6 @@ import (
 	"github.com/zhengpanone/mxshop/mxshop-api/user-web/initialize"
 	myValidator "github.com/zhengpanone/mxshop/mxshop-api/user-web/validator"
 	"go.uber.org/zap"
-	"io"
-	"net/http"
-	"os"
-	"os/signal"
-	"path/filepath"
-	"syscall"
-	"time"
 )
 
 var CmdRun = &cobra.Command{
@@ -52,11 +53,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 		gin.SetMode(gin.ReleaseMode)
 		gin.DefaultWriter = io.Discard
 	}
-
-	// 1.初始化配置文件
-	initialize.InitConfig(configPath)
-
-	// 2.初始化Logger
+	// 1.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
 	err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
 	if err != nil {
@@ -64,7 +61,9 @@ func runFunction(cmd *cobra.Command, args []string) {
 	}
 	global.Logger = commonInitialize.GetLogger()
 	zap.ReplaceGlobals(global.Logger)
-	zap.L().Info("日志初始化成功")
+	global.Logger.Info("日志初始化成功")
+	// 2.初始化配置文件
+	initialize.InitConfig(configPath)
 
 	// 3. 初始化连接redis
 	if global.ServerConfig.System.UseRedis {

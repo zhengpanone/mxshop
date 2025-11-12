@@ -2,6 +2,9 @@ package controller
 
 import (
 	"context"
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	commonResponse "github.com/zhengpanone/mxshop/mxshop-api/common/response"
@@ -9,8 +12,6 @@ import (
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/order-web/global"
 	"go.uber.org/zap"
-	"net/http"
-	"strconv"
 )
 
 type ShopCartApi struct{}
@@ -61,7 +62,7 @@ func (*ShopCartApi) GetShopCartList(ctx *gin.Context) {
 	}
 	goodsList := make([]interface{}, 0)
 	for _, item := range rsp.Data {
-		for _, goods := range goodsRsp.Data {
+		for _, goods := range goodsRsp.List {
 			if goods.Id == item.GoodsId {
 				tmpMap := map[string]interface{}{}
 				tmpMap["id"] = item.Id

@@ -2,13 +2,14 @@ package controller
 
 import (
 	"context"
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	commonpb "github.com/zhengpanone/mxshop/mxshop-api/common/proto/pb"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/forms"
 	"github.com/zhengpanone/mxshop/mxshop-api/userop-web/global"
 	"go.uber.org/zap"
-	"net/http"
-	"strconv"
 )
 
 // GetFavList 获取用户收藏列表
@@ -59,7 +60,7 @@ func GetFavList(ctx *gin.Context) {
 		data := gin.H{
 			"id": item.GoodsId,
 		}
-		for _, good := range goods.Data {
+		for _, good := range goods.List {
 			for item.GoodsId == good.Id {
 				data["name"] = good.Name
 				data["shopPrice"] = good.ShopPrice

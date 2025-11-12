@@ -12,7 +12,7 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/mbobakov/grpc-consul-resolver v1.5.3
-	github.com/nacos-group/nacos-sdk-go/v2 v2.3.2
+	github.com/nacos-group/nacos-sdk-go/v2 v2.3.5
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/cobra v1.9.1

@@ -7,7 +7,7 @@ type LogConfig struct {
 	// 日志级别
 	Level string `mapstructure:"level"`
 	// 志文件的位置
-	Filename string `mapstructure:"filename"`
+	Filename string `mapstructure:"filename" yaml:"filename"`
 	// 在进行切割之前，日志文件的最大大小（以MB为单位）
 	MaxSize int `mapstructure:"max_size"`
 	// 保留旧文件的最大天数
