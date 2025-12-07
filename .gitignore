@@ -1,8 +1,9 @@
-*/.idea
+**/.idea
 */venv
 **/__pycache__
 */*.log
 **/tmp
+**/*.iml
 
 **/vendor
 **/logs
