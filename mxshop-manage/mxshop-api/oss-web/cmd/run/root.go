@@ -4,6 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"syscall"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
@@ -14,13 +22,6 @@ import (
 	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/global"
 	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/initialize"
 	"go.uber.org/zap"
-	"io"
-	"net/http"
-	"os"
-	"os/signal"
-	"path/filepath"
-	"syscall"
-	"time"
 )
 
 var CmdRun = &cobra.Command{
@@ -49,10 +50,7 @@ func runFunction(cmd *cobra.Command, args []string) {
 		gin.DefaultWriter = io.Discard
 	}
 
-	// 1.初始化配置文件
-	initialize.InitConfig(configPath)
-
-	// 2.初始化Logger
+	// 1.初始化Logger
 	logConfig := global.ServerConfig.LogConfig
 	err := commonInitialize.InitLogger(logConfig.Filename, logConfig.MaxSize, logConfig.MaxBackups, logConfig.MaxAge, logConfig.Level)
 	if err != nil {
@@ -61,6 +59,9 @@ func runFunction(cmd *cobra.Command, args []string) {
 	global.Logger = commonInitialize.GetLogger()
 	zap.ReplaceGlobals(global.Logger)
 	global.Logger.Info("日志初始化成功")
+
+	// 2.初始化配置文件
+	initialize.InitConfig(configPath)
 
 	// 初始化oss
 	initialize.InitOSS(global.ServerConfig.OssInfo)

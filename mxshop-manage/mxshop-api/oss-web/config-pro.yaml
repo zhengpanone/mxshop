@@ -5,4 +5,9 @@ nacos:
   namespace: ac2997b0-1569-47d9-a792-efc10375341b
   dataId: oss-web.yaml
   group: pro
+  user: nacos
+  password: nacos
+
+log:
+  filename: 'oss-web.log'
 

@@ -2,6 +2,11 @@ package initialize
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/fsnotify/fsnotify"
 	"github.com/gin-gonic/gin"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
@@ -11,27 +16,59 @@ import (
 	"github.com/zhengpanone/mxshop/mxshop-api/common/utils/filesystem"
 	"github.com/zhengpanone/mxshop/mxshop-api/oss-web/global"
 	"go.uber.org/zap"
-	"log"
-	"path/filepath"
-	"strings"
 )
 
 var RootPath string
 
 func GetConfigFromNacos() {
-	serverConfig := global.ServerConfig
-	//创建 Nacos 服务端配置
+	nacosConfig := global.ServerConfig.Nacos
+
+	// 详细输出配置信息用于调试
+	global.Logger.Info("=== Nacos配置参数详情 ===",
+		zap.String("Host", nacosConfig.Host),
+		zap.Uint64("Port", nacosConfig.Port),
+		zap.String("Namespace", nacosConfig.Namespace),
+		zap.String("DataId", nacosConfig.DataId),
+		zap.String("Group", nacosConfig.Group),
+		zap.String("ContextPath", nacosConfig.ContextPath),
+		zap.String("User", nacosConfig.User),
+		zap.String("Password", nacosConfig.Password))
+
+	// 创建 Nacos 服务端配置
 	sc := []constant.ServerConfig{
-		*constant.NewServerConfig(serverConfig.Nacos.Host, serverConfig.Nacos.Port, constant.WithContextPath(serverConfig.Nacos.ContextPath)),
+		*constant.NewServerConfig(
+			nacosConfig.Host,
+			nacosConfig.Port,
+			constant.WithContextPath(nacosConfig.ContextPath),
+			constant.WithScheme("http"),
+		),
 	}
+	tempDir := os.TempDir()
+	nacosLogDir := filepath.Join(tempDir, "nacos", "log")
+	nacosCacheDir := filepath.Join(tempDir, "nacos", "cache")
+
+	// 确保目录存在
+	if err := os.MkdirAll(nacosLogDir, 0755); err != nil {
+		global.Logger.Warn("创建日志目录失败", zap.Error(err))
+	}
+	if err := os.MkdirAll(nacosCacheDir, 0755); err != nil {
+		global.Logger.Warn("创建缓存目录失败", zap.Error(err))
+	}
+
+	global.Logger.Info("Nacos目录配置",
+		zap.String("logDir", nacosLogDir),
+		zap.String("cacheDir", nacosCacheDir))
+
 	//创建 Nacos 客户端配置
 	cc := *constant.NewClientConfig(
-		constant.WithNamespaceId(serverConfig.Nacos.Namespace),
+		constant.WithNamespaceId(nacosConfig.Namespace),
 		constant.WithTimeoutMs(5000),
 		constant.WithNotLoadCacheAtStart(true),
-		constant.WithLogDir("/tmp/nacos/log"),
-		constant.WithCacheDir("/tmp/nacos/cache"),
+		constant.WithLogDir(nacosLogDir),
+		constant.WithCacheDir(nacosCacheDir),
 		constant.WithLogLevel("debug"),
+		constant.WithUsername(nacosConfig.User),
+		constant.WithPassword(nacosConfig.Password),
 	)
 
 	// 创建 Nacos 客户端
@@ -42,14 +79,24 @@ func GetConfigFromNacos() {
 		},
 	)
 	if err != nil {
-		panic(err)
+		global.Logger.Error("创建Nacos客户端失败", zap.Error(err))
+		panic(fmt.Sprintf("创建Nacos客户端失败: %v", err))
 	}
 
 	//get config
 	content, err := client.GetConfig(vo.ConfigParam{
-		DataId: serverConfig.Nacos.DataId,
-		Group:  serverConfig.Nacos.Group,
+		DataId: nacosConfig.DataId,
+		Group:  nacosConfig.Group,
 	})
+	if err != nil {
+		global.Logger.Error("获取Nacos配置失败",
+			zap.String("dataId", nacosConfig.DataId),
+			zap.String("group", nacosConfig.Group),
+			zap.String("namespace", nacosConfig.Namespace),
+			zap.Error(err))
+		panic(fmt.Sprintf("获取Nacos配置失败: %v", err))
+	}
+	global.Logger.Info("✓ 配置获取成功")
 	// 将配置内容设置到 Viper
 	viper.SetConfigType("yaml")
 	if err := viper.ReadConfig(strings.NewReader(content)); err != nil {
@@ -68,16 +115,10 @@ func GetConfigFromNacos() {
 
 	// 监听 Nacos 配置变化。
 	err = client.ListenConfig(vo.ConfigParam{
-		DataId: serverConfig.Nacos.DataId,
-		Group:  serverConfig.Nacos.Group,
+		DataId: nacosConfig.DataId,
+		Group:  nacosConfig.Group,
 		OnChange: func(namespace, group, dataId, data string) {
 			fmt.Println("配置文件变化-------")
-			//fmt.Println("config changed group:" + group + ", dataId:" + dataId + ", content:" + data)
-
-			/*errs = yaml.Unmarshal([]byte(content), &global.ServerConfig)
-			if errs != nil {
-				zap.S().Fatalf("读取nacos配置文件，转换yaml失败:%s", errs)
-			}*/
 			// 当配置变化时，更新 Viper 中的配置。
 			if err := viper.ReadConfig(strings.NewReader(data)); err != nil {
 				fmt.Printf("Viper read config error: %v\n", err)
@@ -86,7 +127,6 @@ func GetConfigFromNacos() {
 				if err := viper.Unmarshal(global.ServerConfig); err != nil {
 					panic(err)
 				}
-				//fmt.Printf("----2---%v\n", global.ServerConfig)
 			}
 		},
 	})
